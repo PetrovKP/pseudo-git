@@ -19,6 +19,7 @@ interface DatabaseAPI {
     // Commit
     String getActualText(int idFile);
     Commit getCommitByDate(int idFile, String date);
+    List<Integer> getAllCommitsId(int idFile);
     void addCommit(int idFile, String login, String text);
 
 
