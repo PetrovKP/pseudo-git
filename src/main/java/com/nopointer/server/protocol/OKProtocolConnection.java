@@ -22,11 +22,11 @@ class OKProtocolConnection implements ProtocolConnection {
             sin = socket.getInputStream();
             sout = socket.getOutputStream();
 
-            objin = new ObjectInputStream(sin){
+            objin = new ObjectInputStream(sin) {
                 @Override
                 protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
                     ObjectStreamClass descriptor = super.readClassDescriptor();
-                    if (descriptor.getName().endsWith(".Request")){
+                    if (descriptor.getName().endsWith(".Request")) {
                         return ObjectStreamClass.lookup(Request.class);
                     }
                     return descriptor;

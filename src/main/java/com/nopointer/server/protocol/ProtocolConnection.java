@@ -7,7 +7,10 @@ import java.net.Socket;
 
 public interface ProtocolConnection {
     void setSocket(Socket socket);
+
     boolean isReady();
+
     Request getRequest();
+
     void sendResponce(Response response);
 }

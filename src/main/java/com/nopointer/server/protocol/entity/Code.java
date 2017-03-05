@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Code implements Serializable {
     private String code;
 
-    public Code(){
+    public Code() {
         code = "DEFAULT";
     }
 

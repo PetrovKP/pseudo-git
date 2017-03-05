@@ -19,7 +19,7 @@ class OKProtocol implements Protocol {
     @Override
     public Response handleRequest(Request request) {
         Response response = null;
-        switch (request.getType()){
+        switch (request.getType()) {
             case "login":
                 List<String> list = (List<String>) request.getData();
                 Code code = controller.registerUser(list.get(0), list.get(1));

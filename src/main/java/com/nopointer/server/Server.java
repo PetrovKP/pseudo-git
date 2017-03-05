@@ -27,15 +27,15 @@ public class Server {
         }
     }
 
-    public static Server create(Injector injector){
+    public static Server create(Injector injector) {
         return new Server(injector);
     }
 
-    public void start(){
+    public void start() {
         System.out.println("Starting server...");
-        if (serverSocket!=null){
+        if (serverSocket != null) {
             System.out.println("Server started!");
-            while(true){
+            while (true) {
                 try {
                     Socket client = serverSocket.accept();
                     ClientConnection clientConnection = injector.getInstance(ClientConnection.class);
