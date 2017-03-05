@@ -5,19 +5,15 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class DatabaseImplTest {
+    private static Database database = DatabaseImpl.getInstance();
     @Test
     public void connect() throws Exception {
-        Database database = DatabaseImpl.getInstance();
         database.connect();
         assertTrue(database.isConnect());
     }
 
     @Test
     public void disconnect() throws Exception {
-        Database database = DatabaseImpl.getInstance();
-        database.connect();
-        assertTrue(database.isConnect());
-
         database.disconnect();
         assertFalse(database.isConnect());
     }

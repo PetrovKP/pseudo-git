@@ -50,8 +50,12 @@ public class DatabaseImpl implements Database {
         properties.setProperty("db.password", PASSWORD);
     }
 
+    public boolean isConnect() {
+        return connection != null;
+    }
+
     public void connect() {
-        if (connection == null) {
+        if ( !isConnect() ) {
             try {
                 String driver = properties.getProperty("db.driver");
                 String url = properties.getProperty("db.host");
@@ -66,12 +70,8 @@ public class DatabaseImpl implements Database {
         }
     }
 
-    public boolean isConnect() {
-        return connection != null;
-    }
-
     public void disconnect() {
-        if (connection != null) {
+        if ( isConnect() ) {
             try {
                 connection.close();
                 connection = null;
