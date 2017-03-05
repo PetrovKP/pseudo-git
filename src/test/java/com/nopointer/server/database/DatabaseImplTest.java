@@ -5,7 +5,13 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class DatabaseImplTest {
-    private static Database database = DatabaseImpl.getInstance();
+    private static Database database;
+    @Test
+    public void getInstance() throws Exception {
+        database = DatabaseImpl.getInstance();
+        assertFalse(database.isConnect());
+    }
+
     @Test
     public void connect() throws Exception {
         database.connect();
