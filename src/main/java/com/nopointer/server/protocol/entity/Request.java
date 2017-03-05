@@ -1,4 +1,4 @@
-package com.nopointer.server.protocol;
+package com.nopointer.server.protocol.entity;
 
 import java.io.Serializable;
 

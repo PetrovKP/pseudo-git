@@ -4,7 +4,7 @@ import com.nopointer.server.entity.Commit;
 
 import java.util.List;
 
-interface DatabaseAPI {
+public interface DatabaseAPI {
     // Users
     void registerUser(String login, String password);
     boolean login(String login, String password);

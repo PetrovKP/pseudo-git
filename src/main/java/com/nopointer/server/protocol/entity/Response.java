@@ -1,11 +1,11 @@
-package com.nopointer.server.protocol;
+package com.nopointer.server.protocol.entity;
 
 import java.io.Serializable;
 
-public class Responce implements Serializable {
+public class Response implements Serializable {
     private Object data;
 
-    public Responce(Object data) {
+    public Response(Object data) {
         this.data = data;
     }
 

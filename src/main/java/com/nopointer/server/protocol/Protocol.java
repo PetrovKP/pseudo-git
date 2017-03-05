@@ -1,5 +1,8 @@
 package com.nopointer.server.protocol;
 
+import com.nopointer.server.protocol.entity.Request;
+import com.nopointer.server.protocol.entity.Response;
+
 public interface Protocol {
-    Responce handleRequest(Request request);
+    Response handleRequest(Request request);
 }
