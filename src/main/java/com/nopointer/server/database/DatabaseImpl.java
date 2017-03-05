@@ -19,6 +19,8 @@ public class DatabaseImpl implements Database {
     private static final String USERNAME = "petrov";
     private static final String PASSWORD = "petrov2016";
 
+    private static DatabaseAPI databaseAPI;
+
     public static DatabaseImpl getInstance(){
         if(dbIsntance==null) {
             dbIsntance= new DatabaseImpl();
@@ -50,10 +52,12 @@ public class DatabaseImpl implements Database {
         properties.setProperty("db.password", PASSWORD);
     }
 
+    @Override
     public boolean isConnect() {
         return connection != null;
     }
 
+    @Override
     public void connect() {
         if ( !isConnect() ) {
             try {
@@ -70,6 +74,7 @@ public class DatabaseImpl implements Database {
         }
     }
 
+    @Override
     public void disconnect() {
         if ( isConnect() ) {
             try {
@@ -81,7 +86,13 @@ public class DatabaseImpl implements Database {
         }
     }
 
+    @Override
     public DatabaseAPI getAPI() {
-        return null;
+        databaseAPI = new DatabaseAPIGit(connection);
+
+
+
+
+        return databaseAPI;
     }
 }

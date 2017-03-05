@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class DatabaseImplTest {
-    private static Database database;
+    private static DatabaseImpl database;
     @Test
     public void getInstance() throws Exception {
         database = DatabaseImpl.getInstance();
@@ -20,6 +20,10 @@ public class DatabaseImplTest {
 
     @Test
     public void disconnect() throws Exception {
+        database.connect();
+        database.disconnect();
+        assertFalse(database.isConnect());
+
         database.disconnect();
         assertFalse(database.isConnect());
     }
