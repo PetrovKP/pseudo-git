@@ -1,6 +1,7 @@
 package com.nopointer.server.database;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,13 +17,14 @@ public class DatabaseImpl implements Database {
     private DatabaseAPI databaseAPI;
 
     @Inject
-    public DatabaseImpl(DatabaseAPI databaseAPI) {
+    public DatabaseImpl(@Named("config.properties") String config,
+                        DatabaseAPI databaseAPI) {
         this.databaseAPI = databaseAPI;
         properties = new Properties();
         connection = null;
 //      Реализация считывания из фала
         try {
-        InputStream input = new FileInputStream("src/main/resources/config.properties");
+        InputStream input = new FileInputStream(config);
 
 //       Загрузка конфигурационного файла
          properties.load(input);

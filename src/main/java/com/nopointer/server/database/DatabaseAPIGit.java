@@ -13,7 +13,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     private Connection connection;
     private PreparedStatement preparedStatement;
 
-    DatabaseAPIGit() {
+    public DatabaseAPIGit() {
         connection = null;
         preparedStatement = null;
     }
@@ -57,6 +57,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 e.printStackTrace();
             }
         }
+        return true;
     }
 
     @Override
@@ -110,6 +111,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return true;
     }
 
     @Override
@@ -169,6 +171,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
     @Override
     public boolean changeFileStatus(int idFile) {
+        return true;
 
     }
 
@@ -188,7 +191,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public boolean addCommit(int idFile, String login, String text) {
-
+    public boolean addCommit(int idFile, String login, List<String> text) {
+        return false;
     }
 }

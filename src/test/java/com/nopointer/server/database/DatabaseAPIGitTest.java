@@ -3,6 +3,7 @@ package com.nopointer.server.database;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.nopointer.server.config.Module;
+import com.nopointer.server.config.TestModule;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +18,7 @@ public class DatabaseAPIGitTest {
 
     @Before
     public void setUp() throws Exception {
-        Injector injector = Guice.createInjector(new Module());
+        Injector injector = Guice.createInjector(new TestModule());
         database = injector.getInstance(Database.class);
 
         database.connect();
@@ -70,7 +71,7 @@ public class DatabaseAPIGitTest {
     public void getAllFilesId() throws Exception {
         List<Integer> result, expected;
 
-        result = database.getAPI().getAllFilesId();
+        result = database.getAPI().getAllFilesId("e");
 
         expected = new ArrayList<Integer>();
         Collections.addAll(expected, 1, 2, 3);
