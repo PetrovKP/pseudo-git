@@ -2,7 +2,6 @@ package com.nopointer.server.protocol;
 
 import com.google.inject.Inject;
 import com.nopointer.server.controller.Controller;
-import com.nopointer.server.protocol.entity.Code;
 import com.nopointer.server.protocol.entity.Request;
 import com.nopointer.server.protocol.entity.Response;
 
@@ -22,8 +21,8 @@ class OKProtocol implements Protocol {
         switch (request.getType()) {
             case "login":
                 List<String> list = (List<String>) request.getData();
-                Code code = controller.registerUser(list.get(0), list.get(1));
-                response = new Response(code);
+                int code = controller.registerUser(list.get(0), list.get(1));
+                response = new Response(code, null);
                 break;
             // TODO: and so on.
         }
