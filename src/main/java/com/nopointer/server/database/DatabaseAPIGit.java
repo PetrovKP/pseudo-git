@@ -14,7 +14,6 @@ public class DatabaseAPIGit implements DatabaseAPI {
     private Connection connection;
     private PreparedStatement preparedStatement;
 
-    @Inject
     DatabaseAPIGit() {
         connection = null;
         preparedStatement = null;
@@ -51,6 +50,23 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, login);
                 preparedStatement.setString(2, password);
+
+                preparedStatement.executeUpdate();
+
+                preparedStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void deleteUser(String login) {
+        if ( isExistLogin(login) ) {
+            String sql = "DELETE FROM Users WHERE login =?";
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, login);
 
                 preparedStatement.executeUpdate();
 

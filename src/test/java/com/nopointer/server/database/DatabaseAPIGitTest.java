@@ -35,6 +35,8 @@ public class DatabaseAPIGitTest {
         database.getAPI().registerUser("ADD", "145");
         isEnter = database.getAPI().login("ADD", "123");
         assertTrue(isEnter);
+
+        database.getAPI().deleteUser("ADD");
     }
 
     @Test
@@ -45,7 +47,6 @@ public class DatabaseAPIGitTest {
 
         isEnter = database.getAPI().login("ovcharuk", "12332");
         assertFalse(isEnter);
-
     }
 
     @Test
