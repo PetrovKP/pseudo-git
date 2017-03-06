@@ -1,16 +1,20 @@
 package com.nopointer.server.database;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.nopointer.server.config.Module;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class DatabaseImplTest {
-    private static DatabaseImpl database;
+    private Database database;
 
     @Before
     public void setUp() throws Exception {
-        database = DatabaseImpl.getInstance();
+        Injector injector = Guice.createInjector(new Module());
+        database = injector.getInstance(Database.class);
     }
 
     @Test

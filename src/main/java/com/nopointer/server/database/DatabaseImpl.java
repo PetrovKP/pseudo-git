@@ -1,5 +1,7 @@
 package com.nopointer.server.database;
 
+import com.google.inject.Inject;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,20 +11,13 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class DatabaseImpl implements Database {
-    private static DatabaseImpl dbIsntance;
-    private static Connection connection;
-    private static Properties properties;
+    private Properties properties;
+    private Connection connection;
+    private DatabaseAPI databaseAPI;
 
-    private static DatabaseAPI databaseAPI;
+    @Inject
+    public DatabaseImpl() {
 
-    public static DatabaseImpl getInstance(){
-        if(dbIsntance==null) {
-            dbIsntance= new DatabaseImpl();
-        }
-        return dbIsntance;
-    }
-
-    private DatabaseImpl() {
         properties = new Properties();
         connection = null;
 //      Реализация считывания из фала
@@ -75,9 +70,6 @@ public class DatabaseImpl implements Database {
     @Override
     public DatabaseAPI getAPI() {
         databaseAPI = new DatabaseAPIGit(connection);
-
-
-
 
         return databaseAPI;
     }

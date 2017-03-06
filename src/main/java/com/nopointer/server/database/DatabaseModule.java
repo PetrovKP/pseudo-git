@@ -1,12 +1,12 @@
 package com.nopointer.server.database;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Singleton;
 
 public class DatabaseModule extends AbstractModule {
     @Override
     protected void configure() {
-        bind(DatabaseAPI.class);//.to(*твоя реализация*.class);
-        bind(Database.class);//.to(*твоя реализация*.class);
-        //где нужно - добавить .in(Singleton.class);
+        bind(Database.class).to(DatabaseImpl.class).in(Singleton.class);
+        bind(DatabaseAPI.class).to(DatabaseAPIGit.class);
     }
 }
