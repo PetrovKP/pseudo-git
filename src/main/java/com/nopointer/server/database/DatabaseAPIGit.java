@@ -1,5 +1,6 @@
 package com.nopointer.server.database;
 
+import com.google.inject.Inject;
 import com.nopointer.server.entity.Commit;
 
 import java.sql.Connection;
@@ -12,8 +13,9 @@ public class DatabaseAPIGit implements DatabaseAPI {
     private Connection connection;
     private PreparedStatement preparedStatement;
 
-    DatabaseAPIGit(Connection connection) {
-        this.connection = connection;
+    @Inject
+    DatabaseAPIGit() {
+        connection = null;
         preparedStatement = null;
     }
 
@@ -34,6 +36,10 @@ public class DatabaseAPIGit implements DatabaseAPI {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 
     @Override

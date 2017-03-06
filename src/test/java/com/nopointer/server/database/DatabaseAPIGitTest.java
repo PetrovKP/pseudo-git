@@ -1,5 +1,8 @@
 package com.nopointer.server.database;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.nopointer.server.config.Module;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,15 +12,15 @@ import static org.junit.Assert.*;
 
 public class DatabaseAPIGitTest {
     private DatabaseAPI databaseAPI;
-    private Database database;
-    private Connection connection;
 
     @Before
     public void setUp() throws Exception {
-        database = DatabaseImpl.getInstance();
-        connection = database.connect();
+        Injector injector = Guice.createInjector(new Module());
+        Database database = injector.getInstance(Database.class);
 
-        databaseAPI = new DatabaseAPIGit(connection);
+        Connection connection = database.connect();
+        databaseAPI = injector.getInstance(DatabaseAPI.class);
+        databaseAPI.setConnection(connection);
     }
 
     @Test
