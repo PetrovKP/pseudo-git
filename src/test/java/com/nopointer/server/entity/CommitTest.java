@@ -11,9 +11,9 @@ public class CommitTest
     private Commit commitStub;
     private List<TextString> textStringsStub;
 
-    private List<String> oldText; //"String 1\n String 2\n String 3\n";
+    private List<String> oldText; //"String 1\n String 2\n String 3\n"
 
-    private List<String> newText; //"String 1\n String 1.1\n String 2\n String 3.1\n";
+    private List<String> newText; //"String 1\n String 1.1\n String 2\n String 3.1\n"
 
     /* This is the explanation of the expected behavior of created commit
     * Old text:
