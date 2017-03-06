@@ -11,8 +11,9 @@ public class CommitTest
     private Commit commitStub;
     private List<TextString> textStringsStub;
 
-    private String oldText = "String 1\n String 2\n String 3\n";
-    private String newText = "String 1\n String 1.1\n String 2\n String 3.1\n";
+    private List<String> oldText; //"String 1\n String 2\n String 3\n";
+
+    private List<String> newText; //"String 1\n String 1.1\n String 2\n String 3.1\n";
 
     /* This is the explanation of the expected behavior of created commit
     * Old text:
@@ -36,6 +37,19 @@ public class CommitTest
 
     @Before
     public void setUp() throws Exception{
+        // Init oldText
+        oldText = new ArrayList<>();
+        oldText.add("String 1");
+        oldText.add("String 2");
+        oldText.add("String 3");
+
+        // Init newText
+        newText = new ArrayList<>();
+        newText.add("String 1");
+        newText.add("String 1.1");
+        newText.add("String 2");
+        newText.add("String 3.1");
+
         // Init textStringStub
         textStringsStub = new ArrayList<>();
         textStringsStub.add(new TextString("OLD", "String 1"));

@@ -11,7 +11,7 @@ public class Commit implements Serializable{
         textStrings = null;
     }
 
-    public Commit(String oldText, String newText){
+    public Commit(List<String> oldText, List<String> newText){
         this.textStrings = CommitUtils.buildCommit(oldText, newText);
     }
 

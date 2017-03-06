@@ -6,7 +6,7 @@ public class CommitUtils
 {
     private CommitUtils(){}
 
-    public static List<TextString> buildCommit(String oldText, String newText){
+    public static List<TextString> buildCommit(List<String> oldText, List<String> newText){
         // TODO: add realisation
         return null;
     }
