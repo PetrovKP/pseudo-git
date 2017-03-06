@@ -28,11 +28,9 @@ public class CommitTest
     *  String 3.1
     *
     *  Expected 'commit' of this texts:
-    *  OLD: String 1
-    *  NEW: String 1.1
-    *  OLD: String 2
-    *  DELETED: String 3
-    *  NEW: String 3.1
+    *  2:+ String 1.1
+    *  3:- String 3
+    *  4:+ String 3.1
     */
 
     @Before
@@ -52,11 +50,9 @@ public class CommitTest
 
         // Init textStringStub
         textStringsStub = new ArrayList<>();
-        textStringsStub.add(new TextString("OLD", "String 1"));
-        textStringsStub.add(new TextString("NEW", "String 1.1"));
-        textStringsStub.add(new TextString("OLD", "String 2"));
-        textStringsStub.add(new TextString("DELETED", "String 3"));
-        textStringsStub.add(new TextString("NEW", "String 3.1"));
+        textStringsStub.add(new TextString(2, "+", "String 1.1"));
+        textStringsStub.add(new TextString(3, "-", "String 3"));
+        textStringsStub.add(new TextString(4, "+", "String 3.1"));
 
         // Init commitStub
         commitStub = new Commit(){
@@ -84,8 +80,8 @@ public class CommitTest
             public List<TextString> getTextStrings()
             {
                 List<TextString> textStrings = new ArrayList<>();
-                textStrings.add(new TextString("DELETED", "This is old text"));
-                textStrings.add(new TextString("NEW", "This is new text"));
+                textStrings.add(new TextString(1, "DELETED", "This is old text"));
+                textStrings.add(new TextString(2, "NEW", "This is new text"));
                 return textStrings;
             }
         };
@@ -94,8 +90,8 @@ public class CommitTest
             public List<TextString> getTextStrings()
             {
                 List<TextString> textStrings = new ArrayList<>();
-                textStrings.add(new TextString("DELETED", "This is old text"));
-                textStrings.add(new TextString("NEW", "This is new text"));
+                textStrings.add(new TextString(1, "DELETED", "This is old text"));
+                textStrings.add(new TextString(2, "NEW", "This is new text"));
                 return textStrings;
             }
         };
@@ -112,8 +108,8 @@ public class CommitTest
             public List<TextString> getTextStrings()
             {
                 List<TextString> textStrings = new ArrayList<>();
-                textStrings.add(new TextString("DELETED", "This is old text1"));
-                textStrings.add(new TextString("NEW", "This is new text1"));
+                textStrings.add(new TextString(1, "DELETED", "This is old text1"));
+                textStrings.add(new TextString(2, "NEW", "This is new text1"));
                 return textStrings;
             }
         };
@@ -122,9 +118,9 @@ public class CommitTest
             public List<TextString> getTextStrings()
             {
                 List<TextString> textStrings = new ArrayList<>();
-                textStrings.add(new TextString("DELETED", "This is old text2"));
-                textStrings.add(new TextString("NEW", "This is new text2"));
-                textStrings.add(new TextString("NEW", "This is also new text2"));
+                textStrings.add(new TextString(1, "DELETED", "This is old text2"));
+                textStrings.add(new TextString(2, "NEW", "This is new text2"));
+                textStrings.add(new TextString(3, "NEW", "This is also new text2"));
                 return textStrings;
             }
         };

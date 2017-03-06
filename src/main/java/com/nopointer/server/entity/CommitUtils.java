@@ -4,38 +4,52 @@ import difflib.*;
 
 import java.util.*;
 
-public class CommitUtils
+class CommitUtils
 {
     private CommitUtils(){}
 
     public static List<TextString> buildCommit(List<String> oldText, List<String> newText)
     {
         List<TextString> result = new ArrayList<>();
-        List<String> res = new ArrayList<>();
-
-        int shift = 0;
-
-        for (int i = 0; i < oldText.size(); i++)
-        {
-            result.add(new TextString("OLD", oldText.get(i)));
-        }
 
         Patch<String> diff = DiffUtils.diff(oldText, newText);
 
         for (Delta delta : diff.getDeltas()){
+            Chunk original = delta.getOriginal();
+            Chunk revised = delta.getRevised();
+            int position;
+
             switch (delta.getType()){
                 case INSERT:
-                    //int position = ;
+                    position = revised.getPosition();
+                    for (int i = 0; i< revised.getLines().size(); i++){
+                        result.add(new TextString(position + i + 1, "+",
+                                (String)revised.getLines().get(i)));
+                    }
                     break;
-                case CHANGE:
-                break;
+
                 case DELETE:
-                break;
+                    position = original.getPosition();
+                    for (int i = 0; i< original.getLines().size(); i++){
+                        result.add(new TextString(position + i + 1, "-",
+                                (String)original.getLines().get(i)));
+                    }
+                    break;
+
+                case CHANGE:
+                    position = original.getPosition();
+                    for (int i = 0; i< original.getLines().size(); i++){
+                        result.add(new TextString(position + i + 1, "-",
+                                (String)original.getLines().get(i)));
+                    }
+                    position = revised.getPosition();
+                    for (int i = 0; i< revised.getLines().size(); i++){
+                        result.add(new TextString(position + i + 1, "+",
+                                (String)revised.getLines().get(i)));
+                    }
+                    break;
             }
-            System.out.println(delta.getType());
-            System.out.println(delta.getOriginal());
-            System.out.println(delta.getRevised());
         }
-        return null;
+        return result;
     }
 }
