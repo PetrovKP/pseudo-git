@@ -2,20 +2,18 @@ package com.nopointer.server.entity;
 
 import java.io.Serializable;
 
-public class TextString implements Serializable{
+public class TextString implements Serializable {
     private int number;
     private String status;
     private String string;
 
-    public TextString()
-    {
+    public TextString() {
         number = -1;
         status = "DEFAULT";
         string = "DEFAULT";
     }
 
-    public TextString(int number, String status, String string)
-    {
+    public TextString(int number, String status, String string) {
         this.status = status;
         this.number = number;
         this.string = string;
@@ -25,13 +23,11 @@ public class TextString implements Serializable{
         return number;
     }
 
-    public String getStatus()
-    {
+    public String getStatus() {
         return status;
     }
 
-    public String getString()
-    {
+    public String getString() {
         return string;
     }
 
