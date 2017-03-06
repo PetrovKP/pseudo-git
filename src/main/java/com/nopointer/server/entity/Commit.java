@@ -20,13 +20,10 @@ public class Commit implements Serializable{
         return textStrings;
     }
 
-    @Override
-    public boolean equals(Object o)
+    public boolean equals(Commit commit)
     {
-        if (this == o) { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
+        if (this == commit) { return true; }
 
-        Commit commit = (Commit)o;
         List<TextString> localTextStrings = getTextStrings();
 
         if (localTextStrings == null || commit.getTextStrings() == null) {return false;}
