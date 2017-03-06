@@ -6,6 +6,11 @@ public class Request implements Serializable {
     private String type;
     private Object data;
 
+    public Request() {
+        this.type = "default";
+        this.data = null;
+    }
+
     public Request(String type, Object data) {
         this.type = type;
         this.data = data;
