@@ -27,24 +27,24 @@ public class DatabaseAPIGitTest {
 
     @Test
     public void registerUser() throws Exception {
-        boolean logout;
+        boolean isEnter;
         database.getAPI().registerUser("ADD", "123");
-        logout = database.getAPI().login("ADD", "123");
-        assertTrue(logout);
+        isEnter = database.getAPI().login("ADD", "123");
+        assertTrue(isEnter);
 
         database.getAPI().registerUser("ADD", "145");
-        logout = database.getAPI().login("ADD", "123");
-        assertTrue(logout);
+        isEnter = database.getAPI().login("ADD", "123");
+        assertTrue(isEnter);
     }
 
     @Test
     public void login() throws Exception {
-        boolean logout;
-        logout = database.getAPI().login("petrov", "qwerty123");
-        assertTrue(logout);
+        boolean isEnter;
+        isEnter = database.getAPI().login("petrov", "qwerty123");
+        assertTrue(isEnter);
 
-        logout = database.getAPI().login("ovcharuk", "12332");
-        assertFalse(logout);
+        isEnter = database.getAPI().login("ovcharuk", "12332");
+        assertFalse(isEnter);
 
     }
 
