@@ -19,4 +19,24 @@ public class Commit implements Serializable{
     {
         return textStrings;
     }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
+
+        Commit commit = (Commit)o;
+        List<TextString> localTextStrings = getTextStrings();
+
+        if (localTextStrings == null || commit.getTextStrings() == null) {return false;}
+
+        if (localTextStrings.size() != commit.getTextStrings().size()) {return false;}
+        for (int i = 0; i < localTextStrings.size(); i++){
+            if (!localTextStrings.get(i).equals(commit.getTextStrings().get(i))){
+                return false;
+            }
+        }
+        return true;
+    }
 }

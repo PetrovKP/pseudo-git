@@ -66,8 +66,26 @@ public class CommitTest
     @Test
     public void canCompareEqualCommits() throws Exception
     {
-        Commit commit1 = new Commit("This is old text", "This is new text");
-        Commit commit2 = new Commit("This is old text", "This is new text");
+        Commit commit1 = new Commit(){
+            @Override
+            public List<TextString> getTextStrings()
+            {
+                List<TextString> textStrings = new ArrayList<>();
+                textStrings.add(new TextString("DELETED", "This is old text"));
+                textStrings.add(new TextString("NEW", "This is new text"));
+                return textStrings;
+            }
+        };
+        Commit commit2 = new Commit(){
+            @Override
+            public List<TextString> getTextStrings()
+            {
+                List<TextString> textStrings = new ArrayList<>();
+                textStrings.add(new TextString("DELETED", "This is old text"));
+                textStrings.add(new TextString("NEW", "This is new text"));
+                return textStrings;
+            }
+        };
 
         assertTrue(commit1.equals(commit2));
         assertTrue(commit2.equals(commit1));
@@ -76,8 +94,27 @@ public class CommitTest
     @Test
     public void canCompareNotEqualCommits() throws Exception
     {
-        Commit commit1 = new Commit("This is old text1", "This is new text1");
-        Commit commit2 = new Commit("This is old text2", "This is new text2\n And also this is new text2");
+        Commit commit1 = new Commit(){
+            @Override
+            public List<TextString> getTextStrings()
+            {
+                List<TextString> textStrings = new ArrayList<>();
+                textStrings.add(new TextString("DELETED", "This is old text1"));
+                textStrings.add(new TextString("NEW", "This is new text1"));
+                return textStrings;
+            }
+        };
+        Commit commit2 = new Commit(){
+            @Override
+            public List<TextString> getTextStrings()
+            {
+                List<TextString> textStrings = new ArrayList<>();
+                textStrings.add(new TextString("DELETED", "This is old text2"));
+                textStrings.add(new TextString("NEW", "This is new text2"));
+                textStrings.add(new TextString("NEW", "This is also new text2"));
+                return textStrings;
+            }
+        };
 
         assertFalse(commit1.equals(commit2));
         assertFalse(commit2.equals(commit1));
