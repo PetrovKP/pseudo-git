@@ -28,4 +28,20 @@ public class TextString implements Serializable{
     {
         return string;
     }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
+        TextString that = (TextString)o;
+        return Objects.equals(status, that.status) &&
+                Objects.equals(string, that.string);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(status, string);
+    }
 }
