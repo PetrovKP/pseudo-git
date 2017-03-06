@@ -1,6 +1,5 @@
 package com.nopointer.server.database;
 
-import com.google.inject.Inject;
 import com.nopointer.server.entity.Commit;
 
 import java.sql.Connection;
@@ -43,7 +42,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public void registerUser(String login, String password) {
+    public boolean registerUser(String login, String password) {
         if ( !isExistLogin(login) ) {
             String sql = "INSERT INTO Users (login, password) VALUES (?, ?)";
             try {
@@ -99,7 +98,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public void createFile(String title, String text) {
+    public boolean createFile(String title) {
         String sql = "INSERT INTO Files (title) VALUES (?)";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -133,7 +132,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public List<Integer> getAllFilesId() {
+    public List<Integer> getAllFilesId(String login) {
         List<Integer> result = new ArrayList<>();
         String sql = "SELECT idFiles FROM Files";
         try {
@@ -149,7 +148,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public String getFileStatus() {
+    public String getFileStatus(int idFile) {
 
         String result = null;
         String sql = "SELECT status FROM Files WHERE idFiles = ?";
@@ -169,12 +168,12 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public void changeFileStatus() {
+    public boolean changeFileStatus(int idFile) {
 
     }
 
     @Override
-    public String getActualText(int idFile) {
+    public List<String> getActualText(int idFile) {
         return null;
     }
 
@@ -189,7 +188,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public void addCommit(int idFile, String login, String text) {
+    public boolean addCommit(int idFile, String login, String text) {
 
     }
 }
