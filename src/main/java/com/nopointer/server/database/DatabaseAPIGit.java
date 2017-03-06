@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseAPIGit implements DatabaseAPI {
@@ -21,7 +22,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
     private boolean isExistLogin(String login) {
         boolean result = true;
-        String sql = "SELECT COUNT(*) AS rowcount FROM users WHERE login = ?";
+        String sql = "SELECT COUNT(*) AS rowcount FROM Users WHERE login = ?";
         try {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, login);
@@ -45,7 +46,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     @Override
     public void registerUser(String login, String password) {
         if ( !isExistLogin(login) ) {
-            String sql = "INSERT INTO users (login, password) VALUES (?, ?)";
+            String sql = "INSERT INTO Users (login, password) VALUES (?, ?)";
             try {
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, login);
@@ -63,7 +64,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     @Override
     public boolean login(String login, String password) {
         boolean result = true;
-        String sql = "SELECT COUNT(*) AS rowcount FROM users WHERE login = ? AND password = ?";
+        String sql = "SELECT COUNT(*) AS rowcount FROM Users WHERE login = ? AND password = ?";
         try {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, login);
@@ -83,22 +84,72 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
     @Override
     public void createFile(String title, String text) {
+        String sql = "INSERT INTO Files (title) VALUES (?)";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+//                preparedStatement.setString(1, login);
+//                preparedStatement.setString(2, password);
 
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public String getTitle(int idFile) {
-        return null;
+        String result = null;
+        String sql = "SELECT title FROM Files WHERE idFiles = ?";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idFile);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                result = resultSet.getString("title");
+
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
     public List<Integer> getAllFilesId() {
-        return null;
+        List<Integer> result = new ArrayList<>();
+        String sql = "SELECT idFiles FROM Files";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next())
+                result.add(resultSet.getInt("idFiles"));
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
     public String getFileStatus() {
-        return null;
+
+        String result = null;
+        String sql = "SELECT status FROM Files WHERE idFiles = ?";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+//            preparedStatement.setInt(1, idFile);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                result = resultSet.getString("title");
+
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override

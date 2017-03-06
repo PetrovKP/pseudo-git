@@ -16,8 +16,8 @@ public class DatabaseImpl implements Database {
     private DatabaseAPI databaseAPI;
 
     @Inject
-    public DatabaseImpl() {
-
+    public DatabaseImpl(DatabaseAPI databaseAPI) {
+        this.databaseAPI = databaseAPI;
         properties = new Properties();
         connection = null;
 //      Реализация считывания из фала
@@ -38,7 +38,7 @@ public class DatabaseImpl implements Database {
     }
 
     @Override
-    public Connection connect() {
+    public void connect() {
         if ( !isConnect() ) {
             try {
                 String driver = properties.getProperty("db.driver");
@@ -47,12 +47,13 @@ public class DatabaseImpl implements Database {
                 String password = properties.getProperty("db.password");
                 Class.forName(driver);
                 connection = DriverManager.getConnection(url, username, password);
+//                Не оч корректно!
+                databaseAPI.setConnection(connection);
             }
             catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
-        return connection;
     }
 
     @Override

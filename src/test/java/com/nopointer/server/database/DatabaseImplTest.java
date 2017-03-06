@@ -33,4 +33,14 @@ public class DatabaseImplTest {
         assertFalse(database.isConnect());
     }
 
+    @Test
+    public void getAPI() throws Exception {
+        database.connect();
+        database.getAPI().login("ADD", "123");
+
+        database.disconnect();
+//        database.getAPI().login("ADD", "123");
+
+    }
+
 }

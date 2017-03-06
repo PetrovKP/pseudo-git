@@ -7,42 +7,104 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class DatabaseAPIGitTest {
-    private DatabaseAPI databaseAPI;
+    private Database database;
 
     @Before
     public void setUp() throws Exception {
         Injector injector = Guice.createInjector(new Module());
-        Database database = injector.getInstance(Database.class);
+        database = injector.getInstance(Database.class);
 
-        Connection connection = database.connect();
-        databaseAPI = injector.getInstance(DatabaseAPI.class);
-        databaseAPI.setConnection(connection);
+        database.connect();
     }
 
     @Test
     public void registerUser() throws Exception {
         boolean logout;
-        databaseAPI.registerUser("ADD", "123");
-        logout = databaseAPI.login("ADD", "123");
+        database.getAPI().registerUser("ADD", "123");
+        logout = database.getAPI().login("ADD", "123");
         assertTrue(logout);
 
-        databaseAPI.registerUser("ADD", "145");
-        logout = databaseAPI.login("ADD", "123");
+        database.getAPI().registerUser("ADD", "145");
+        logout = database.getAPI().login("ADD", "123");
         assertTrue(logout);
     }
 
     @Test
     public void login() throws Exception {
         boolean logout;
-        logout = databaseAPI.login("petrov", "qwerty123");
+        logout = database.getAPI().login("petrov", "qwerty123");
         assertTrue(logout);
 
-        logout = databaseAPI.login("ovcharuk", "12332");
+        logout = database.getAPI().login("ovcharuk", "12332");
         assertFalse(logout);
+
     }
 
+    @Test
+    public void createFile() throws Exception {
+
+    }
+
+    @Test
+    public void getTitle() throws Exception {
+        String result, expected;
+
+        result = database.getAPI().getTitle(1);
+
+        expected = "test1";
+        assertEquals(result, expected);
+
+        result = database.getAPI().getTitle(100);
+
+        assertNull(result);
+    }
+
+    @Test
+    public void getAllFilesId() throws Exception {
+        List<Integer> result, expected;
+
+        result = database.getAPI().getAllFilesId();
+
+        expected = new ArrayList<Integer>();
+        Collections.addAll(expected, 1, 2, 3);
+        assertEquals(result, expected);
+    }
+
+    @Test
+    public void getFileStatus() throws Exception {
+
+    }
+
+    @Test
+    public void changeFileStatus() throws Exception {
+
+    }
+
+    @Test
+    public void getActualText() throws Exception {
+
+    }
+
+    @Test
+    public void getCommitByDate() throws Exception {
+
+    }
+
+    @Test
+    public void getAllCommitsId() throws Exception {
+
+    }
+
+    @Test
+    public void addCommit() throws Exception {
+
+    }
 }
