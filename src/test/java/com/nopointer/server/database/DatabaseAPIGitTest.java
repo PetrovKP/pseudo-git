@@ -20,6 +20,7 @@ public class DatabaseAPIGitTest {
 
         Connection connection = database.connect();
         databaseAPI = injector.getInstance(DatabaseAPI.class);
+        databaseAPI.setConnection(connection);
     }
 
     @Test

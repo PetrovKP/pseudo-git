@@ -14,8 +14,8 @@ public class DatabaseAPIGit implements DatabaseAPI {
     private PreparedStatement preparedStatement;
 
     @Inject
-    DatabaseAPIGit(Connection connection) {
-        this.connection = connection;
+    DatabaseAPIGit() {
+        connection = null;
         preparedStatement = null;
     }
 
@@ -36,6 +36,10 @@ public class DatabaseAPIGit implements DatabaseAPI {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 
     @Override

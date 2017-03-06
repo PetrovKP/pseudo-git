@@ -69,8 +69,6 @@ public class DatabaseImpl implements Database {
 
     @Override
     public DatabaseAPI getAPI() {
-        databaseAPI = new DatabaseAPIGit(connection);
-
         return databaseAPI;
     }
 }
