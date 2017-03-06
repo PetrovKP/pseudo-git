@@ -1,15 +1,16 @@
 package com.nopointer.server.database;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class DatabaseImplTest {
     private static DatabaseImpl database;
-    @Test
-    public void getInstance() throws Exception {
+
+    @Before
+    public void setUp() throws Exception {
         database = DatabaseImpl.getInstance();
-        assertFalse(database.isConnect());
     }
 
     @Test

@@ -12,8 +12,8 @@ public class DatabaseAPIGit implements DatabaseAPI {
     private Connection connection;
     private PreparedStatement preparedStatement;
 
-    DatabaseAPIGit(Connection connection_) {
-        connection = connection_;
+    DatabaseAPIGit(Connection connection) {
+        this.connection = connection;
         preparedStatement = null;
     }
 

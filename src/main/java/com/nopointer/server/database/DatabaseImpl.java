@@ -24,6 +24,7 @@ public class DatabaseImpl implements Database {
 
     private DatabaseImpl() {
         properties = new Properties();
+        connection = null;
 //      Реализация считывания из фала
         try {
         InputStream input = new FileInputStream("src/main/resources/config.properties");
