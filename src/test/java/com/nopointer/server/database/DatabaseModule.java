@@ -7,12 +7,12 @@ public class DatabaseModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(Database.class)
-                .annotatedWith(Names.named("STUB"))
+                .annotatedWith(Names.named("StubIfNeeded"))
                 .to(DatabaseStub.class)
                 .asEagerSingleton();
 
         bind(DatabaseAPI.class)
-                .annotatedWith(Names.named("STUB"))
+                .annotatedWith(Names.named("StubIfNeeded"))
                 .to(DatabaseAPIStub.class);
 
     }

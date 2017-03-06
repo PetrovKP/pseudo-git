@@ -7,7 +7,7 @@ public class DatabaseStub implements Database {
     private DatabaseAPI databaseAPI;
 
     @Inject
-    public DatabaseStub(@Named("STUB") DatabaseAPI databaseAPI) {
+    public DatabaseStub(@Named("StubIfNeeded") DatabaseAPI databaseAPI) {
         this.databaseAPI = databaseAPI;
     }
 

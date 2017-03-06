@@ -11,7 +11,7 @@ class ControllerImpl implements Controller {
     private Database database;
 
     @Inject
-    public ControllerImpl(@Named("STUB") Database database) {
+    public ControllerImpl(@Named("StubIfNeeded") Database database) {
         this.database = database;
         database.connect();
     }
