@@ -68,7 +68,6 @@ public class CommitTest
         };
     }
 
-
     @Test
     public void commitCreatesCorrectly() throws Exception
     {
