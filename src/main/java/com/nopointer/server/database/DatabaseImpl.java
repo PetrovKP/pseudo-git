@@ -13,12 +13,6 @@ public class DatabaseImpl implements Database {
     private static Connection connection;
     private static Properties properties;
 
-//    Будет в файле!
-    private static final String DATABASE_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String DATABASE_URL = "jdbc:mysql://94.142.139.84/PseudoGit";
-    private static final String USERNAME = "petrov";
-    private static final String PASSWORD = "petrov2016";
-
     private static DatabaseAPI databaseAPI;
 
     public static DatabaseImpl getInstance(){
@@ -30,26 +24,16 @@ public class DatabaseImpl implements Database {
 
     private DatabaseImpl() {
         properties = new Properties();
-//      Реализация считывания из фала (ПОЗЖЕ)
-        /*
+//      Реализация считывания из фала
         try {
-        InputStream input = new FileInputStream("config.properties");
+        InputStream input = new FileInputStream("src/main/resources/config.properties");
 
-        // Загрузка конфигурационного файла
+//       Загрузка конфигурационного файла
          properties.load(input);
-
-        System.out.println(properties.getProperty("db.host"));
-        System.out.println(properties.getProperty("db.login"));
-        System.out.println(properties.getProperty("db.password"));
         }
         catch (IOException ex) {
             ex.printStackTrace();
         }
-        */
-        properties.setProperty("db.driver", DATABASE_DRIVER);
-        properties.setProperty("db.host", DATABASE_URL);
-        properties.setProperty("db.login", USERNAME);
-        properties.setProperty("db.password", PASSWORD);
     }
 
     @Override
@@ -58,7 +42,7 @@ public class DatabaseImpl implements Database {
     }
 
     @Override
-    public void connect() {
+    public Connection connect() {
         if ( !isConnect() ) {
             try {
                 String driver = properties.getProperty("db.driver");
@@ -72,6 +56,7 @@ public class DatabaseImpl implements Database {
                 e.printStackTrace();
             }
         }
+        return connection;
     }
 
     @Override
