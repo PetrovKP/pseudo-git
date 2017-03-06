@@ -8,7 +8,7 @@ import com.nopointer.server.protocol.entity.Response;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ProtocolTest {
     Injector injector;
@@ -22,7 +22,7 @@ public class ProtocolTest {
 
     @Test
     public void handleRequest() throws Exception {
-        Request request = new Request("RETURN ME!", new String("qwe"));
+        Request request = new Request("RETURN ME!", "qwe");
         Response response = protocol.handleRequest(request);
 
         /* Не совсем корректный, но очень информативный пример. Тут мы подменяем Protocol

@@ -8,7 +8,7 @@ class OKProtocolStub implements Protocol {
     public Response handleRequest(Request request) {
         Response response = null;
         if (request.getType().equals("RETURN ME!")){
-            response = new Response(100, request.getData());
+            response = new Response(100, request.getData().get(0));
         }
         return response;
     }

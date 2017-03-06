@@ -20,7 +20,7 @@ class OKProtocol implements Protocol {
         Response response = null;
         switch (request.getType()) {
             case "login":
-                List<String> list = (List<String>) request.getData();
+                List<String> list = (List<String>) request.getData().get(0);
                 int code = controller.registerUser(list.get(0), list.get(1));
                 response = new Response(code, null);
                 break;
