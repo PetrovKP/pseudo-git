@@ -13,8 +13,7 @@ public class DatabaseAPIStub implements DatabaseAPI {
 
     @Override
     public boolean registerUser(String login, String password) {
-        if (login.equals("Oleg")) return false;
-        return true;
+        return !login.equals("Oleg");
     }
 
     @Override
@@ -91,11 +90,11 @@ public class DatabaseAPIStub implements DatabaseAPI {
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(2);
-        return !(idFile == 3) ? list : null;
+        return (idFile == 3) ? list : null;
     }
 
     @Override
     public boolean addCommit(int idFile, String login, List<String> text) {
-        return false;
+        return (idFile==1);
     }
 }
