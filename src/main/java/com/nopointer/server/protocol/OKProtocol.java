@@ -19,21 +19,28 @@ class OKProtocol implements Protocol {
     // на поведении контроллера и бд
     @Override
     public Response handleRequest(Request request) {
+        int code;
         Response response = null;
         switch (request.getType()) {
             case "login":
                 List<String> auth = (List<String>) request.getData().get(0);
-                int code = controller.login(auth.get(0), auth.get(1));
-                response = new Response(code, null);
+                code = controller.login(auth.get(0), auth.get(1));
+                response = new Response(code);
                 break;
             case "registerUser":
-                // TODO: realisation
+                List<String> newUser = (List<String>)request.getData().get(0);
+                code = controller.registerUser(newUser.get(0), newUser.get(1));
+                response = new Response(code);
                 break;
             case "deleteUser":
-                // TODO: realisation
+                List<String> deleteUser = (List<String>)request.getData().get(0);
+                code = controller.deleteUser(deleteUser.get(0));
+                response = new Response(code);
                 break;
             case "createFile":
-                // TODO: realisation
+                String title = (String)request.getData().get(1);
+                code = controller.createFile(title);
+                response = new Response(code);
                 break;
             case "getTitle":
                 // TODO: realisation

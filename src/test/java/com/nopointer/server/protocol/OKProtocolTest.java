@@ -100,6 +100,7 @@ public class OKProtocolTest
     @Test
     public void successCreateFile() throws Exception{
         List<String> data = new ArrayList<>();
+        data.add("login");
         data.add("New file");
 
         Request request = new Request("createFile", data);
