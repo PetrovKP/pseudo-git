@@ -7,11 +7,10 @@ import com.nopointer.server.entity.Commit;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ControllerTest {
     private Controller controller;
@@ -83,8 +82,8 @@ public class ControllerTest {
         list.add("Text");
         list.add("Here");
 
-        assertEquals(controller.getActualText(10), null);
-        assertEquals(controller.getActualText(5), list);
+        assertEquals(controller.getActualText(2), null);
+        assertEquals(controller.getActualText(1), list);
     }
 
     @Test
@@ -112,8 +111,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void addCommit() throws Exception
-    {
+    public void addCommit() throws Exception {
         assertEquals(controller.addCommit(1, "Oleg", null), 100);
         assertEquals(controller.addCommit(2, "Oleg", null), 200);
     }

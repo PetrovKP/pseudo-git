@@ -4,11 +4,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class TextStringTest
-{
+public class TextStringTest {
     @Test
-    public void getStatusAndString() throws Exception
-    {
+    public void getStatusAndString() throws Exception {
         TextString ts = new TextString(1, "This is status", "This is string");
 
         int number = ts.getNumber();
@@ -21,8 +19,7 @@ public class TextStringTest
     }
 
     @Test
-    public void canCompareEqualTextStrings() throws Exception
-    {
+    public void canCompareEqualTextStrings() throws Exception {
         TextString ts1 = new TextString(1, "Status", "Text");
         TextString ts2 = new TextString(1, "Status", "Text");
 
@@ -31,7 +28,7 @@ public class TextStringTest
     }
 
     @Test
-    public void canCompareNotEqualTextStrings() throws Exception{
+    public void canCompareNotEqualTextStrings() throws Exception {
         TextString ts1 = new TextString(1, "Status1", "Text1");
         TextString ts2 = new TextString(2, "Status2", "Text2");
 

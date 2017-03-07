@@ -1,13 +1,15 @@
 package com.nopointer.server.entity;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-public class CommitTest
-{
+public class CommitTest {
     private Commit commitStub;
     private List<TextString> textStringsStub;
 
@@ -34,7 +36,7 @@ public class CommitTest
     */
 
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
         // Init oldText
         oldText = new ArrayList<>();
         oldText.add("String 1");
@@ -55,40 +57,35 @@ public class CommitTest
         textStringsStub.add(new TextString(4, "+", "String 3.1"));
 
         // Init commitStub
-        commitStub = new Commit(){
+        commitStub = new Commit() {
             @Override
-            public List<TextString> getTextStrings()
-            {
+            public List<TextString> getTextStrings() {
                 return textStringsStub;
             }
         };
     }
 
     @Test
-    public void commitCreatesCorrectly() throws Exception
-    {
+    public void commitCreatesCorrectly() throws Exception {
         Commit commit = new Commit(oldText, newText);
 
         assertTrue(commit.equals(commitStub));
     }
 
     @Test
-    public void canCompareEqualCommits() throws Exception
-    {
-        Commit commit1 = new Commit(){
+    public void canCompareEqualCommits() throws Exception {
+        Commit commit1 = new Commit() {
             @Override
-            public List<TextString> getTextStrings()
-            {
+            public List<TextString> getTextStrings() {
                 List<TextString> textStrings = new ArrayList<>();
                 textStrings.add(new TextString(1, "DELETED", "This is old text"));
                 textStrings.add(new TextString(2, "NEW", "This is new text"));
                 return textStrings;
             }
         };
-        Commit commit2 = new Commit(){
+        Commit commit2 = new Commit() {
             @Override
-            public List<TextString> getTextStrings()
-            {
+            public List<TextString> getTextStrings() {
                 List<TextString> textStrings = new ArrayList<>();
                 textStrings.add(new TextString(1, "DELETED", "This is old text"));
                 textStrings.add(new TextString(2, "NEW", "This is new text"));
@@ -101,22 +98,19 @@ public class CommitTest
     }
 
     @Test
-    public void canCompareNotEqualCommits() throws Exception
-    {
-        Commit commit1 = new Commit(){
+    public void canCompareNotEqualCommits() throws Exception {
+        Commit commit1 = new Commit() {
             @Override
-            public List<TextString> getTextStrings()
-            {
+            public List<TextString> getTextStrings() {
                 List<TextString> textStrings = new ArrayList<>();
                 textStrings.add(new TextString(1, "DELETED", "This is old text1"));
                 textStrings.add(new TextString(2, "NEW", "This is new text1"));
                 return textStrings;
             }
         };
-        Commit commit2 = new Commit(){
+        Commit commit2 = new Commit() {
             @Override
-            public List<TextString> getTextStrings()
-            {
+            public List<TextString> getTextStrings() {
                 List<TextString> textStrings = new ArrayList<>();
                 textStrings.add(new TextString(1, "DELETED", "This is old text2"));
                 textStrings.add(new TextString(2, "NEW", "This is new text2"));

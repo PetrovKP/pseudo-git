@@ -71,7 +71,7 @@ public class DatabaseAPIStub implements DatabaseAPI {
         List<String> list = new ArrayList<>();
         list.add("Text");
         list.add("Here");
-        return (idFile == 5) ? list : null;
+        return (idFile == 1) ? list : null;
     }
 
     @Override
@@ -95,6 +95,6 @@ public class DatabaseAPIStub implements DatabaseAPI {
 
     @Override
     public boolean addCommit(int idFile, String login, List<String> text) {
-        return (idFile==1);
+        return (idFile == 1);
     }
 }
