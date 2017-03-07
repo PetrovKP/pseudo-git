@@ -15,9 +15,13 @@ public class Response implements Serializable {
 
     public Response(int code, Object... data) {
         this.code = code;
-        this.data = new ArrayList<>();
-        for (Object object : data) {
-            this.data.add(object);
+        if (data != null)
+        {
+            this.data = new ArrayList<>();
+            for (Object object : data)
+            {
+                this.data.add(object);
+            }
         }
     }
 

@@ -15,16 +15,50 @@ class OKProtocol implements Protocol {
         this.controller = controller;
     }
 
+    // Тут никаких изменений быть уже не должно, вся ответственность будет лежать
+    // на поведении контроллера и бд
     @Override
     public Response handleRequest(Request request) {
         Response response = null;
         switch (request.getType()) {
             case "login":
-                List<String> list = (List<String>) request.getData().get(0);
-                int code = controller.registerUser(list.get(0), list.get(1));
+                List<String> auth = (List<String>) request.getData().get(0);
+                int code = controller.login(auth.get(0), auth.get(1));
                 response = new Response(code, null);
                 break;
-            // TODO: and so on.
+            case "registerUser":
+                // TODO: realisation
+                break;
+            case "deleteUser":
+                // TODO: realisation
+                break;
+            case "createFile":
+                // TODO: realisation
+                break;
+            case "getTitle":
+                // TODO: realisation
+                break;
+            case "getFileStatus":
+                // TODO: realisation
+                break;
+            case "changeFileStatus":
+                // TODO: realisation
+                break;
+            case "getAllFilesId":
+                // TODO: realisation
+                break;
+            case "getActualText":
+                // TODO: realisation
+                break;
+            case "getCommitByDate":
+                // TODO: realisation
+                break;
+            case "getAllCommitsId":
+                // TODO: realisation
+                break;
+            case "addCommit":
+                // TODO: realisation
+                break;
         }
         return response;
     }
