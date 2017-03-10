@@ -2,11 +2,18 @@ package com.nopointer.server.database;
 
 import com.nopointer.server.entity.Commit;
 
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.sql.*;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class DatabaseAPIGit implements DatabaseAPI {
@@ -37,12 +44,34 @@ public class DatabaseAPIGit implements DatabaseAPI {
         return result;
     }
 
+    private int getActualId(int idFile) {
+        int result = 0;
+        String sql = "SELECT MAX(Commits.idLocalCommits) AS maxIndex " +
+                "FROM Commits WHERE idFile = ?";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idFile);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            int count = resultSet.getInt("maxIndex");
+            result = count;
+
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
 
     @Override
     public boolean registerUser(String login, String password) {
+        boolean result = false;
         if ( !isExistLogin(login) ) {
             String sql = "INSERT INTO Users (login, password) VALUES (?, ?)";
             try {
@@ -53,11 +82,12 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 preparedStatement.executeUpdate();
 
                 preparedStatement.close();
+                result = true;
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        return true;
+        return result;
     }
 
     @Override
@@ -117,6 +147,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
     @Override
     public Integer getCommitsCount(String login, int idFile) {
+
         return null;
     }
 
@@ -155,9 +186,31 @@ public class DatabaseAPIGit implements DatabaseAPI {
         return result;
     }
 
+
     @Override
     public List<String> getActualText(String login, int idFile) {
-        return null;
+        List<String> result = new ArrayList<>();
+
+        String sql = "SELECT text FROM Commits WHERE idLocalCommits = ? AND idFile = ?";
+        try {
+            int idActualCommit = getActualId(idFile);
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idActualCommit);
+            preparedStatement.setInt(2, idFile);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+
+            // Преобразование blob в массив строк
+            Blob blob = resultSet.getBlob("text");
+            String data = new String(blob.getBytes(1, (int)blob.length()));
+            result = Arrays.asList(data.split("\n"));
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
@@ -201,12 +254,44 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public boolean addCommit(String login, int idFile, List<String> text) {
-        return false;
+    public boolean addCommit(int idUser, int idFile, List<String> text) {
+        boolean result = false;
+        String sql = "INSERT INTO Commits (idLocalCommits, idFile," +
+                " idUser, text, data) VALUES (?, ?, ?, ?, ?)";
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();;
+            DataOutputStream out = new DataOutputStream(baos);
+
+            for (String element : text) {
+                out.write(element.getBytes(Charset.forName("UTF-8")));
+                out.write("\n".getBytes(Charset.forName("UTF-8")));
+            }
+
+            Blob blob=new SerialBlob(baos.toByteArray());
+
+            java.util.Date date = Calendar.getInstance().getTime();
+            java.sql.Timestamp sqlDate = new java.sql.Timestamp(date.getTime());
+            int localFileId = getActualId(idFile) + 1;
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, localFileId);
+            preparedStatement.setInt(2, idFile);
+            preparedStatement.setInt(3, idUser);
+            preparedStatement.setBlob(4, blob);
+            preparedStatement.setTimestamp(5, sqlDate);
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            result = true;
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
     public String getCommitDateById(String login, int idCommit) {
+
         return null;
     }
 

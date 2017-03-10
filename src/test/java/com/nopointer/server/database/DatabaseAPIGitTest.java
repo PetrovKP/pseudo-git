@@ -75,7 +75,7 @@ public class DatabaseAPIGitTest {
 
         expected = new ArrayList<Integer>();
         Collections.addAll(expected, 1, 2, 3);
-        assertEquals(result, expected);
+        assertEquals(expected, result);
     }
 
     @Test
@@ -90,6 +90,12 @@ public class DatabaseAPIGitTest {
 
     @Test
     public void getActualText() throws Exception {
+        List<String> expected = new ArrayList<>();
+
+        List<String> result = database.getAPI().getActualText("petrov", 1);
+
+        Collections.addAll(expected, "Hello123", "Qwerty123", "123Lol!");
+        assertEquals(expected, result);
 
     }
 
@@ -105,6 +111,9 @@ public class DatabaseAPIGitTest {
 
     @Test
     public void addCommit() throws Exception {
+        List<String> text = new ArrayList<>();
+        Collections.addAll(text, "Hello123", "Qwerty123", "123Lol!");
 
+        database.getAPI().addCommit(1, 1, text);
     }
 }
