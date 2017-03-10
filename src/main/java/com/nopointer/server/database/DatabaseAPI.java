@@ -33,6 +33,6 @@ public interface DatabaseAPI {
     boolean addCommit (String login, int idFile, List<String> text);
     String getCommitDateById(String login, int idCommit);
     Commit getCommitById(String login, int idFile, int idCommit);
+    Commit getCommitByDate(int idFile, String date);
     boolean revertFileToCommit (String login, int idFile, int idCommit);
-
 }

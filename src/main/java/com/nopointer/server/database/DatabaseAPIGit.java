@@ -75,6 +75,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 e.printStackTrace();
             }
         }
+        return true;
     }
 
     @Override
@@ -155,6 +156,16 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
+    public List<String> getActualText(String login, int idFile) {
+        return null;
+    }
+
+    @Override
+    public List<Integer> getAllCommitsId(String login, int idFile) {
+        return null;
+    }
+
+    @Override
     public List<String> getAllUsersByFile(String login, int idFile) {
         return null;
     }
@@ -185,6 +196,16 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
+    public boolean changeFileStatus(String login, int idFile) {
+        return false;
+    }
+
+    @Override
+    public boolean addCommit(String login, int idFile, List<String> text) {
+        return false;
+    }
+
+    @Override
     public String getCommitDateById(String login, int idCommit) {
         return null;
     }
@@ -192,6 +213,16 @@ public class DatabaseAPIGit implements DatabaseAPI {
     @Override
     public Commit getCommitById(String login, int idFile, int idCommit) {
         return null;
+    }
+
+    @Override
+    public Commit getCommitByDate(int idFile, String date) {
+        return null;
+    }
+
+    @Override
+    public boolean revertFileToCommit(String login, int idFile, int idCommit) {
+        return false;
     }
 
 }

@@ -17,8 +17,8 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public void deleteUser(String login) {
-
+    public boolean deleteUser(String login) {
+        return true;
     }
 
     @Override
@@ -27,12 +27,17 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public boolean createFile(String title) {
+    public boolean createFile(String login, String title, List<String> text) {
         return !(title.equals("FIRST FILE"));
     }
 
     @Override
-    public String getTitle(int idFile) {
+    public Integer getCommitsCount(String login, int idFile) {
+        return null;
+    }
+
+    @Override
+    public String getTitle(String login, int idFile) {
         if (idFile == 1) {
             return "Title1";
         }
@@ -43,7 +48,7 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public String getFileStatus(int idFile) {
+    public String getFileStatus(String login, int idFile) {
         if (idFile == 1) {
             return "locked";
         }
@@ -54,7 +59,12 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public boolean changeFileStatus(int idFile) {
+    public boolean addUserToFile(String login, String newUserLogin, int idFile) {
+        return false;
+    }
+
+    @Override
+    public boolean changeFileStatus(String login, int idFile) {
         return !(idFile == 1);
     }
 
@@ -67,7 +77,7 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public List<String> getActualText(int idFile) {
+    public List<String> getActualText(String login, int idFile) {
         List<String> list = new ArrayList<>();
         list.add("Text");
         list.add("Here");
@@ -86,7 +96,7 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public List<Integer> getAllCommitsId(int idFile) {
+    public List<Integer> getAllCommitsId(String login, int idFile) {
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(2);
@@ -94,7 +104,27 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public boolean addCommit(int idFile, String login, List<String> text) {
+    public List<String> getAllUsersByFile(String login, int idFile) {
+        return null;
+    }
+
+    @Override
+    public boolean addCommit(String login, int idFile, List<String> text) {
         return (idFile == 1);
+    }
+
+    @Override
+    public String getCommitDateById(String login, int idCommit) {
+        return null;
+    }
+
+    @Override
+    public Commit getCommitById(String login, int idFile, int idCommit) {
+        return null;
+    }
+
+    @Override
+    public boolean revertFileToCommit(String login, int idFile, int idCommit) {
+        return false;
     }
 }

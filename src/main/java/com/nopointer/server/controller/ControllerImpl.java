@@ -36,22 +36,42 @@ class ControllerImpl implements Controller {
 
     @Override
     public int createFile(String title) {
-        return database.getAPI().createFile(title) ? 100 : 200;
+        return 0;
+    }
+
+    @Override
+    public int createFile(String login, String title, List<String> text) {
+        return database.getAPI().createFile(login, title, text) ? 100 : 200;
     }
 
     @Override
     public String getTitle(int idFile) {
-        return database.getAPI().getTitle(idFile);
+        return null;
+    }
+
+    @Override
+    public String getTitle(String login, int idFile) {
+        return database.getAPI().getTitle(login, idFile);
     }
 
     @Override
     public String getFileStatus(int idFile) {
-        return database.getAPI().getFileStatus(idFile);
+        return null;
+    }
+
+    @Override
+    public String getFileStatus(String login, int idFile) {
+        return database.getAPI().getFileStatus(login, idFile);
     }
 
     @Override
     public int changeFileStatus(int idFile) {
-        return database.getAPI().changeFileStatus(idFile) ? 100 : 200;
+        return 0;
+    }
+
+    @Override
+    public int changeFileStatus(String login, int idFile) {
+        return database.getAPI().changeFileStatus(login, idFile) ? 100 : 200;
     }
 
     @Override
@@ -61,7 +81,12 @@ class ControllerImpl implements Controller {
 
     @Override
     public List<String> getActualText(int idFile) {
-        return database.getAPI().getActualText(idFile);
+        return null;
+    }
+
+    @Override
+    public List<String> getActualText(String login, int idFile) {
+        return database.getAPI().getActualText(login, idFile);
     }
 
     @Override
@@ -71,12 +96,17 @@ class ControllerImpl implements Controller {
 
     @Override
     public List<Integer> getAllCommitsId(int idFile) {
-        return database.getAPI().getAllCommitsId(idFile);
+        return null;
+    }
+
+    @Override
+    public List<Integer> getAllCommitsId(String login, int idFile) {
+        return database.getAPI().getAllCommitsId(login, idFile);
     }
 
     @Override
     public int addCommit(int idFile, String login, List<String> text) {
-        return database.getAPI().addCommit(idFile, login, text) ? 100 : 200;
+        return database.getAPI().addCommit(login, idFile, text) ? 100 : 200;
     }
 
 

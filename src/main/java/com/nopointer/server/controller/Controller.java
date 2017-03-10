@@ -15,11 +15,19 @@ public interface Controller {
     // Texts
     int createFile(String title);
 
+    int createFile(String login, String title, List<String> text);
+
     String getTitle(int idFile);
+
+    String getTitle(String login, int idFile);
 
     String getFileStatus(int idFile);
 
+    String getFileStatus(String login, int idFile);
+
     int changeFileStatus(int idFile);
+
+    int changeFileStatus(String login, int idFile);
 
     // Access
     List<Integer> getAllFilesId(String login);
@@ -27,9 +35,13 @@ public interface Controller {
     // Commit
     List<String> getActualText(int idFile);
 
+    List<String> getActualText(String login, int idFile);
+
     Commit getCommitByDate(int idFile, String date);
 
     List<Integer> getAllCommitsId(int idFile);
+
+    List<Integer> getAllCommitsId(String login, int idFile);
 
     int addCommit(int idFile, String login, List<String> text);
 }

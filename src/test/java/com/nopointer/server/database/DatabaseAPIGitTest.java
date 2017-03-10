@@ -57,12 +57,12 @@ public class DatabaseAPIGitTest {
     public void getTitle() throws Exception {
         String result, expected;
 
-        result = database.getAPI().getTitle(1);
+        result = database.getAPI().getTitle("petrov", 1);
 
         expected = "test1";
         assertEquals(result, expected);
 
-        result = database.getAPI().getTitle(100);
+        result = database.getAPI().getTitle("petrov", 100);
 
         assertNull(result);
     }
