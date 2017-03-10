@@ -19,6 +19,7 @@ import java.util.List;
 public class DatabaseAPIGit implements DatabaseAPI {
     private Connection connection;
     private PreparedStatement preparedStatement;
+    private static int id = 4;
 
     public DatabaseAPIGit() {
         connection = null;
@@ -94,7 +95,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     public boolean deleteUser(String login) {
         boolean result = false;
         if ( isExistLogin(login) ) {
-            String sql = "DELETE FROM Users WHERE login =?";
+            String sql = "DELETE FROM Users WHERE login = ?";
             try {
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, login);
@@ -150,19 +151,27 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public boolean createFile(String login, String title, List<String> text) {
+    public boolean createFile(int idUser, String title, List<String> text) {
+        boolean result = false;
         String sql = "INSERT INTO Files (title) VALUES (?)";
         try {
-            preparedStatement = connection.prepareStatement(sql);
-//                preparedStatement.setString(1, login);
-//                preparedStatement.setString(2, password);
+            preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, title);
 
             preparedStatement.executeUpdate();
+            // Вернуть автосгенерируемый id файла
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            resultSet.next();
+            int idFile = resultSet.getInt(1);
+
+            // Сразу выполняем коммит (самый первый для этого файла)
+            addCommit(idUser, idFile, text);
             preparedStatement.close();
+            result = true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
+        return result;
     }
 
     @Override
@@ -187,20 +196,22 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public String getTitle(String login, int idFile) {
+    public String getTitle(int idUser, int idFile) {
         String result = null;
-        String sql = "SELECT title FROM Files WHERE idFiles = ?";
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, idFile);
+        if (isAccessUserToFile(idUser, idFile)) {
+            String sql = "SELECT title FROM Files WHERE idFiles = ?";
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, idFile);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next())
-                result = resultSet.getString("title");
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next())
+                    result = resultSet.getString("title");
 
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+                preparedStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return result;
     }
@@ -225,34 +236,51 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
 
     @Override
-    public List<String> getActualText(String login, int idFile) {
+    public List<String> getActualText(int idUser, int idFile) {
         List<String> result = new ArrayList<>();
 
-        String sql = "SELECT text FROM Commits WHERE idLocalCommits = ? AND idFile = ?";
-        try {
-            int idActualCommit = getActualId(idFile);
+        if (isAccessUserToFile(idUser, idFile)) {
+            String sql = "SELECT text FROM Commits WHERE idLocalCommits = ? AND idFile = ?";
+            try {
+                int idActualCommit = getActualId(idFile);
 
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, idActualCommit);
-            preparedStatement.setInt(2, idFile);
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, idActualCommit);
+                preparedStatement.setInt(2, idFile);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                // Преобразование blob в массив строк
-                Blob blob = resultSet.getBlob("text");
-                String data = new String(blob.getBytes(1, (int) blob.length()));
-                result = Arrays.asList(data.split("\n"));
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    // Преобразование blob в массив строк
+                    Blob blob = resultSet.getBlob("text");
+                    String data = new String(blob.getBytes(1, (int) blob.length()));
+                    result = Arrays.asList(data.split("\n"));
+                }
+                preparedStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return result;
     }
 
     @Override
-    public List<Integer> getAllCommitsId(String login, int idFile) {
-        return null;
+    public List<Integer> getAllCommitsId(int idUser, int idFile) {
+        List<Integer> result = new ArrayList<>();
+        if (isAccessUserToFile(idUser, idFile)) {
+            String sql = "SELECT idLocalCommits FROM Commits WHERE idFile = ?";
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, idFile);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next())
+                    result.add(resultSet.getInt("idLocalCommits"));
+                preparedStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
     @Override
@@ -276,8 +304,26 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public List<String> getAllUsersByFile(String login, int idFile) {
-        return null;
+    public List<String> getAllUsersByFile(int idUser, int idFile) {
+        List<String> result = new ArrayList<>();
+        if (isAccessUserToFile(idUser, idFile)) {
+            String sql = "SELECT Users.login FROM Users, Access" +
+                    " WHERE Access.idFile = ? AND Users.idUsers = Access.idUser";
+            try {
+
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, idFile);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    result.add(resultSet.getString("login"));
+                }
+                preparedStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
     @Override
@@ -285,6 +331,26 @@ public class DatabaseAPIGit implements DatabaseAPI {
         boolean result = false;
         if (isAccessUserToFile(idUser, idFile) && !isAccessUserToFile(newIdUser, idFile)) {
             String sql = "INSERT INTO Access (idUser, idFile) VALUES (?, ?)";
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, newIdUser);
+                preparedStatement.setInt(2, idFile);
+
+                preparedStatement.executeUpdate();
+                preparedStatement.close();
+                result = true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public boolean deleteUserToFile(int idUser, int newIdUser, int idFile) {
+        boolean result = false;
+        if (isAccessUserToFile(idUser, idFile) && isAccessUserToFile(newIdUser, idFile)) {
+            String sql = "DELETE FROM Access WHERE idUser = ? AND idFile = ?";
             try {
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setInt(1, newIdUser);
@@ -337,7 +403,29 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public String getCommitDateById(String login, int idFile, int idCommit) {
+    public boolean deleteCommit(int idUser, int idFile, int idCommit) {
+        boolean result = false;
+        if (isAccessUserToFile(idUser, idFile)) {
+            String sql = "DELETE FROM Commits " +
+                    "WHERE idUser = ? AND idFile = ? AND idLocalCommits = ?";
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, idUser);
+                preparedStatement.setInt(2, idFile);
+                preparedStatement.setInt(3, idCommit);
+
+                preparedStatement.executeUpdate();
+                preparedStatement.close();
+                result = true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public String getCommitDateById(int idUser, int idFile, int idCommit) {
         String result = null;
         String sql = "SELECT data FROM Commits WHERE idFiles = ?";
         try {
@@ -356,12 +444,12 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public Commit getCommitById(String login, int idFile, int idCommit) {
+    public Commit getCommitById(int idUser, int idFile, int idCommit) {
         return null;
     }
 
     @Override
-    public boolean revertFileToCommit(String login, int idFile, int idCommit) {
+    public boolean revertFileToCommit(int idUser, int idFile, int idCommit) {
         return false;
     }
 

@@ -17,22 +17,26 @@ public interface DatabaseAPI {
     boolean deleteUser(String login);
 
     // Files
-    boolean createFile(String login, String title, List<String> text); // Я на уровне клиента запрещу создать пустой по содержанию файл
+    boolean createFile(int idUser, String title, List<String> text); // Я на уровне клиента запрещу создать пустой по содержанию файл
     Integer getCommitsCount(int idUser, int idFile);
-    String getTitle(String login, int idFile);
+    String getTitle(int idUser, int idFile);
     List<Integer> getAllFilesId(int idUser);
-    List<String> getActualText(String login, int idFile);
-    List<Integer> getAllCommitsId(String login, int idFile);
+    List<String> getActualText(int idUser, int idFile);
+    List<Integer> getAllCommitsId(int idUser, int idFile);
 
     //Access
     boolean isAccessUserToFile(int idUser, int idFile);
-    List<String> getAllUsersByFile(String login, int idFile);
+    List<String> getAllUsersByFile(int idUser, int idFile);
     boolean addUserToFile(int idUser, int newIdUser, int idFile);
+    @Deprecated
+    boolean deleteUserToFile(int idUser, int newIdUser, int idFile);
 
     // Commits
-    boolean addCommit (int idUser, int idFile, List<String> text);
-    String getCommitDateById(String login, int idFile, int idCommit);
-    Commit getCommitById(String login, int idFile, int idCommit);
+    boolean addCommit(int idUser, int idFile, List<String> text);
+    @Deprecated
+    boolean deleteCommit(int idUser, int idFile, int idCommit);
+    String getCommitDateById(int idUser, int idFile, int idCommit);
+    Commit getCommitById(int idUser, int idFile, int idCommit);
     // Удалить коммиты у которые Id выше
-    boolean revertFileToCommit (String login, int idFile, int idCommit);
+    boolean revertFileToCommit(int idUser, int idFile, int idCommit);
 }

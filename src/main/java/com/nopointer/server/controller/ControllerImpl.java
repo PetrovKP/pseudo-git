@@ -45,8 +45,8 @@ class ControllerImpl implements Controller {
     }
 
     @Override
-    public int createFile(String login, String title, List<String> text) {
-        return database.getAPI().createFile(login, title, text) ? 100 : 200;
+    public int createFile(int idUser, String title, List<String> text) {
+        return database.getAPI().createFile(idUser, title, text) ? 100 : 200;
     }
 
     @Override
@@ -55,8 +55,8 @@ class ControllerImpl implements Controller {
     }
 
     @Override
-    public String getTitle(String login, int idFile) {
-        return database.getAPI().getTitle(login, idFile);
+    public String getTitle(int idUser, int idFile) {
+        return database.getAPI().getTitle(idUser, idFile);
     }
 
     @Override
@@ -80,8 +80,8 @@ class ControllerImpl implements Controller {
     }
 
     @Override
-    public List<String> getActualText(String login, int idFile) {
-        return database.getAPI().getActualText(login, idFile);
+    public List<String> getActualText(int idUser, int idFile) {
+        return database.getAPI().getActualText(idUser, idFile);
     }
 
     @Override
@@ -95,8 +95,8 @@ class ControllerImpl implements Controller {
     }
 
     @Override
-    public List<Integer> getAllCommitsId(String login, int idFile) {
-        return database.getAPI().getAllCommitsId(login, idFile);
+    public List<Integer> getAllCommitsId(int idUser, int idFile) {
+        return database.getAPI().getAllCommitsId(idUser, idFile);
     }
 
     @Override

@@ -32,7 +32,7 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public boolean createFile(String login, String title, List<String> text) {
+    public boolean createFile(int idUser, String title, List<String> text) {
         return !(title.equals("FIRST FILE"));
     }
 
@@ -42,7 +42,7 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public String getTitle(String login, int idFile) {
+    public String getTitle(int idUser, int idFile) {
         if (idFile == 1) {
             return "Title1";
         }
@@ -58,6 +58,11 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
+    public boolean deleteUserToFile(int idUser, int newIdUser, int idFile) {
+        return false;
+    }
+
+    @Override
     public List<Integer> getAllFilesId(int idUser) {
         List<Integer> list = new ArrayList<>();
         list.add(1);
@@ -66,7 +71,7 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public List<String> getActualText(String login, int idFile) {
+    public List<String> getActualText(int idUser, int idFile) {
         List<String> list = new ArrayList<>();
         list.add("Text");
         list.add("Here");
@@ -85,7 +90,7 @@ public class DatabaseAPIStub implements DatabaseAPI {
 //    }
 
     @Override
-    public List<Integer> getAllCommitsId(String login, int idFile) {
+    public List<Integer> getAllCommitsId(int idUser, int idFile) {
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(2);
@@ -98,7 +103,7 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public List<String> getAllUsersByFile(String login, int idFile) {
+    public List<String> getAllUsersByFile(int idUser, int idFile) {
         return null;
     }
 
@@ -108,7 +113,12 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public String getCommitDateById(String login, int idFile, int idCommit) {
+    public boolean deleteCommit(int idUser, int idFile, int idCommit) {
+        return false;
+    }
+
+    @Override
+    public String getCommitDateById(int idUser, int idFile, int idCommit) {
         return null;
     }
 
@@ -117,12 +127,12 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public Commit getCommitById(String login, int idFile, int idCommit) {
+    public Commit getCommitById(int idUser, int idFile, int idCommit) {
         return null;
     }
 
     @Override
-    public boolean revertFileToCommit(String login, int idFile, int idCommit) {
+    public boolean revertFileToCommit(int idUser, int idFile, int idCommit) {
         return false;
     }
 }
