@@ -1,23 +1,18 @@
 package com.nopointer.server.connection;
 
 import com.google.inject.Inject;
-import com.nopointer.server.protocol.Protocol;
 import com.nopointer.server.protocol.ProtocolConnection;
-import com.nopointer.server.protocol.entity.Request;
-import com.nopointer.server.protocol.entity.Response;
 
 import java.net.Socket;
+import java.net.SocketException;
 
 class ClientConnectionImpl extends ClientConnection {
 
     private ProtocolConnection protocolConnection;
-    private Protocol protocol;
 
     @Inject
-    public ClientConnectionImpl(ProtocolConnection protocolConnection,
-                                Protocol protocol) {
+    public ClientConnectionImpl(ProtocolConnection protocolConnection) {
         this.protocolConnection = protocolConnection;
-        this.protocol = protocol;
     }
 
     @Override
@@ -29,9 +24,11 @@ class ClientConnectionImpl extends ClientConnection {
     @Override
     public void run() {
         while (true) {
-            Request request = protocolConnection.getRequest();
-            Response response = protocol.handleRequest(request);
-            protocolConnection.sendResponce(response);
+            try {
+                protocolConnection.serveRequest();
+            } catch (SocketException e) {
+                break;
+            }
         }
     }
 }
