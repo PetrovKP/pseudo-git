@@ -109,7 +109,7 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public boolean addCommit(String login, int idFile, List<String> text) {
+    public boolean addCommit(int idUser, int idFile, List<String> text) {
         return (idFile == 1);
     }
 

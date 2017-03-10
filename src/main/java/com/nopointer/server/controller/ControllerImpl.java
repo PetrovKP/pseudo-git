@@ -105,8 +105,8 @@ class ControllerImpl implements Controller {
     }
 
     @Override
-    public int addCommit(int idFile, String login, List<String> text) {
-        return database.getAPI().addCommit(login, idFile, text) ? 100 : 200;
+    public int addCommit(int idFile, int idUser, List<String> text) {
+        return database.getAPI().addCommit(idUser, idFile, text) ? 100 : 200;
     }
 
 

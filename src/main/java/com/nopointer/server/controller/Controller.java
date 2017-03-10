@@ -43,5 +43,5 @@ public interface Controller {
 
     List<Integer> getAllCommitsId(String login, int idFile);
 
-    int addCommit(int idFile, String login, List<String> text);
+    int addCommit(int idFile, int idUser, List<String> text);
 }

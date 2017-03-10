@@ -50,7 +50,7 @@ public class DatabaseAPIGitTest {
 
     @Test
     public void createFile() throws Exception {
-
+        assertTrue(false);
     }
 
     @Test
@@ -80,12 +80,12 @@ public class DatabaseAPIGitTest {
 
     @Test
     public void getFileStatus() throws Exception {
-
+        assertTrue(false);
     }
 
     @Test
     public void changeFileStatus() throws Exception {
-
+        assertTrue(false);
     }
 
     @Test
@@ -96,17 +96,16 @@ public class DatabaseAPIGitTest {
 
         Collections.addAll(expected, "Hello123", "Qwerty123", "123Lol!");
         assertEquals(expected, result);
-
     }
 
     @Test
     public void getCommitByDate() throws Exception {
-
+        assertTrue(false);
     }
 
     @Test
     public void getAllCommitsId() throws Exception {
-
+        assertTrue(false);
     }
 
     @Test
@@ -115,5 +114,17 @@ public class DatabaseAPIGitTest {
         Collections.addAll(text, "Hello123", "Qwerty123", "123Lol!");
 
         database.getAPI().addCommit(1, 1, text);
+        List<String> result = database.getAPI().getActualText("petrov", 1);
+        assertEquals(text, result);
+    }
+
+    @Test
+    public void getCommitsCount() throws Exception {
+
+        Integer result = database.getAPI().getCommitsCount("petrov", 1);
+
+        Integer expected = 5;
+//        assertEquals(expected, result);
+        assertTrue(false);
     }
 }

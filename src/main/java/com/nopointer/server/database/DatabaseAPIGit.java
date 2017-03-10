@@ -147,8 +147,21 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
     @Override
     public Integer getCommitsCount(String login, int idFile) {
+        Integer result = 0;
+        String sql = "SELECT COUNT(*) AS rowcount FROM Commits WHERE idFile = ?";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idFile);
 
-        return null;
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            result = resultSet.getInt("rowcount");
+
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
@@ -230,11 +243,11 @@ public class DatabaseAPIGit implements DatabaseAPI {
         String sql = "SELECT status FROM Files WHERE idFiles = ?";
         try {
             preparedStatement = connection.prepareStatement(sql);
-//            preparedStatement.setInt(1, idFile);
+            preparedStatement.setInt(1, idFile);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
-                result = resultSet.getString("title");
+                result = resultSet.getString("status");
 
             preparedStatement.close();
         } catch (SQLException e) {
@@ -289,10 +302,26 @@ public class DatabaseAPIGit implements DatabaseAPI {
         return result;
     }
 
+
+// НЕ ПОНЯТНА ЛОГИКА!
     @Override
     public String getCommitDateById(String login, int idCommit) {
+        String result = "";
+        String sql = "SELECT data FROM Commits WHERE idFiles = ?";
+        try {
 
-        return null;
+            preparedStatement = connection.prepareStatement(sql);
+//            preparedStatement.setInt(1, idFile);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                result = resultSet.getString("title");
+
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override

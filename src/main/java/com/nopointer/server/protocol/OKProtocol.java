@@ -99,8 +99,8 @@ class OKProtocol implements Protocol {
                 idFile = (int) request.getData().get(0);
                 auth = (List<String>) request.getData().get(1);
                 List<String> textCommit = (List<String>) request.getData().get(2);
-                code = controller.addCommit(idFile, auth.get(0), textCommit);
-                response = new Response(code);
+//                code = controller.addCommit(idFile, auth.get(0), textCommit);
+//                response = new Response(code);
                 break;
         }
         return response;

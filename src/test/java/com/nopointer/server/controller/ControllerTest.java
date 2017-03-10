@@ -112,7 +112,7 @@ public class ControllerTest {
 
     @Test
     public void addCommit() throws Exception {
-        assertEquals(controller.addCommit(1, "Oleg", null), 100);
-        assertEquals(controller.addCommit(2, "Oleg", null), 200);
+        assertEquals(controller.addCommit(1, 1, null), 100);
+        assertEquals(controller.addCommit(2, 1, null), 200);
     }
 }
