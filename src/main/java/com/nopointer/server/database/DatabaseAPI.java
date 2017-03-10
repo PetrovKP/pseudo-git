@@ -30,9 +30,9 @@ public interface DatabaseAPI {
     boolean changeFileStatus(String login, int idFile);
 
     // Commits
+    boolean addCommit (String login, int idFile, List<String> text);
     String getCommitDateById(String login, int idCommit);
     Commit getCommitById(String login, int idFile, int idCommit);
-    boolean addCommit (String login, int idFile, List<String> text);
     boolean revertFileToCommit (String login, int idFile, int idCommit);
 
 }

@@ -61,7 +61,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public void deleteUser(String login) {
+    public boolean deleteUser(String login) {
         if ( isExistLogin(login) ) {
             String sql = "DELETE FROM Users WHERE login =?";
             try {
@@ -99,7 +99,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public boolean createFile(String title) {
+    public boolean createFile(String login, String title, List<String> text) {
         String sql = "INSERT INTO Files (title) VALUES (?)";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -115,7 +115,12 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public String getTitle(int idFile) {
+    public Integer getCommitsCount(String login, int idFile) {
+        return null;
+    }
+
+    @Override
+    public String getTitle(String login, int idFile) {
         String result = null;
         String sql = "SELECT title FROM Files WHERE idFiles = ?";
         try {
@@ -150,7 +155,12 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public String getFileStatus(int idFile) {
+    public List<String> getAllUsersByFile(String login, int idFile) {
+        return null;
+    }
+
+    @Override
+    public String getFileStatus(String login, int idFile) {
 
         String result = null;
         String sql = "SELECT status FROM Files WHERE idFiles = ?";
@@ -170,28 +180,18 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public boolean changeFileStatus(int idFile) {
-        return true;
-
-    }
-
-    @Override
-    public List<String> getActualText(int idFile) {
-        return null;
-    }
-
-    @Override
-    public Commit getCommitByDate(int idFile, String date) {
-        return null;
-    }
-
-    @Override
-    public List<Integer> getAllCommitsId(int idFile) {
-        return null;
-    }
-
-    @Override
-    public boolean addCommit(int idFile, String login, List<String> text) {
+    public boolean addUserToFile(String login, String newUserLogin, int idFile) {
         return false;
     }
+
+    @Override
+    public String getCommitDateById(String login, int idCommit) {
+        return null;
+    }
+
+    @Override
+    public Commit getCommitById(String login, int idFile, int idCommit) {
+        return null;
+    }
+
 }

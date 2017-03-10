@@ -1,10 +1,12 @@
 package com.nopointer.server.protocol;
 
+import com.google.inject.Inject;
 import com.nopointer.server.protocol.entity.Request;
 import com.nopointer.server.protocol.entity.Response;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 
 class OKProtocolConnection implements ProtocolConnection {
     private Socket socket;
@@ -15,13 +17,21 @@ class OKProtocolConnection implements ProtocolConnection {
     private ObjectInputStream objin;
     private ObjectOutputStream objout;
 
+    private Protocol protocol;
+
+    @Inject
+    public OKProtocolConnection(Protocol protocol) {
+        this.protocol = protocol;
+    }
+
     @Override
     public void setSocket(Socket socket) {
         try {
             this.socket = socket;
-            sin = socket.getInputStream();
             sout = socket.getOutputStream();
-
+            sin = socket.getInputStream();
+            objout = new ObjectOutputStream(sout);
+            objout.flush();
             objin = new ObjectInputStream(sin) {
                 @Override
                 protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
@@ -33,8 +43,6 @@ class OKProtocolConnection implements ProtocolConnection {
                 }
             };
 
-            objout = new ObjectOutputStream(sout);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,29 +50,23 @@ class OKProtocolConnection implements ProtocolConnection {
 
     @Override
     public boolean isReady() {
-        return socket != null;
+        return socket.isConnected();
     }
 
     @Override
-    public Request getRequest() {
-        Request request = null;
-        if (socket != null) {
+    public void serveRequest() throws SocketException {
+        if (isReady()) {
             try {
-                request = (Request) objin.readObject();
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        return request;
-    }
-
-    @Override
-    public void sendResponce(Response response) {
-        if (socket != null) {
-            try {
+                Request request = (Request) objin.readObject();
+                System.out.println("Get request: " + request.getType() + " / " + request.getData());
+                Response response = protocol.handleRequest(request);
                 objout.writeObject(response);
                 objout.flush();
-            } catch (IOException e) {
+            } catch (EOFException e) {
+                // readObject() sends exceptions while waiting for new object
+            } catch (SocketException e) {
+                throw e;
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
