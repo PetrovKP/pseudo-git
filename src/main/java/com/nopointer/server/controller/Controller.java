@@ -12,6 +12,8 @@ public interface Controller {
 
     int login(String login, String password);
 
+    int getIdUser(String login);
+
     // Texts
     int createFile(String title);
 
@@ -21,16 +23,12 @@ public interface Controller {
 
     String getTitle(String login, int idFile);
 
-    String getFileStatus(int idFile);
-
-    String getFileStatus(String login, int idFile);
-
     int changeFileStatus(int idFile);
 
     int changeFileStatus(String login, int idFile);
 
     // Access
-    List<Integer> getAllFilesId(String login);
+    List<Integer> getAllFilesId(int idUser);
 
     // Commit
     List<String> getActualText(int idFile);

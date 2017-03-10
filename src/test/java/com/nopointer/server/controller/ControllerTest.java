@@ -54,13 +54,6 @@ public class ControllerTest {
     }
 
     @Test
-    public void getFileStatus() throws Exception {
-        assertEquals(controller.getFileStatus(1), "locked");
-        assertEquals(controller.getFileStatus(2), "unlocked");
-        assertEquals(controller.getFileStatus(3), null);
-    }
-
-    @Test
     public void changeFileStatus() throws Exception {
         assertEquals(controller.changeFileStatus(2), 100);
         assertEquals(controller.changeFileStatus(1), 200);
@@ -72,8 +65,8 @@ public class ControllerTest {
         list.add(1);
         list.add(2);
 
-        assertEquals(controller.getAllFilesId("Oleg"), list);
-        assertEquals(controller.getAllFilesId("Kirill"), null);
+        assertEquals(controller.getAllFilesId(1), list);
+        assertEquals(controller.getAllFilesId(2), null);
     }
 
     @Test

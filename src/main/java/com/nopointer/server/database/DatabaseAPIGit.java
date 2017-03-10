@@ -26,7 +26,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     private boolean isExistLogin(String login) {
-        boolean result = true;
+        boolean result = false;
         String sql = "SELECT COUNT(*) AS rowcount FROM Users WHERE login = ?";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -92,6 +92,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
     @Override
     public boolean deleteUser(String login) {
+        boolean result = false;
         if ( isExistLogin(login) ) {
             String sql = "DELETE FROM Users WHERE login =?";
             try {
@@ -101,16 +102,17 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 preparedStatement.executeUpdate();
 
                 preparedStatement.close();
+                result = true;
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        return true;
+        return result;
     }
 
     @Override
     public boolean login(String login, String password) {
-        boolean result = true;
+        boolean result = false;
         String sql = "SELECT COUNT(*) AS rowcount FROM Users WHERE login = ? AND password = ?";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -122,6 +124,24 @@ public class DatabaseAPIGit implements DatabaseAPI {
             int count = resultSet.getInt("rowcount");
             result = count > 0;
 
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public int getIdUser(String login) {
+        int result = 0;
+        String sql = "SELECT idUsers FROM Users WHERE login = ?";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, login);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                result = resultSet.getInt("idUsers");
             preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -146,20 +166,22 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public Integer getCommitsCount(String login, int idFile) {
+    public Integer getCommitsCount(int idUser, int idFile) {
         Integer result = 0;
-        String sql = "SELECT COUNT(*) AS rowcount FROM Commits WHERE idFile = ?";
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, idFile);
+        if (isAccessUserToFile(idUser, idFile)) {
+            String sql = "SELECT COUNT(*) AS rowcount FROM Commits WHERE idFile = ?";
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, idFile);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            result = resultSet.getInt("rowcount");
+                ResultSet resultSet = preparedStatement.executeQuery();
+                resultSet.next();
+                result = resultSet.getInt("rowcount");
 
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+                preparedStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return result;
     }
@@ -184,14 +206,16 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public List<Integer> getAllFilesId(String login) {
+    public List<Integer> getAllFilesId(int idUser) {
         List<Integer> result = new ArrayList<>();
-        String sql = "SELECT idFiles FROM Files";
+        String sql = "SELECT idFile FROM Access WHERE idUser = ?";
         try {
             preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idUser);
+
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next())
-                result.add(resultSet.getInt("idFiles"));
+                result.add(resultSet.getInt("idFile"));
             preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -213,12 +237,12 @@ public class DatabaseAPIGit implements DatabaseAPI {
             preparedStatement.setInt(2, idFile);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-
-            // Преобразование blob в массив строк
-            Blob blob = resultSet.getBlob("text");
-            String data = new String(blob.getBytes(1, (int)blob.length()));
-            result = Arrays.asList(data.split("\n"));
+            if (resultSet.next()) {
+                // Преобразование blob в массив строк
+                Blob blob = resultSet.getBlob("text");
+                String data = new String(blob.getBytes(1, (int) blob.length()));
+                result = Arrays.asList(data.split("\n"));
+            }
             preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -232,23 +256,18 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public List<String> getAllUsersByFile(String login, int idFile) {
-        return null;
-    }
-
-    @Override
-    public String getFileStatus(String login, int idFile) {
-
-        String result = null;
-        String sql = "SELECT status FROM Files WHERE idFiles = ?";
+    public boolean isAccessUserToFile(int idUser, int idFile) {
+        boolean result = false;
+        String sql = "SELECT * FROM Access WHERE idUser = ? AND idFile = ?";
         try {
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, idFile);
+            preparedStatement.setInt(1, idUser);
+            preparedStatement.setInt(2, idFile);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next())
-                result = resultSet.getString("status");
-
+            if (resultSet.next()) {
+                result = true;
+            }
             preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -257,13 +276,28 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public boolean addUserToFile(String login, String newUserLogin, int idFile) {
-        return false;
+    public List<String> getAllUsersByFile(String login, int idFile) {
+        return null;
     }
 
     @Override
-    public boolean changeFileStatus(String login, int idFile) {
-        return false;
+    public boolean addUserToFile(int idUser, int newIdUser, int idFile) {
+        boolean result = false;
+        if (isAccessUserToFile(idUser, idFile) && !isAccessUserToFile(newIdUser, idFile)) {
+            String sql = "INSERT INTO Access (idUser, idFile) VALUES (?, ?)";
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, newIdUser);
+                preparedStatement.setInt(2, idFile);
+
+                preparedStatement.executeUpdate();
+                preparedStatement.close();
+                result = true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
     @Override
@@ -302,14 +336,11 @@ public class DatabaseAPIGit implements DatabaseAPI {
         return result;
     }
 
-
-// НЕ ПОНЯТНА ЛОГИКА!
     @Override
-    public String getCommitDateById(String login, int idCommit) {
-        String result = "";
+    public String getCommitDateById(String login, int idFile, int idCommit) {
+        String result = null;
         String sql = "SELECT data FROM Commits WHERE idFiles = ?";
         try {
-
             preparedStatement = connection.prepareStatement(sql);
 //            preparedStatement.setInt(1, idFile);
 
@@ -326,11 +357,6 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
     @Override
     public Commit getCommitById(String login, int idFile, int idCommit) {
-        return null;
-    }
-
-    @Override
-    public Commit getCommitByDate(int idFile, String date) {
         return null;
     }
 

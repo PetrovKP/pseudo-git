@@ -49,6 +49,17 @@ public class DatabaseAPIGitTest {
     }
 
     @Test
+    public void getIdUser() throws Exception {
+        int idUser;
+
+        idUser = database.getAPI().getIdUser("petrov");
+        assertEquals(1, idUser);
+
+        idUser = database.getAPI().getIdUser("petrov5");
+        assertEquals(0, idUser);
+    }
+
+    @Test
     public void createFile() throws Exception {
         assertTrue(false);
     }
@@ -71,22 +82,18 @@ public class DatabaseAPIGitTest {
     public void getAllFilesId() throws Exception {
         List<Integer> result, expected;
 
-        result = database.getAPI().getAllFilesId("e");
+        result = database.getAPI().getAllFilesId(1);
 
         expected = new ArrayList<Integer>();
-        Collections.addAll(expected, 1, 2, 3);
+        Collections.addAll(expected, 1, 2);
+        assertEquals(expected, result);
+
+        result = database.getAPI().getAllFilesId(3);
+
+        expected = new ArrayList<Integer>();
         assertEquals(expected, result);
     }
 
-    @Test
-    public void getFileStatus() throws Exception {
-        assertTrue(false);
-    }
-
-    @Test
-    public void changeFileStatus() throws Exception {
-        assertTrue(false);
-    }
 
     @Test
     public void getActualText() throws Exception {
@@ -114,17 +121,47 @@ public class DatabaseAPIGitTest {
         Collections.addAll(text, "Hello123", "Qwerty123", "123Lol!");
 
         database.getAPI().addCommit(1, 1, text);
-        List<String> result = database.getAPI().getActualText("petrov", 1);
+        List<String> result = database.getAPI().getActualText("1", 1);
         assertEquals(text, result);
     }
 
     @Test
     public void getCommitsCount() throws Exception {
+        Integer result, expected;
 
-        Integer result = database.getAPI().getCommitsCount("petrov", 1);
+        result = database.getAPI().getCommitsCount(1, 1);
 
-        Integer expected = 5;
+        expected = 5;
 //        assertEquals(expected, result);
-        assertTrue(false);
+
+        result = database.getAPI().getCommitsCount(2, 2);
+
+        expected = 0;
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void isAccessUserToFile() throws Exception {
+        boolean isAccess;
+
+        isAccess = database.getAPI().isAccessUserToFile(1, 1);
+        assertTrue(isAccess);
+
+        isAccess = database.getAPI().isAccessUserToFile(100, 1);
+        assertFalse(isAccess);
+
+        isAccess = database.getAPI().isAccessUserToFile(1, 100);
+        assertFalse(isAccess);
+    }
+
+    @Test
+    public void addUserToFile() throws Exception {
+        boolean isAdd;
+
+        isAdd = database.getAPI().addUserToFile(1, 2, 1);
+        assertTrue(isAdd);
+
+        isAdd = database.getAPI().addUserToFile(4, 2, 1);
+        assertFalse(isAdd);
     }
 }

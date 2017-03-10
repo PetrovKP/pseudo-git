@@ -35,6 +35,11 @@ class ControllerImpl implements Controller {
     }
 
     @Override
+    public int getIdUser(String login) {
+        return database.getAPI().getIdUser(login) > 0 ? 100 : 200;
+    }
+
+    @Override
     public int createFile(String title) {
         return 0;
     }
@@ -55,28 +60,18 @@ class ControllerImpl implements Controller {
     }
 
     @Override
-    public String getFileStatus(int idFile) {
-        return null;
-    }
-
-    @Override
-    public String getFileStatus(String login, int idFile) {
-        return database.getAPI().getFileStatus(login, idFile);
-    }
-
-    @Override
     public int changeFileStatus(int idFile) {
         return 0;
     }
 
     @Override
     public int changeFileStatus(String login, int idFile) {
-        return database.getAPI().changeFileStatus(login, idFile) ? 100 : 200;
+        return 0;
     }
 
     @Override
-    public List<Integer> getAllFilesId(String login) {
-        return database.getAPI().getAllFilesId(login);
+    public List<Integer> getAllFilesId(int idUser) {
+        return database.getAPI().getAllFilesId(idUser);
     }
 
     @Override
@@ -91,7 +86,7 @@ class ControllerImpl implements Controller {
 
     @Override
     public Commit getCommitByDate(int idFile, String date) {
-        return database.getAPI().getCommitByDate(idFile, date);
+        return null;
     }
 
     @Override

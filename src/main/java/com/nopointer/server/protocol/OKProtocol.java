@@ -55,13 +55,6 @@ class OKProtocol implements Protocol {
                 response = new Response(code, titleFile);
                 break;
 
-            case "getFileStatus":
-                idFile = (int) request.getData().get(0);
-                String statusFile = controller.getFileStatus(idFile);
-                code = (statusFile != null) ? 100 : 200;
-                response = new Response(code, statusFile);
-                break;
-
             case "changeFileStatus":
                 idFile = (int) request.getData().get(0);
                 code = controller.changeFileStatus(idFile);
@@ -70,7 +63,8 @@ class OKProtocol implements Protocol {
 
             case "getAllFilesId":
                 List<String> filesOwner = (List<String>) request.getData().get(0);
-                List<Integer> filesIds = controller.getAllFilesId(filesOwner.get(0));
+                int idUser = controller.getIdUser(filesOwner.get(0));
+                List<Integer> filesIds = controller.getAllFilesId(idUser);
                 code = (filesIds != null) ? 100 : 200;
                 response = new Response(code, filesIds);
                 break;

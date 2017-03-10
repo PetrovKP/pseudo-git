@@ -27,12 +27,17 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
+    public int getIdUser(String login) {
+        return 0;
+    }
+
+    @Override
     public boolean createFile(String login, String title, List<String> text) {
         return !(title.equals("FIRST FILE"));
     }
 
     @Override
-    public Integer getCommitsCount(String login, int idFile) {
+    public Integer getCommitsCount(int idUser, int idFile) {
         return null;
     }
 
@@ -48,32 +53,16 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public String getFileStatus(String login, int idFile) {
-        if (idFile == 1) {
-            return "locked";
-        }
-        if (idFile == 2) {
-            return "unlocked";
-        }
-        return null;
-    }
-
-    @Override
-    public boolean addUserToFile(String login, String newUserLogin, int idFile) {
+    public boolean addUserToFile(int idUser, int newIdUser, int idFile) {
         return false;
     }
 
     @Override
-    public boolean changeFileStatus(String login, int idFile) {
-        return !(idFile == 1);
-    }
-
-    @Override
-    public List<Integer> getAllFilesId(String login) {
+    public List<Integer> getAllFilesId(int idUser) {
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(2);
-        return (login.equals("Oleg")) ? list : null;
+        return (idUser > 0) ? list : null;
     }
 
     @Override
@@ -84,16 +73,16 @@ public class DatabaseAPIStub implements DatabaseAPI {
         return (idFile == 1) ? list : null;
     }
 
-    @Override
-    public Commit getCommitByDate(int idFile, String date) {
-        List<String> list1 = new ArrayList<>();
-        list1.add("Text");
-        list1.add("Here");
-        List<String> list2 = new ArrayList<>();
-        list2.add("Text1");
-        list2.add("Here1");
-        return new Commit(list1, list2);
-    }
+//    @Override
+//    public Commit getCommitByDate(int idFile, String date) {
+//        List<String> list1 = new ArrayList<>();
+//        list1.add("Text");
+//        list1.add("Here");
+//        List<String> list2 = new ArrayList<>();
+//        list2.add("Text1");
+//        list2.add("Here1");
+//        return new Commit(list1, list2);
+//    }
 
     @Override
     public List<Integer> getAllCommitsId(String login, int idFile) {
@@ -101,6 +90,11 @@ public class DatabaseAPIStub implements DatabaseAPI {
         list.add(1);
         list.add(2);
         return (idFile == 3) ? list : null;
+    }
+
+    @Override
+    public boolean isAccessUserToFile(int idUser, int idFile) {
+        return false;
     }
 
     @Override
@@ -114,7 +108,11 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public String getCommitDateById(String login, int idCommit) {
+    public String getCommitDateById(String login, int idFile, int idCommit) {
+        return null;
+    }
+
+    public String getCommitDateById(int idUser, int idCommit) {
         return null;
     }
 
