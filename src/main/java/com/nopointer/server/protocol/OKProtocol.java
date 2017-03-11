@@ -20,7 +20,7 @@ class OKProtocol implements Protocol {
     // на поведении контроллера и бд
     @Override
     public Response handleRequest(Request request) {
-        int code, idFile;
+        int code, idFile, idUser;
         List<String> auth;
         Response response = null;
         switch (request.getType()) {
@@ -44,26 +44,20 @@ class OKProtocol implements Protocol {
 
             case "createFile":
                 String title = ((List<String>) request.getData().get(0)).get(1);
-                code = controller.createFile(title);
-                response = new Response(code);
+//                code = controller.createFile(title);
+//                response = new Response(code);
                 break;
 
             case "getTitle":
                 idFile = (int) request.getData().get(0);
-                String titleFile = controller.getTitle(idFile);
-                code = (titleFile != null) ? 100 : 200;
-                response = new Response(code, titleFile);
-                break;
-
-            case "changeFileStatus":
-                idFile = (int) request.getData().get(0);
-                code = controller.changeFileStatus(idFile);
-                response = new Response(code);
+//                String titleFile = controller.getTitle(idFile);
+//                code = (titleFile != null) ? 100 : 200;
+//                response = new Response(code, titleFile);
                 break;
 
             case "getAllFilesId":
                 List<String> filesOwner = (List<String>) request.getData().get(0);
-                int idUser = controller.getIdUser(filesOwner.get(0));
+                idUser = controller.getIdUser(filesOwner.get(0));
                 List<Integer> filesIds = controller.getAllFilesId(idUser);
                 code = (filesIds != null) ? 100 : 200;
                 response = new Response(code, filesIds);
@@ -71,22 +65,16 @@ class OKProtocol implements Protocol {
 
             case "getActualText":
                 idFile = (int) request.getData().get(0);
-                List<String> actualText = controller.getActualText(idFile);
-                code = (actualText != null) ? 100 : 200;
-                response = new Response(code, actualText);
+//                List<String> actualText = controller.getActualText(idFile);
+//                code = (actualText != null) ? 100 : 200;
+//                response = new Response(code, actualText);
                 break;
 
-            case "getCommitByDate":
-                idFile = (int) request.getData().get(0);
-                //String date = (String)request.getData().get(1);
-                Commit commitByDate = controller.getCommitByDate(idFile, /*date*/null);
-                response = new Response(100, commitByDate);
-                break;
 
             case "getAllCommitsId":
                 idFile = (int) request.getData().get(0);
-                List<Integer> allCommitsId = controller.getAllCommitsId(idFile);
-                response = new Response(100, allCommitsId);
+//                List<Integer> allCommitsId = controller.getAllCommitsId(idFile);
+//                response = new Response(100, allCommitsId);
                 break;
 
             case "addCommit":
