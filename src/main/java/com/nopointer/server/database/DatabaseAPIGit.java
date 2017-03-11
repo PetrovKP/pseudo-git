@@ -484,7 +484,43 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
     @Override
     public Commit getCommitById(int idUser, int idFile, int idCommit) {
-        return null;
+        Commit result = new Commit();
+        if (isAccessUserToFile(idUser, idFile)) {
+            String sql = "SELECT text FROM Commits " +
+                    "WHERE idUser = ? AND idFile = ? AND " +
+                    "(idLocalCommits = ? OR idLocalCommits = ?)" +
+                    " ORDER BY idLocalCommits DESC";
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, idUser);
+                preparedStatement.setInt(2, idFile);
+                preparedStatement.setInt(3, idCommit);
+                preparedStatement.setInt(4, idCommit - 1);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                List<String> oldT = new ArrayList<>();
+                List<String> newT = new ArrayList<>();
+
+                if (resultSet.next()) {
+                    // Преобразование blob в массив строк
+                    Blob blob = resultSet.getBlob("text");
+                    String data = new String(blob.getBytes(1, (int) blob.length()));
+                    newT = Arrays.asList(data.split("\n"));
+                }
+                if (resultSet.next()) {
+                    // Преобразование blob в массив строк
+                    Blob blob = resultSet.getBlob("text");
+                    String data = new String(blob.getBytes(1, (int) blob.length()));
+                    oldT = Arrays.asList(data.split("\n"));
+                }
+                result = new Commit(oldT, newT);
+                preparedStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
     @Override

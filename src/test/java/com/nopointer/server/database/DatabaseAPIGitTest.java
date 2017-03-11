@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.nopointer.server.config.Module;
 import com.nopointer.server.config.TestModule;
+import com.nopointer.server.entity.Commit;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -134,7 +135,6 @@ public class DatabaseAPIGitTest {
         assertEquals(expected, result);
     }
 
-
     @Test
     public void getActualText() throws Exception {
         List<String> expected = new ArrayList<>();
@@ -145,6 +145,7 @@ public class DatabaseAPIGitTest {
         assertEquals(expected, result);
     }
 
+
     @Test
     public void getCommitByDate() throws Exception {
         String result, expected;
@@ -154,7 +155,7 @@ public class DatabaseAPIGitTest {
         expected = "03.11.2017 - 22:12";
         assertEquals(expected, result);
 
-        result = database.getAPI().getCommitDateById(2,2, 1);
+        result = database.getAPI().getCommitDateById(1,3, 1);
 
         expected = "";
         assertEquals(expected, result);
@@ -191,15 +192,43 @@ public class DatabaseAPIGitTest {
     public void getCommitsCount() throws Exception {
         Integer result, expected;
 
-        result = database.getAPI().getCommitsCount(1, 1);
+        result = database.getAPI().getCommitsCount(1, 3);
 
-        expected = 5;
-//        assertEquals(expected, result);
+        expected = 2;
+        assertEquals(expected, result);
 
         result = database.getAPI().getCommitsCount(1, 1);
 
         expected = 0;
         assertEquals(expected, result);
+    }
+
+    @Test
+    public void getCommitById() throws Exception {
+        Commit expected, result;
+        List<String> oldText = new ArrayList<>();
+        List<String> newText = new ArrayList<>();
+
+        result = database.getAPI().getCommitById(1, 3,2);
+
+        Collections.addAll(oldText, "Hello", "World!");
+        Collections.addAll(newText, "Bye", "World!");
+        expected = new Commit(oldText, newText);
+        assertTrue(expected.equals(result));
+
+
+/*        TODO:
+ *        Не работает с первым коммитом, вероятно не предусмотрено в Commit
+ *        Действие с пустым List<string>
+ *        С моей стороны я представлял так (см. ниже)
+ */
+//       result = database.getAPI().getCommitById(1, 3,1 );
+//
+//        oldText = new ArrayList<>();
+//        Collections.addAll(newText, "Hello", "World!");
+//        expected = new Commit(oldText, newText);
+//        assertTrue(expected.equals(result));
+
     }
 
     @Test
