@@ -259,9 +259,10 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
     @Override
     public List<Integer> getAllFilesId(int idUser) {
-        List<Integer> result = new ArrayList<>();
+        List<Integer> result = null;
         String sql = "SELECT idFile FROM Access WHERE idUser = ?";
         try {
+            result = new ArrayList<>();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, idUser);
 
@@ -483,7 +484,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
     @Override
     public Commit getCommitById(int idUser, int idFile, int idCommit) {
-        Commit result = new Commit();
+        Commit result = null;
         if (isAccessUserToFile(idUser, idFile)) {
             String sql = "SELECT text FROM Commits " +
                     "WHERE idUser = ? AND idFile = ? AND " +

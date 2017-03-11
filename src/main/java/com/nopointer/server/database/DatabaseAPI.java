@@ -40,6 +40,5 @@ public interface DatabaseAPI {
     boolean deleteCommit(int idUser, int idFile, int idCommit);
     String getCommitDateById(int idUser, int idFile, int idCommit);
     Commit getCommitById(int idUser, int idFile, int idCommit);
-    // Удалить коммиты у которые Id выше
     boolean revertFileToCommit(int idUser, int idFile, int idCommit);
 }

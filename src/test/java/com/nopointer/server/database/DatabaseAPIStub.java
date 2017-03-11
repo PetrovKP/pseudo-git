@@ -18,7 +18,7 @@ public class DatabaseAPIStub implements DatabaseAPI {
 
     @Override
     public boolean deleteUser(String login) {
-        return true;
+        return login.equals("Oleg");
     }
 
     @Override
@@ -33,12 +33,12 @@ public class DatabaseAPIStub implements DatabaseAPI {
 
     @Override
     public int createFile(int idUser, String title, List<String> text) {
-        return !(title.equals("FIRST FILE"))? 1 : 0;
+        return 1;
     }
 
     @Override
     public boolean deleteToFile(int idUser, int idFile) {
-        return false;
+        return idUser == 1 && idFile == 2;
     }
 
     @Override
@@ -48,10 +48,10 @@ public class DatabaseAPIStub implements DatabaseAPI {
 
     @Override
     public String getTitle(int idUser, int idFile) {
-        if (idFile == 1) {
+        if (idFile == 1 && idUser == 1) {
             return "Title1";
         }
-        if (idFile == 2) {
+        if (idFile == 2 && idUser == 1) {
             return "Title2";
         }
         return null;
@@ -59,12 +59,12 @@ public class DatabaseAPIStub implements DatabaseAPI {
 
     @Override
     public boolean addUserToFile(int idUser, int newIdUser, int idFile) {
-        return false;
+        return idUser != newIdUser && idUser == 1 && newIdUser != 2;
     }
 
     @Override
     public boolean deleteUserToFile(int idUser, int newIdUser, int idFile) {
-        return false;
+        return idUser != newIdUser && idUser == 1;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class DatabaseAPIStub implements DatabaseAPI {
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(2);
-        return (idUser > 0) ? list : null;
+        return (idUser == 1) ? list : null;
     }
 
     @Override
@@ -83,33 +83,25 @@ public class DatabaseAPIStub implements DatabaseAPI {
         return (idFile == 1) ? list : null;
     }
 
-//    @Override
-//    public Commit getCommitByDate(int idFile, String date) {
-//        List<String> list1 = new ArrayList<>();
-//        list1.add("Text");
-//        list1.add("Here");
-//        List<String> list2 = new ArrayList<>();
-//        list2.add("Text1");
-//        list2.add("Here1");
-//        return new Commit(list1, list2);
-//    }
-
     @Override
     public List<Integer> getAllCommitsId(int idUser, int idFile) {
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(2);
-        return (idFile == 3) ? list : null;
+        return (idFile == 3 && idUser == 1) ? list : null;
     }
 
     @Override
     public boolean isAccessUserToFile(int idUser, int idFile) {
-        return false;
+        return idUser == 2 && idFile == 1;
     }
 
     @Override
     public List<String> getAllUsersByFile(int idUser, int idFile) {
-        return null;
+        List<String> list = new ArrayList<>();
+        list.add("Petrov");
+        list.add("Ovchraruk");
+        return (idFile == 1 && idUser == 1) ? list : null;
     }
 
     @Override
@@ -119,25 +111,31 @@ public class DatabaseAPIStub implements DatabaseAPI {
 
     @Override
     public boolean deleteCommit(int idUser, int idFile, int idCommit) {
-        return false;
+        return idUser == 1 && idFile == 2 && idCommit == 1;
     }
 
     @Override
     public String getCommitDateById(int idUser, int idFile, int idCommit) {
-        return null;
-    }
-
-    public String getCommitDateById(int idUser, int idCommit) {
+        if (idFile == 1 && idUser == 1 && idCommit == 1) {
+            return "03.11.2017 - 22:12";
+        }
+        if (idFile == 1 && idUser == 1 && idCommit == 2) {
+            return "04.11.2017 - 12:12";
+        }
         return null;
     }
 
     @Override
     public Commit getCommitById(int idUser, int idFile, int idCommit) {
+//        if (idFile == 1 && idUser == 1 && idCommit == 1)
+//            return new Commit();
+//        else
+//            return null;
         return null;
     }
 
     @Override
     public boolean revertFileToCommit(int idUser, int idFile, int idCommit) {
-        return false;
+        return idUser == 1 && idFile == 1 && idCommit == 1;
     }
 }

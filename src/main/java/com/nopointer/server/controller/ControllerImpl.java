@@ -16,8 +16,6 @@ class ControllerImpl implements Controller {
         database.connect();
     }
 
-    // TODO: add all functions, provided by DatabaseAPI
-
     @Override
     public int registerUser(String login, String password) {
         return database.getAPI().registerUser(login, password) ? 100 : 200;
@@ -25,8 +23,7 @@ class ControllerImpl implements Controller {
 
     @Override
     public int deleteUser(String login) {
-        database.getAPI().deleteUser(login);
-        return -1;
+        return database.getAPI().deleteUser(login) ? 100 : 200;
     }
 
     @Override
@@ -40,18 +37,18 @@ class ControllerImpl implements Controller {
     }
 
     @Override
-    public int createFile(String title) {
-        return 0;
-    }
-
-    @Override
     public int createFile(int idUser, String title, List<String> text) {
         return database.getAPI().createFile(idUser, title, text) != 0 ? 100 : 200;
     }
 
     @Override
-    public String getTitle(int idFile) {
-        return null;
+    public int deleteToFile(int idUser, int idFile) {
+        return database.getAPI().deleteToFile(idUser, idFile) ? 100 : 200;
+    }
+
+    @Override
+    public Integer getCommitsCount(int idUser, int idFile) {
+        return database.getAPI().getCommitsCount(idUser, idFile);
     }
 
     @Override
@@ -60,23 +57,8 @@ class ControllerImpl implements Controller {
     }
 
     @Override
-    public int changeFileStatus(int idFile) {
-        return 0;
-    }
-
-    @Override
-    public int changeFileStatus(String login, int idFile) {
-        return 0;
-    }
-
-    @Override
     public List<Integer> getAllFilesId(int idUser) {
         return database.getAPI().getAllFilesId(idUser);
-    }
-
-    @Override
-    public List<String> getActualText(int idFile) {
-        return null;
     }
 
     @Override
@@ -85,18 +67,28 @@ class ControllerImpl implements Controller {
     }
 
     @Override
-    public Commit getCommitByDate(int idFile, String date) {
-        return null;
-    }
-
-    @Override
-    public List<Integer> getAllCommitsId(int idFile) {
-        return null;
-    }
-
-    @Override
     public List<Integer> getAllCommitsId(int idUser, int idFile) {
         return database.getAPI().getAllCommitsId(idUser, idFile);
+    }
+
+    @Override
+    public int isAccessUserToFile(int idUser, int idFile) {
+        return database.getAPI().isAccessUserToFile(idUser, idFile) ? 100 : 200;
+    }
+
+    @Override
+    public List<String> getAllUsersByFile(int idUser, int idFile) {
+        return database.getAPI().getAllUsersByFile(idUser, idFile);
+    }
+
+    @Override
+    public int addUserToFile(int idUser, int newIdUser, int idFile) {
+        return database.getAPI().addUserToFile(idUser, newIdUser, idFile) ? 100 : 200;
+    }
+
+    @Override
+    public int deleteUserToFile(int idUser, int newIdUser, int idFile) {
+        return database.getAPI().deleteUserToFile(idUser, newIdUser, idFile) ? 100 : 200;
     }
 
     @Override
@@ -104,5 +96,24 @@ class ControllerImpl implements Controller {
         return database.getAPI().addCommit(idUser, idFile, text) ? 100 : 200;
     }
 
+    @Override
+    public int deleteCommit(int idUser, int idFile, int idCommit) {
+        return database.getAPI().deleteCommit(idUser, idFile, idCommit) ? 100 : 200;
+    }
+
+    @Override
+    public String getCommitDateById(int idUser, int idFile, int idCommit) {
+        return database.getAPI().getCommitDateById(idUser, idFile, idCommit);
+    }
+
+    @Override
+    public Commit getCommitById(int idUser, int idFile, int idCommit) {
+        return database.getAPI().getCommitById(idUser, idFile, idCommit);
+    }
+
+    @Override
+    public int revertFileToCommit(int idUser, int idFile, int idCommit) {
+        return database.getAPI().revertFileToCommit(idUser, idFile, idCommit) ? 100 : 200;
+    }
 
 }
