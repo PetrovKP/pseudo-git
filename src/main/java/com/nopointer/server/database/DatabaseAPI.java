@@ -17,7 +17,10 @@ public interface DatabaseAPI {
     boolean deleteUser(String login);
 
     // Files
-    boolean createFile(int idUser, String title, List<String> text); // Я на уровне клиента запрещу создать пустой по содержанию файл
+    int createFile(int idUser, String title, List<String> text);
+    @Deprecated
+    boolean deleteToFile(int idUser, int idFile);
+
     Integer getCommitsCount(int idUser, int idFile);
     String getTitle(int idUser, int idFile);
     List<Integer> getAllFilesId(int idUser);

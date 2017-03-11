@@ -32,8 +32,13 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public boolean createFile(int idUser, String title, List<String> text) {
-        return !(title.equals("FIRST FILE"));
+    public int createFile(int idUser, String title, List<String> text) {
+        return !(title.equals("FIRST FILE"))? 1 : 0;
+    }
+
+    @Override
+    public boolean deleteToFile(int idUser, int idFile) {
+        return false;
     }
 
     @Override

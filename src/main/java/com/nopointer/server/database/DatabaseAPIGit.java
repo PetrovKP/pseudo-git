@@ -11,6 +11,7 @@ import java.sql.*;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -65,6 +66,25 @@ public class DatabaseAPIGit implements DatabaseAPI {
         return result;
     }
 
+    private boolean addUserToFileWithoutChecking(int idUser, int idFile) {
+        boolean result = false;
+        //  Если нет в таблице пользователя и id файла
+        if (!isAccessUserToFile(idUser, idFile)) {
+            String sql = "INSERT INTO Access (idUser, idFile) VALUES (?, ?)";
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, idUser);
+                preparedStatement.setInt(2, idFile);
+
+                preparedStatement.executeUpdate();
+                preparedStatement.close();
+                result = true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
 
     public void setConnection(Connection connection) {
         this.connection = connection;
@@ -151,8 +171,8 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public boolean createFile(int idUser, String title, List<String> text) {
-        boolean result = false;
+    public int createFile(int idUser, String title, List<String> text) {
+        int result = 0;
         String sql = "INSERT INTO Files (title) VALUES (?)";
         try {
             preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -166,10 +186,31 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
             // Сразу выполняем коммит (самый первый для этого файла)
             addCommit(idUser, idFile, text);
+            // И добавляем права доступа для этого пользователя
+            addUserToFileWithoutChecking(idUser, idFile);
             preparedStatement.close();
-            result = true;
+            result = idFile;
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public boolean deleteToFile(int idUser, int idFile) {
+        boolean result = false;
+        if (isAccessUserToFile(idUser, idFile)) {
+            String sql = "DELETE FROM Files WHERE idFiles = ?";
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, idFile);
+
+                preparedStatement.executeUpdate();
+                preparedStatement.close();
+                result = true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return result;
     }
@@ -329,19 +370,9 @@ public class DatabaseAPIGit implements DatabaseAPI {
     @Override
     public boolean addUserToFile(int idUser, int newIdUser, int idFile) {
         boolean result = false;
-        if (isAccessUserToFile(idUser, idFile) && !isAccessUserToFile(newIdUser, idFile)) {
-            String sql = "INSERT INTO Access (idUser, idFile) VALUES (?, ?)";
-            try {
-                preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setInt(1, newIdUser);
-                preparedStatement.setInt(2, idFile);
-
-                preparedStatement.executeUpdate();
-                preparedStatement.close();
-                result = true;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        // Проверка наличия доступа к данному файлу
+        if (isAccessUserToFile(idUser, idFile) ) {
+            result = addUserToFileWithoutChecking(newIdUser, idFile);
         }
         return result;
     }
@@ -416,6 +447,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
                 preparedStatement.executeUpdate();
                 preparedStatement.close();
+
                 result = true;
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -426,16 +458,23 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
     @Override
     public String getCommitDateById(int idUser, int idFile, int idCommit) {
-        String result = null;
-        String sql = "SELECT data FROM Commits WHERE idFiles = ?";
+        String result = "";
+        String sql = "SELECT data FROM Commits WHERE idFile = ? AND idLocalCommits = ?";
         try {
             preparedStatement = connection.prepareStatement(sql);
-//            preparedStatement.setInt(1, idFile);
+            preparedStatement.setInt(1, idFile);
+            preparedStatement.setInt(2, idCommit);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next())
-                result = resultSet.getString("title");
-
+            if (resultSet.next()) {
+                // Конвертация sql даты в строку по выбранному шаблону
+                Timestamp timestamp = resultSet.getTimestamp("data");
+                if (timestamp != null) {
+                    java.sql.Date date = new java.sql.Date(timestamp.getTime());
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.YYYY - HH:mm");
+                    result = dateFormat.format(date);
+                }
+            }
             preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
