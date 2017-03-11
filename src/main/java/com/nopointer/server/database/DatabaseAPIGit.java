@@ -447,7 +447,6 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
                 preparedStatement.executeUpdate();
                 preparedStatement.close();
-
                 result = true;
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -524,8 +523,28 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
+//    TODO:
+//    Пользователь может удалять коммиты других пользователй?
     public boolean revertFileToCommit(int idUser, int idFile, int idCommit) {
-        return false;
+        boolean result = false;
+        if (isAccessUserToFile(idUser, idFile)) {
+            String sql = "DELETE FROM Commits " +
+                    "WHERE idUser = ? AND idFile = ? AND idLocalCommits > ?";
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, idUser);
+                preparedStatement.setInt(2, idFile);
+                preparedStatement.setInt(3, idCommit);
+
+                int count = preparedStatement.executeUpdate();
+                preparedStatement.close();
+
+                result = count > 0;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
 }

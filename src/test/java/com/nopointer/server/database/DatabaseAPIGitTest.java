@@ -145,7 +145,6 @@ public class DatabaseAPIGitTest {
         assertEquals(expected, result);
     }
 
-
     @Test
     public void getCommitByDate() throws Exception {
         String result, expected;
@@ -160,6 +159,7 @@ public class DatabaseAPIGitTest {
         expected = "";
         assertEquals(expected, result);
     }
+
 
     @Test
     public void getAllCommitsId() throws Exception {
@@ -229,6 +229,40 @@ public class DatabaseAPIGitTest {
 //        expected = new Commit(oldText, newText);
 //        assertTrue(expected.equals(result));
 
+    }
+
+    @Test
+    public void revertFileToCommit() throws Exception {
+        List<String> text = new ArrayList<>();
+        boolean isAdd, isDel;
+        text.add("TEST");
+
+        isAdd = database.getAPI().addCommit(1, 3, text);
+
+        // Успешное добавление
+        assertTrue(isAdd);
+
+        isAdd = database.getAPI().addCommit(1, 3, text);
+
+        // Успешное добавление
+        assertTrue(isAdd);
+
+        isDel = database.getAPI().revertFileToCommit(1, 3, 2);
+
+        // Успешное удаление коммитов
+        assertTrue(isDel);
+
+        List<String> result = database.getAPI().getActualText(1, 3);
+
+        List<String> expected = new ArrayList<>();
+        Collections.addAll(expected, "Bye", "World!");
+        // Проверка актульного текста
+        assertEquals(expected, result);
+
+        isDel = database.getAPI().revertFileToCommit(1, 3, 2);
+
+        // Нельзя удалить коммиты, если больше нет
+        assertFalse(isDel);
     }
 
     @Test
