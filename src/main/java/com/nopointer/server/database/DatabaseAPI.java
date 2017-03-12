@@ -9,7 +9,7 @@ public interface DatabaseAPI {
     void setConnection(Connection connection);
 
     // Users
-    boolean registerUser(String login, String password);
+    int registerUser(String login, String password);
     boolean login(String login, String password);
     Integer getIdUser(String login);
 
