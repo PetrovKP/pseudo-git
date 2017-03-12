@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import com.nopointer.server.config.Module;
 import com.nopointer.server.config.TestModule;
 import com.nopointer.server.entity.Commit;
+import com.nopointer.server.entity.TextString;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -241,19 +242,14 @@ public class DatabaseAPIGitTest {
         result = database.getAPI().getCommitById(3, 2,2);
         assertNull(result);
 
+        result = database.getAPI().getCommitById(1, 3,1 );
 
-/*        TODO:
- *        Не работает с первым коммитом, вероятно не предусмотрено в Commit
- *        Действие с пустым List<string>
- *        С моей стороны я представлял так (см. ниже)
- */
-//       result = database.getAPI().getCommitById(1, 3,1 );
-//
-//        oldText = new ArrayList<>();
-//        Collections.addAll(newText, "Hello", "World!");
-//        expected = new Commit(oldText, newText);
-//        assertTrue(expected.equals(result));
+        oldText = new ArrayList<>();
+        newText = new ArrayList<>();
 
+        Collections.addAll(newText, "Hello", "World!");
+        expected = new Commit(oldText, newText);
+        assertTrue(expected.equals(result));
     }
 
     @Test

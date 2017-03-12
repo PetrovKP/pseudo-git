@@ -1,6 +1,7 @@
 package com.nopointer.server.database;
 
 import com.nopointer.server.entity.Commit;
+import com.nopointer.server.entity.TextString;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.ByteArrayOutputStream;
@@ -488,15 +489,14 @@ public class DatabaseAPIGit implements DatabaseAPI {
         Commit result = null;
         if (isAccessUserToFile(idUser, idFile)) {
             String sql = "SELECT text FROM Commits " +
-                    "WHERE idUser = ? AND idFile = ? AND " +
+                    "WHERE idFile = ? AND " +
                     "(idLocalCommits = ? OR idLocalCommits = ?)" +
                     " ORDER BY idLocalCommits DESC";
             try {
                 preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setInt(1, idUser);
-                preparedStatement.setInt(2, idFile);
-                preparedStatement.setInt(3, idCommit);
-                preparedStatement.setInt(4, idCommit - 1);
+                preparedStatement.setInt(1, idFile);
+                preparedStatement.setInt(2, idCommit);
+                preparedStatement.setInt(3, idCommit - 1);
 
                 ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -516,6 +516,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
                     oldT = Arrays.asList(data.split("\n"));
                 }
                 result = new Commit(oldT, newT);
+
                 preparedStatement.close();
             } catch (SQLException e) {
                 e.printStackTrace();
