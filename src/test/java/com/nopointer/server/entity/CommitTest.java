@@ -122,12 +122,4 @@ public class CommitTest {
         assertFalse(commit1.equals(commit2));
         assertFalse(commit2.equals(commit1));
     }
-
-    @Test
-    public void nd() throws Exception {
-        Commit commit = new Commit(new ArrayList<String>(), newText);
-        for (TextString ts : commit.getTextStrings()) {
-            System.out.println(ts.getString());
-        }
-    }
 }
