@@ -44,6 +44,22 @@ public class OKProtocolTest {
     }
 
     @Test
+    public void successGetIdUser() throws Exception {
+        Request request = new Request("getIdUser", "log2");
+        Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 100);
+    }
+
+    @Test
+    public void unsuccessGetIdUser() throws Exception {
+        Request request = new Request("getIdUser", "lo4");
+        Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 200);
+    }
+
+    @Test
     public void successRegister() throws Exception {
         Request request = new Request("registerUser", "Kirill", "Petrov");
         Response response = protocol.handleRequest(request);
