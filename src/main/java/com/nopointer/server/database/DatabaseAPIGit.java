@@ -1,7 +1,6 @@
 package com.nopointer.server.database;
 
 import com.nopointer.server.entity.Commit;
-import com.nopointer.server.entity.TextString;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.ByteArrayOutputStream;
@@ -9,9 +8,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.sql.*;
-import java.sql.Blob;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -92,8 +88,8 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public boolean registerUser(String login, String password) {
-        boolean result = false;
+    public int registerUser(String login, String password) {
+        int result = 0;
         if ( !isExistLogin(login) ) {
             String sql = "INSERT INTO Users (login, password) VALUES (?, ?)";
             try {
@@ -104,7 +100,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 preparedStatement.executeUpdate();
 
                 preparedStatement.close();
-                result = true;
+                result = getIdUser(login);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
