@@ -11,10 +11,11 @@ public class TestDatabaseModule extends AbstractModule {
                 .to(DatabaseImpl.class)
                 .asEagerSingleton();
 
+        bind(DatabaseAPI.class).to(DatabaseAPIGit.class);
+
         bind(String.class)
                 .annotatedWith(Names.named("config.properties"))
                 .toInstance("src/main/resources/test_config.properties");
 
-        bind(DatabaseAPI.class).to(DatabaseAPIGit.class);
     }
 }

@@ -16,73 +16,129 @@ class OKProtocol implements Protocol {
         this.controller = controller;
     }
 
-    // Тут никаких изменений быть уже не должно, вся ответственность будет лежать
-    // на поведении контроллера и бд
     @Override
     public Response handleRequest(Request request) {
-        int code, idFile, idUser;
-        List<String> auth;
+        int code, idFile, idUser, idCommit;
+        String login, password;
+        List<String> text;
         Response response = null;
         switch (request.getType()) {
-            case "login":
-                auth = (List<String>) request.getData().get(0);
-                code = controller.login(auth.get(0), auth.get(1));
-                response = new Response(code);
-                break;
-
             case "registerUser":
-                auth = (List<String>) request.getData().get(0);
-                code = controller.registerUser(auth.get(0), auth.get(1));
+                login = (String) request.getData().get(0);
+                password = (String) request.getData().get(1);
+                code = controller.registerUser(login, password);
                 response = new Response(code);
                 break;
 
-            case "deleteUser":
-                auth = (List<String>) request.getData().get(0);
-                code = controller.deleteUser(auth.get(0));
+            case "login":
+                login = (String) request.getData().get(0);
+                password = (String) request.getData().get(1);
+                code = controller.login(login, password);
                 response = new Response(code);
+                break;
+
+            case "getIdUser":
+                login = (String) request.getData().get(0);
+                idUser = controller.getIdUser(login);
+                response = (idUser != 0) ? new Response(100, idUser) :
+                        new Response(200, null);
                 break;
 
             case "createFile":
-                String title = ((List<String>) request.getData().get(0)).get(1);
-//                code = controller.createFile(title);
-//                response = new Response(code);
+                idUser = (int) request.getData().get(0);
+                String title = (String) request.getData().get(1);
+                text = (List<String>) request.getData().get(2);
+                idFile = controller.createFile(idUser, title, text);
+                response = (idFile != 0) ? new Response(100, idFile) :
+                        new Response(200, null);
                 break;
 
             case "getTitle":
-                idFile = (int) request.getData().get(0);
-//                String titleFile = controller.getTitle(idFile);
-//                code = (titleFile != null) ? 100 : 200;
-//                response = new Response(code, titleFile);
+                idUser = (int) request.getData().get(0);
+                idFile = (int) request.getData().get(1);
+                String fileTitle = controller.getTitle(idUser, idFile);
+                code = (fileTitle != null) ? 100 : 200;
+                response = new Response(code, fileTitle);
+                break;
+
+            case "getCommitsCount":
+                idUser = (int) request.getData().get(0);
+                idFile = (int) request.getData().get(1);
+                int count = controller.getCommitsCount(idUser, idFile);
+                response = (count != 0) ? new Response(100, count) :
+                        new Response(200, null);
                 break;
 
             case "getAllFilesId":
-                List<String> filesOwner = (List<String>) request.getData().get(0);
-                idUser = controller.getIdUser(filesOwner.get(0));
+                idUser = (int) request.getData().get(0);
                 List<Integer> filesIds = controller.getAllFilesId(idUser);
                 code = (filesIds != null) ? 100 : 200;
                 response = new Response(code, filesIds);
                 break;
 
             case "getActualText":
-                idFile = (int) request.getData().get(0);
-//                List<String> actualText = controller.getActualText(idFile);
-//                code = (actualText != null) ? 100 : 200;
-//                response = new Response(code, actualText);
+                idUser = (int) request.getData().get(0);
+                idFile = (int) request.getData().get(1);
+                List<String> actualText = controller.getActualText(idUser, idFile);
+                code = (actualText != null) ? 100 : 200;
+                response = new Response(code, actualText);
                 break;
-
 
             case "getAllCommitsId":
-                idFile = (int) request.getData().get(0);
-//                List<Integer> allCommitsId = controller.getAllCommitsId(idFile);
-//                response = new Response(100, allCommitsId);
+                idUser = (int) request.getData().get(0);
+                idFile = (int) request.getData().get(1);
+                List<Integer> allCommitsId = controller.getAllCommitsId(idUser, idFile);
+                code = (allCommitsId != null) ? 100 : 200;
+                response = new Response(code, allCommitsId);
                 break;
 
+            case "getAllUsersByFile":
+                idUser = (int) request.getData().get(0);
+                idFile = (int) request.getData().get(1);
+                List<String> allUsersByFile = controller.getAllUsersByFile(idUser, idFile);
+                code = (allUsersByFile != null) ? 100 : 200;
+                response = new Response(code, allUsersByFile);
+                break;
+
+            case "addUserToFile":
+                idUser = (int) request.getData().get(0);
+                int newIdUser = (int) request.getData().get(1);
+                idFile = (int) request.getData().get(2);
+                code = controller.addUserToFile(idUser, newIdUser, idFile);
+                response = new Response(code);
+
             case "addCommit":
-                idFile = (int) request.getData().get(0);
-                auth = (List<String>) request.getData().get(1);
-                List<String> textCommit = (List<String>) request.getData().get(2);
-//                code = controller.addCommit(idFile, auth.get(0), textCommit);
-//                response = new Response(code);
+                idUser = (int) request.getData().get(0);
+                idFile = (int) request.getData().get(1);
+                text = (List<String>) request.getData().get(2);
+                code = controller.addCommit(idUser, idFile, text);
+                response = new Response(code);
+                break;
+
+            case "getCommitDateById":
+                idUser = (int) request.getData().get(0);
+                idFile = (int) request.getData().get(1);
+                idCommit = (int) request.getData().get(2);
+                String date = controller.getCommitDateById(idUser, idFile, idCommit);
+                code = (!date.equals("")) ? 100 : 200;
+                response = new Response(code, date);
+                break;
+
+            case "getCommitById":
+                idUser = (int) request.getData().get(0);
+                idFile = (int) request.getData().get(1);
+                idCommit = (int) request.getData().get(2);
+                Commit commit = controller.getCommitById(idUser, idFile, idCommit);
+                code = (commit != null) ? 100 : 200;
+                response = new Response(code, commit);
+                break;
+
+            case "revertFileToCommit":
+                idUser = (int) request.getData().get(0);
+                idFile = (int) request.getData().get(1);
+                idCommit = (int) request.getData().get(2);
+                code = controller.revertFileToCommit(idUser, idFile, idCommit);
+                response = new Response(code);
                 break;
         }
         return response;

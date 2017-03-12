@@ -28,11 +28,7 @@ public class OKProtocolTest {
 
     @Test
     public void successLogin() throws Exception {
-        List<String> auth = new ArrayList<>();
-        auth.add("oleg");
-        auth.add("ovcharuk");
-
-        Request request = new Request("login", auth);
+        Request request = new Request("login", "oleg", "ovcharuk");
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 100);
@@ -40,11 +36,7 @@ public class OKProtocolTest {
 
     @Test
     public void unsuccessLogin() throws Exception {
-        List<String> auth = new ArrayList<>();
-        auth.add("kirill");
-        auth.add("petrov");
-
-        Request request = new Request("login", auth);
+        Request request = new Request("login", "kirill", "petrov");
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 200);
@@ -52,11 +44,7 @@ public class OKProtocolTest {
 
     @Test
     public void successRegister() throws Exception {
-        List<String> auth = new ArrayList<>();
-        auth.add("Kirill");
-        auth.add("Petrov");
-
-        Request request = new Request("registerUser", auth);
+        Request request = new Request("registerUser", "Kirill", "Petrov");
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 100);
@@ -64,11 +52,7 @@ public class OKProtocolTest {
 
     @Test
     public void unsuccessRegister() throws Exception {
-        List<String> auth = new ArrayList<>();
-        auth.add("Oleg");
-        auth.add("Ovcharuk");
-
-        Request request = new Request("registerUser", auth);
+        Request request = new Request("registerUser", "Oleg", "Ovcharuk");
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 200);

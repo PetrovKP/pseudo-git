@@ -1,7 +1,6 @@
 package com.nopointer.server.controller;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import com.nopointer.server.database.Database;
 import com.nopointer.server.entity.Commit;
 
@@ -11,7 +10,7 @@ class ControllerImpl implements Controller {
     private Database database;
 
     @Inject
-    public ControllerImpl(@Named("StubIfNeeded") Database database) {
+    public ControllerImpl(Database database) {
         this.database = database;
         database.connect();
     }
