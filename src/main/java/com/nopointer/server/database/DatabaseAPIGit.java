@@ -153,7 +153,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public int getIdUser(String login) {
+    public Integer getIdUser(String login) {
         int result = 0;
         String sql = "SELECT idUsers FROM Users WHERE login = ?";
         try {

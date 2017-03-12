@@ -11,7 +11,7 @@ public interface DatabaseAPI {
     // Users
     boolean registerUser(String login, String password);
     boolean login(String login, String password);
-    int getIdUser(String login);
+    Integer getIdUser(String login);
 
     @Deprecated
     boolean deleteUser(String login);

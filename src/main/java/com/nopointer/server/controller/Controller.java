@@ -12,7 +12,7 @@ public interface Controller {
 
     int login(String login, String password);
 
-    int getIdUser(String login);
+    Integer getIdUser(String login);
 
     // Texts
 

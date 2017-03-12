@@ -40,15 +40,23 @@ public class ControllerTest {
     }
 
     @Test
+    public void getIdUser() throws Exception {
+        assertEquals(controller.getIdUser("log1"), new Integer(1));
+        assertEquals(controller.getIdUser("log2"), new Integer(2));
+        assertEquals(controller.getIdUser("log4"), new Integer(0));
+    }
+
+    @Test
     public void createFile() throws Exception {
         List<String> list = new ArrayList<>();
         assertEquals(controller.createFile(1,"NewFile", list), 100);
+        assertEquals(controller.createFile(3,"NewFile", list), 200);
     }
 
     @Test
     public void deleteUserToFile() throws Exception {
-        assertEquals(controller.deleteToFile(1, 2), 100);
-        assertEquals(controller.deleteToFile(1, 3), 200);
+        assertEquals(controller.deleteUserToFile(1, 2, 2), 100);
+        assertEquals(controller.deleteUserToFile(1, 3,4), 200);
     }
 
     @Test
@@ -102,6 +110,12 @@ public class ControllerTest {
     }
 
     @Test
+    public void getCommitsCount() throws Exception {
+        assertEquals(controller.getCommitsCount(1, 1), new Integer(4));
+        assertEquals(controller.getCommitsCount(3, 1), new Integer(0));
+    }
+
+    @Test
     public void isAccessUserToFile() throws Exception {
         assertEquals(controller.isAccessUserToFile(2,1), 100);
         assertEquals(controller.isAccessUserToFile(1,3), 200);
@@ -137,6 +151,7 @@ public class ControllerTest {
 //        assertTrue(controller.getCommitById(1,1,1).equals(new Commit()));
         assertEquals(controller.getCommitById(1,1,1),null);
     }
+
 
     @Test
     public void revertFileToCommit() throws Exception {

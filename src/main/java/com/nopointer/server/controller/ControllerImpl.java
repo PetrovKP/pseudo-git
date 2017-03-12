@@ -32,8 +32,8 @@ class ControllerImpl implements Controller {
     }
 
     @Override
-    public int getIdUser(String login) {
-        return database.getAPI().getIdUser(login) > 0 ? 100 : 200;
+    public Integer getIdUser(String login) {
+        return database.getAPI().getIdUser(login);
     }
 
     @Override

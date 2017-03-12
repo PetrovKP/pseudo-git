@@ -27,13 +27,19 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public int getIdUser(String login) {
+    public Integer getIdUser(String login) {
+        if (login.equals("log1")) {
+            return 1;
+        }
+        if (login.equals("log2")) {
+            return 2;
+        }
         return 0;
     }
 
     @Override
     public int createFile(int idUser, String title, List<String> text) {
-        return 1;
+        return idUser == 1 ? 1 : 0;
     }
 
     @Override
@@ -43,7 +49,10 @@ public class DatabaseAPIStub implements DatabaseAPI {
 
     @Override
     public Integer getCommitsCount(int idUser, int idFile) {
-        return null;
+        if (idUser == 1 && idFile == 1)
+            return 4;
+        else
+            return 0;
     }
 
     @Override
@@ -64,7 +73,7 @@ public class DatabaseAPIStub implements DatabaseAPI {
 
     @Override
     public boolean deleteUserToFile(int idUser, int newIdUser, int idFile) {
-        return idUser != newIdUser && idUser == 1;
+        return idUser != newIdUser && idUser == 1  && newIdUser == 2 && idFile == 2;
     }
 
     @Override
@@ -106,7 +115,7 @@ public class DatabaseAPIStub implements DatabaseAPI {
 
     @Override
     public boolean addCommit(int idUser, int idFile, List<String> text) {
-        return (idFile == 1);
+        return idFile == 1 && idUser == 1;
     }
 
     @Override
