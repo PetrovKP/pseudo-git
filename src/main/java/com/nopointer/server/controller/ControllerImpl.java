@@ -17,7 +17,7 @@ class ControllerImpl implements Controller {
 
     @Override
     public int registerUser(String login, String password) {
-        return database.getAPI().registerUser(login, password) ? 100 : 200;
+        return database.getAPI().registerUser(login, password);
     }
 
     @Override
