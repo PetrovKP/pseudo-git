@@ -279,7 +279,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
     @Override
     public List<String> getActualText(int idUser, int idFile) {
-        List<String> result = new ArrayList<>();
+        List<String> result = null;
 
         if (isAccessUserToFile(idUser, idFile)) {
             String sql = "SELECT text FROM Commits WHERE idLocalCommits = ? AND idFile = ?";
@@ -307,7 +307,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
     @Override
     public List<Integer> getAllCommitsId(int idUser, int idFile) {
-        List<Integer> result = new ArrayList<>();
+        List<Integer> result = null;
         if (isAccessUserToFile(idUser, idFile)) {
             String sql = "SELECT idLocalCommits FROM Commits WHERE idFile = ?";
             try {
@@ -315,6 +315,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 preparedStatement.setInt(1, idFile);
 
                 ResultSet resultSet = preparedStatement.executeQuery();
+                result = new ArrayList<>();
                 while (resultSet.next())
                     result.add(resultSet.getInt("idLocalCommits"));
                 preparedStatement.close();
