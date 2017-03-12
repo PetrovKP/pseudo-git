@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class OKProtocolTest {
@@ -58,69 +59,55 @@ public class OKProtocolTest {
         assertEquals(response.getCode(), 200);
     }
 
-    @Ignore
-    @Test
-    public void successDeleteUser() throws Exception {
-        List<String> auth = new ArrayList<>();
-        auth.add("Oleg");
-        auth.add("Ovcharuk");
-
-        Request request = new Request("deleteUser", auth);
-        Response response = protocol.handleRequest(request);
-
-        assertEquals(response.getCode(), 100);
-    }
-
-    @Ignore
-    @Test
-    public void unsuccessDeleteUser() throws Exception {
-        List<String> auth = new ArrayList<>();
-        auth.add("Kirill");
-        auth.add("Petrov");
-
-        Request request = new Request("deleteUser", auth);
-        Response response = protocol.handleRequest(request);
-
-        assertEquals(response.getCode(), 200);
-    }
-
-    @Ignore
     @Test
     public void successCreateFile() throws Exception {
-        List<String> data = new ArrayList<>();
-        data.add("login");
-        data.add("New file");
+        List<String> text = new ArrayList<>();
+        text.add("Hello");
+        text.add("World!");
 
-        Request request = new Request("createFile", data);
+        Request request = new Request("createFile", 1, "title", text);
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 100);
     }
 
-    @Ignore
     @Test
     public void unsuccessCreateFile() throws Exception {
-        List<String> data = new ArrayList<>();
-        data.add("login");
-        data.add("FIRST FILE");
+        List<String> text = new ArrayList<>();
+        text.add("Hello");
+        text.add("World!");
 
-        Request request = new Request("createFile", data);
+        Request request = new Request("createFile", 2, "title", text);
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 200);
     }
 
-    @Ignore
     @Test
-    public void getTitle() throws Exception {
+    public void successGetTitle() throws Exception {
+        int idUser = 1;
         int idFile = 1;
-
-        Request request = new Request("getTitle", idFile);
+        Request request = new Request("getTitle", idUser, idFile);
         Response response = protocol.handleRequest(request);
 
-        String title = (String) response.getData().get(0);
+        assertEquals(response.getCode(), 100);
 
+        String title = (String) response.getData().get(0);
         assertEquals(title, "Title1");
+    }
+
+//    Остановился тут
+    @Test
+    public void unsuccessGetTitle() throws Exception {
+        int idUser = 1;
+        int idFile = 1;
+        Request request = new Request("getTitle", idUser, idFile);
+        Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 100);
+
+        String title = (String) response.getData().get(0);
+        assertNull(title);
     }
 
     @Ignore
