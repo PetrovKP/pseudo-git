@@ -20,7 +20,7 @@ public class DatabaseAPIGitTest {
 
     @Before
     public void setUp() throws Exception {
-        Injector injector = Guice.createInjector(new TestModule());
+        Injector injector = Guice.createInjector(new TestDatabaseModule());
         database = injector.getInstance(Database.class);
 
         database.connect();
