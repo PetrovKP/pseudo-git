@@ -1,13 +1,12 @@
 package com.nopointer.server.database;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class DatabaseStub implements Database {
     private DatabaseAPI databaseAPI;
 
     @Inject
-    public DatabaseStub(@Named("StubIfNeeded") DatabaseAPI databaseAPI) {
+    public DatabaseStub(DatabaseAPI databaseAPI) {
         this.databaseAPI = databaseAPI;
     }
 
