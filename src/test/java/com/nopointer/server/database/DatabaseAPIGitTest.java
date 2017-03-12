@@ -2,7 +2,10 @@ package com.nopointer.server.database;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.nopointer.server.config.Module;
+import com.nopointer.server.config.TestModule;
 import com.nopointer.server.entity.Commit;
+import com.nopointer.server.entity.TextString;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +20,7 @@ public class DatabaseAPIGitTest {
 
     @Before
     public void setUp() throws Exception {
-        Injector injector = Guice.createInjector(new TestDatabaseModule());
+        Injector injector = Guice.createInjector(new TestModule());
         database = injector.getInstance(Database.class);
 
         database.connect();
