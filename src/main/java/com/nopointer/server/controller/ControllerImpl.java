@@ -37,7 +37,7 @@ class ControllerImpl implements Controller {
 
     @Override
     public int createFile(int idUser, String title, List<String> text) {
-        return database.getAPI().createFile(idUser, title, text) != 0 ? 100 : 200;
+        return database.getAPI().createFile(idUser, title, text);
     }
 
     @Override
