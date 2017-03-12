@@ -23,8 +23,8 @@ public class ControllerTest {
 
     @Test
     public void registerUser() throws Exception {
-        assertEquals(controller.registerUser("Oleg", "pass"), 200);
-        assertEquals(controller.registerUser("Kirill", "pass"), 100);
+        assertEquals(controller.registerUser("Oleg", "pass"), 0);
+        assertEquals(controller.registerUser("Kirill", "pass"), 2);
     }
 
     @Test
