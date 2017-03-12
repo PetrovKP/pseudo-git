@@ -12,24 +12,44 @@ public interface Controller {
 
     int login(String login, String password);
 
+    Integer getIdUser(String login);
+
     // Texts
-    int createFile(String title);
 
-    String getTitle(int idFile);
+    int createFile(int idUser, String title, List<String> text);
 
-    String getFileStatus(int idFile);
+    int deleteToFile(int idUser, int idFile);
 
-    int changeFileStatus(int idFile);
+    Integer getCommitsCount(int idUser, int idFile);
+
+    List<Integer> getAllFilesId(int idUser);
+
+    String getTitle(int idUser, int idFile);
+
+    List<String> getActualText(int idUser, int idFile);
+
+    List<Integer> getAllCommitsId(int idUser, int idFile);
 
     // Access
-    List<Integer> getAllFilesId(String login);
+
+    int isAccessUserToFile(int idUser, int idFile);
+
+    List<String> getAllUsersByFile(int idUser, int idFile);
+
+    int addUserToFile(int idUser, int newIdUser, int idFile);
+
+    int deleteUserToFile(int idUser, int newIdUser, int idFile);
 
     // Commit
-    List<String> getActualText(int idFile);
 
-    Commit getCommitByDate(int idFile, String date);
+    int addCommit(int idUser, int idFile, List<String> text);
 
-    List<Integer> getAllCommitsId(int idFile);
+    int deleteCommit(int idUser, int idFile, int idCommit);
 
-    int addCommit(int idFile, String login, List<String> text);
+    String getCommitDateById(int idUser, int idFile, int idCommit);
+
+    Commit getCommitById(int idUser, int idFile, int idCommit);
+
+    int revertFileToCommit(int idUser, int idFile, int idCommit);
+
 }

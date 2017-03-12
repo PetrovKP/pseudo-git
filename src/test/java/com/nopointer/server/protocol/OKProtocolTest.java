@@ -100,6 +100,7 @@ public class OKProtocolTest {
         assertEquals(response.getCode(), 200);
     }
 
+    @Ignore
     @Test
     public void successCreateFile() throws Exception {
         List<String> data = new ArrayList<>();
@@ -112,6 +113,7 @@ public class OKProtocolTest {
         assertEquals(response.getCode(), 100);
     }
 
+    @Ignore
     @Test
     public void unsuccessCreateFile() throws Exception {
         List<String> data = new ArrayList<>();
@@ -124,6 +126,7 @@ public class OKProtocolTest {
         assertEquals(response.getCode(), 200);
     }
 
+    @Ignore
     @Test
     public void getTitle() throws Exception {
         int idFile = 1;
@@ -136,6 +139,7 @@ public class OKProtocolTest {
         assertEquals(title, "Title1");
     }
 
+    @Ignore
     @Test
     public void getFileStatus() throws Exception {
         int idFile = 1;
@@ -148,6 +152,7 @@ public class OKProtocolTest {
         assertEquals(status, "locked");
     }
 
+    @Ignore
     @Test
     public void successChangeFileStatus() throws Exception {
         int idFile = 2;
@@ -158,6 +163,7 @@ public class OKProtocolTest {
         assertEquals(response.getCode(), 100);
     }
 
+    @Ignore
     @Test
     public void unsuccessChangeFileStatus() throws Exception {
         int idFile = 1;
@@ -168,6 +174,7 @@ public class OKProtocolTest {
         assertEquals(response.getCode(), 200);
     }
 
+    @Ignore
     @Test
     public void getAllFilesId() throws Exception {
         List<String> auth = new ArrayList<>();
@@ -182,6 +189,7 @@ public class OKProtocolTest {
         assertEquals((int) list.get(1), 2);
     }
 
+    @Ignore
     @Test
     public void getActualText() throws Exception {
         int idFile = 1;
@@ -195,6 +203,7 @@ public class OKProtocolTest {
         assertEquals(text.get(1), "Here");
     }
 
+    @Ignore
     @Test
     public void getCommitByDate() throws Exception {
         int idFile = 1;
@@ -215,6 +224,7 @@ public class OKProtocolTest {
         assertTrue(commit1.equals(commit2));
     }
 
+    @Ignore
     @Test
     public void getAllCommitsId() throws Exception {
         int idFile = 3;
@@ -228,6 +238,7 @@ public class OKProtocolTest {
         assertEquals((int) list.get(1), 2);
     }
 
+    @Ignore
     @Test
     public void successAddCommit() throws Exception {
         int idFile = 1;
@@ -241,6 +252,7 @@ public class OKProtocolTest {
         assertEquals(response.getCode(), 100);
     }
 
+    @Ignore
     @Test
     public void unsuccessAddCommit() throws Exception {
         int idFile = 2;

@@ -10,30 +10,35 @@ public interface DatabaseAPI {
 
     // Users
     boolean registerUser(String login, String password);
-
-    void deleteUser(String login);
-
     boolean login(String login, String password);
+    Integer getIdUser(String login);
 
-    // Texts
-    boolean createFile(String title);
+    @Deprecated
+    boolean deleteUser(String login);
 
-    String getTitle(int idFile);
+    // Files
+    int createFile(int idUser, String title, List<String> text);
+    @Deprecated
+    boolean deleteToFile(int idUser, int idFile);
 
-    String getFileStatus(int idFile);
+    Integer getCommitsCount(int idUser, int idFile);
+    String getTitle(int idUser, int idFile);
+    List<Integer> getAllFilesId(int idUser);
+    List<String> getActualText(int idUser, int idFile);
+    List<Integer> getAllCommitsId(int idUser, int idFile);
 
-    boolean changeFileStatus(int idFile);
+    //Access
+    boolean isAccessUserToFile(int idUser, int idFile);
+    List<String> getAllUsersByFile(int idUser, int idFile);
+    boolean addUserToFile(int idUser, int newIdUser, int idFile);
+    @Deprecated
+    boolean deleteUserToFile(int idUser, int newIdUser, int idFile);
 
-    // Access
-    List<Integer> getAllFilesId(String login);
-
-    // Commit
-    List<String> getActualText(int idFile);
-
-    Commit getCommitByDate(int idFile, String date);
-
-    List<Integer> getAllCommitsId(int idFile);
-
-    boolean addCommit(int idFile, String login, List<String> text);
-
+    // Commits
+    boolean addCommit(int idUser, int idFile, List<String> text);
+    @Deprecated
+    boolean deleteCommit(int idUser, int idFile, int idCommit);
+    String getCommitDateById(int idUser, int idFile, int idCommit);
+    Commit getCommitById(int idUser, int idFile, int idCommit);
+    boolean revertFileToCommit(int idUser, int idFile, int idCommit);
 }

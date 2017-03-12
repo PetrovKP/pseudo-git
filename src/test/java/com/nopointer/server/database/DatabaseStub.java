@@ -22,6 +22,11 @@ public class DatabaseStub implements Database {
     }
 
     @Override
+    public boolean isConnect() {
+        return false;
+    }
+
+    @Override
     public DatabaseAPI getAPI() {
         return databaseAPI;
     }
