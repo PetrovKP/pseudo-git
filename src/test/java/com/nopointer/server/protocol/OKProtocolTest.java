@@ -61,11 +61,12 @@ public class OKProtocolTest {
 
     @Test
     public void successCreateFile() throws Exception {
+        int idUser = 1;
         List<String> text = new ArrayList<>();
         text.add("Hello");
         text.add("World!");
 
-        Request request = new Request("createFile", 1, "title", text);
+        Request request = new Request("createFile", idUser, "title", text);
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 100);
@@ -73,11 +74,37 @@ public class OKProtocolTest {
 
     @Test
     public void unsuccessCreateFile() throws Exception {
+        int idUser = 3;
         List<String> text = new ArrayList<>();
         text.add("Hello");
         text.add("World!");
 
-        Request request = new Request("createFile", 2, "title", text);
+        Request request = new Request("createFile", idUser, "title", text);
+        Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 200);
+    }
+
+    @Test
+    public void successGetCommitsCount() throws Exception {
+        int idUser = 1;
+        int idFile = 1;
+
+        Request request = new Request("getCommitsCount", idUser, idFile);
+        Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 100);
+
+        Integer count = (Integer) response.getData().get(0);
+        assertEquals(count, new Integer(4));
+    }
+
+    @Test
+    public void unsuccessGetCommitsCount() throws Exception {
+        int idUser = 2;
+        int idFile = 3;
+
+        Request request = new Request("getCommitsCount", idUser, idFile);
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 200);
@@ -96,142 +123,275 @@ public class OKProtocolTest {
         assertEquals(title, "Title1");
     }
 
-//    Остановился тут
     @Test
     public void unsuccessGetTitle() throws Exception {
-        int idUser = 1;
+        int idUser = 2;
         int idFile = 1;
         Request request = new Request("getTitle", idUser, idFile);
         Response response = protocol.handleRequest(request);
 
-        assertEquals(response.getCode(), 100);
+        assertEquals(response.getCode(), 200);
 
         String title = (String) response.getData().get(0);
         assertNull(title);
     }
 
-    @Ignore
     @Test
-    public void getFileStatus() throws Exception {
+    public void successAddUserToFile() throws Exception {
+        int idUser = 1;
+        int newIdUser = 3;
         int idFile = 1;
-
-        Request request = new Request("getFileStatus", idFile);
-        Response response = protocol.handleRequest(request);
-
-        String status = (String) response.getData().get(0);
-
-        assertEquals(status, "locked");
-    }
-
-    @Ignore
-    @Test
-    public void successChangeFileStatus() throws Exception {
-        int idFile = 2;
-
-        Request request = new Request("changeFileStatus", idFile);
+        Request request = new Request("addUserToFile", idUser, newIdUser, idFile);
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 100);
     }
 
-    @Ignore
     @Test
-    public void unsuccessChangeFileStatus() throws Exception {
+    public void unsuccessAddUserToFile() throws Exception {
+        int idUser = 2;
+        int newIdUser = 2;
         int idFile = 1;
-
-        Request request = new Request("changeFileStatus", idFile);
+        Request request = new Request("addUserToFile", idUser, newIdUser, idFile);
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 200);
     }
 
-    @Ignore
     @Test
-    public void getAllFilesId() throws Exception {
-        List<String> auth = new ArrayList<>();
-        auth.add("Oleg");
-
-        Request request = new Request("getAllFilesId", auth);
-        Response response = protocol.handleRequest(request);
-
-        List<Integer> list = (List<Integer>) response.getData().get(0);
-
-        assertEquals((int) list.get(0), 1);
-        assertEquals((int) list.get(1), 2);
-    }
-
-    @Ignore
-    @Test
-    public void getActualText() throws Exception {
+    public void successGetAllUsersByFile() throws Exception {
+        int idUser = 1;
         int idFile = 1;
-
-        Request request = new Request("getActualText", idFile);
+        Request request = new Request("getAllUsersByFile", idUser, idFile);
         Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 100);
 
         List<String> text = (List<String>) response.getData().get(0);
 
-        assertEquals(text.get(0), "Text");
-        assertEquals(text.get(1), "Here");
+        List<String> expected = new ArrayList<>();
+        expected.add("Petrov");
+        expected.add("Ovchraruk");
+        assertEquals(expected, text);
     }
 
-    @Ignore
     @Test
-    public void getCommitByDate() throws Exception {
+    public void unsuccessGetAllUsersByFile() throws Exception {
+        int idUser = 2;
         int idFile = 1;
-
-        List<String> list1 = new ArrayList<>();
-        list1.add("Text");
-        list1.add("Here");
-        List<String> list2 = new ArrayList<>();
-        list2.add("Text1");
-        list2.add("Here1");
-        Commit commit1 = new Commit(list1, list2);
-
-        Request request = new Request("getCommitByDate", idFile);
+        Request request = new Request("getAllUsersByFile", idUser, idFile);
         Response response = protocol.handleRequest(request);
 
-        Commit commit2 = (Commit) response.getData().get(0);
+        assertEquals(response.getCode(), 200);
 
-        assertTrue(commit1.equals(commit2));
+        List<String> text = (List<String>) response.getData().get(0);
+        assertNull(text);
     }
 
-    @Ignore
     @Test
-    public void getAllCommitsId() throws Exception {
-        int idFile = 3;
+    public void successGetAllFilesId() throws Exception {
+        int idUser = 1;
 
-        Request request = new Request("getAllCommitsId", idFile);
+        Request request = new Request("getAllFilesId", idUser);
         Response response = protocol.handleRequest(request);
 
         List<Integer> list = (List<Integer>) response.getData().get(0);
 
-        assertEquals((int) list.get(0), 1);
-        assertEquals((int) list.get(1), 2);
+        assertEquals(response.getCode(), 100);
+
+        List<Integer> expected = new ArrayList<>();
+        expected.add(1);
+        expected.add(2);
+        assertEquals(expected, list);
     }
 
-    @Ignore
+    @Test
+    public void unsuccessGetAllFilesId() throws Exception {
+        int idUser = 2;
+
+        Request request = new Request("getAllFilesId", idUser);
+        Response response = protocol.handleRequest(request);
+
+        List<Integer> list = (List<Integer>) response.getData().get(0);
+
+        assertEquals(response.getCode(), 200);
+
+        assertNull(list);
+    }
+
+    @Test
+    public void successGetActualText() throws Exception {
+        int idUser = 2;
+        int idFile = 1;
+
+        Request request = new Request("getActualText", idUser, idFile);
+        Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 100);
+
+        List<String> text = (List<String>) response.getData().get(0);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("Text");
+        expected.add("Here");
+        assertEquals(expected, text);
+    }
+
+    @Test
+    public void unsuccessGetActualText() throws Exception {
+        int idUser = 2;
+        int idFile = 2;
+
+        Request request = new Request("getActualText", idUser, idFile);
+        Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 200);
+
+        List<String> text = (List<String>) response.getData().get(0);
+        assertNull(text);
+    }
+
     @Test
     public void successAddCommit() throws Exception {
+        int idUser = 1;
         int idFile = 1;
-        List<String> auth = new ArrayList<>();
-        auth.add("Oleg");
-        auth.add("Ovcharuk");
+        List<String> text = new ArrayList<>();
+        text.add("Hello");
+        text.add("World!");
 
-        Request request = new Request("addCommit", idFile, auth, null);
+        Request request = new Request("addCommit", idUser, idFile, text);
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 100);
     }
 
-    @Ignore
     @Test
     public void unsuccessAddCommit() throws Exception {
-        int idFile = 2;
-        List<String> auth = new ArrayList<>();
-        auth.add("Oleg");
-        auth.add("Ovcharuk");
+        int idUser = 2;
+        int idFile = 3;
+        List<String> text = new ArrayList<>();
+        text.add("Hello");
+        text.add("World!");
 
-        Request request = new Request("addCommit", idFile, auth, null);
+        Request request = new Request("addCommit", idUser, idFile, text);
+        Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 200);
+    }
+
+    @Test
+    public void successGetAllCommitsId() throws Exception {
+        int idUser = 1;
+        int idFile = 3;
+
+        Request request = new Request("getAllCommitsId", idUser, idFile);
+        Response response = protocol.handleRequest(request);
+
+        List<Integer> list = (List<Integer>) response.getData().get(0);
+
+        assertEquals(response.getCode(), 100);
+
+        List<Integer> expected = new ArrayList<>();
+        expected.add(1);
+        expected.add(2);
+        assertEquals(expected, list);
+    }
+
+    @Test
+    public void unsuccessGetAllCommitsId() throws Exception {
+        int idUser = 2;
+        int idFile = 3;
+
+        Request request = new Request("getAllCommitsId", idUser, idFile);
+        Response response = protocol.handleRequest(request);
+
+        List<Integer> list = (List<Integer>) response.getData().get(0);
+
+        assertEquals(response.getCode(), 200);
+
+        assertNull(list);
+    }
+
+    @Test
+    public void successGetCommitDateById() throws Exception {
+        int idUser = 1;
+        int idFile = 1;
+        int idCommit = 1;
+        Request request = new Request("getCommitDateById", idUser, idFile, idCommit);
+        Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 100);
+
+        String data = (String) response.getData().get(0);
+        assertEquals(data, "03.11.2017 - 22:12");
+    }
+
+    @Test
+    public void unsuccessGetCommitDateById() throws Exception {
+        int idUser = 1;
+        int idFile = 2;
+        int idCommit = 3;
+        Request request = new Request("getCommitDateById", idUser, idFile, idCommit);
+        Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 200);
+
+        String data = (String) response.getData().get(0);
+        assertNull(data);
+    }
+
+    @Test
+    public void successGetCommitById() throws Exception {
+        int idUser = 1;
+        int idFile = 1;
+        int idCommit = 1;
+        Request request = new Request("getCommitById", idUser, idFile, idCommit);
+        Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 100);
+
+        Commit commit = (Commit) response.getData().get(0);
+        List<String> oldText = new ArrayList<>();
+        List<String> newText = new ArrayList<>();
+        oldText.add("Java");
+        oldText.add("Not");
+        newText.add("Java");
+        newText.add("Yes");
+        Commit expected = new Commit(oldText, newText);
+        assertTrue(expected.equals(expected));
+    }
+
+    @Test
+    public void unsuccessGetCommitById() throws Exception {
+        int idUser = 1;
+        int idFile = 2;
+        int idCommit = 3;
+        Request request = new Request("getCommitById", idUser, idFile, idCommit);
+        Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 200);
+
+        Commit commit = (Commit) response.getData().get(0);
+        assertNull(commit);
+    }
+
+    @Test
+    public void successRevertFileToCommit() throws Exception {
+        int idUser = 1;
+        int idFile = 1;
+        int idCommit = 1;
+        Request request = new Request("revertFileToCommit", idUser, idFile, idCommit);
+        Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 100);
+    }
+
+    @Test
+    public void unsuccessRevertFileToCommit() throws Exception {
+        int idUser = 1;
+        int idFile = 2;
+        int idCommit = 3;
+        Request request = new Request("revertFileToCommit", idUser, idFile, idCommit);
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 200);
