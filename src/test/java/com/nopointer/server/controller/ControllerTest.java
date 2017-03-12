@@ -54,9 +54,9 @@ public class ControllerTest {
     }
 
     @Test
-    public void deleteUserToFile() throws Exception {
-        assertEquals(controller.deleteUserToFile(1, 2, 2), 100);
-        assertEquals(controller.deleteUserToFile(1, 3,4), 200);
+    public void deleteToFile() throws Exception {
+        assertEquals(controller.deleteToFile(1,2), 100);
+        assertEquals(controller.deleteToFile(3,2), 200);
     }
 
     @Test
@@ -137,6 +137,12 @@ public class ControllerTest {
         assertEquals(controller.addUserToFile(2,1,1), 200);
         assertEquals(controller.addUserToFile(1,1,1), 200);
         assertEquals(controller.addUserToFile(1,2, 1), 200);
+    }
+
+    @Test
+    public void deleteUserToFile() throws Exception {
+        assertEquals(controller.deleteUserToFile(1, 2, 2), 100);
+        assertEquals(controller.deleteUserToFile(1, 3,4), 200);
     }
 
     @Test
