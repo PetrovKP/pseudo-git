@@ -23,8 +23,8 @@ public class ControllerTest {
 
     @Test
     public void registerUser() throws Exception {
-        assertEquals(controller.registerUser("Oleg", "pass"), 0);
-        assertEquals(controller.registerUser("Kirill", "pass"), 2);
+        assertEquals(controller.registerUser("oleg", "pass"), 100);
+        assertEquals(controller.registerUser("Kirill", "pass"), 200);
     }
 
     @Test
@@ -35,8 +35,8 @@ public class ControllerTest {
 
     @Test
     public void login() throws Exception {
-        assertEquals(controller.login("oleg", "ovcharuk"), 100);
-        assertEquals(controller.login("oleg2", "ovcharuk"), 200);
+        assertEquals(controller.login("Oleg", "123"), 2);
+        assertEquals(controller.login("oleg2", "ovcharuk"), 0);
     }
 
     @Test
