@@ -1,6 +1,6 @@
 package com.nopointer.server.controller;
 
-import com.nopointer.server.entity.Commit;
+import com.nopointer.server.entity.TextString;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ public interface Controller {
 
     String getCommitDateById(int idUser, int idFile, int idCommit);
 
-    Commit getCommitById(int idUser, int idFile, int idCommit);
+    List<TextString> getCommitById(int idUser, int idFile, int idCommit);
 
     int revertFileToCommit(int idUser, int idFile, int idCommit);
 

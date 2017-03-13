@@ -5,12 +5,14 @@ import com.google.inject.Injector;
 import com.nopointer.server.config.TestModule;
 import com.nopointer.server.entity.Commit;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ControllerTest {
     private Controller controller;
@@ -152,6 +154,7 @@ public class ControllerTest {
         assertEquals(controller.getCommitDateById(2, 1, 4), null);
     }
 
+    @Ignore
     @Test
     public void getCommitById() throws Exception {
         List<String> oldText = new ArrayList<>();

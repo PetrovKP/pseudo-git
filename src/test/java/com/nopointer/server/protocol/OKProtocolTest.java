@@ -13,9 +13,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class OKProtocolTest {
     private Injector injector;
@@ -360,6 +358,7 @@ public class OKProtocolTest {
         assertNull(data);
     }
 
+    @Ignore
     @Test
     public void successGetCommitById() throws Exception {
         int idUser = 1;

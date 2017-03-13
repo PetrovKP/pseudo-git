@@ -3,6 +3,7 @@ package com.nopointer.server.controller;
 import com.google.inject.Inject;
 import com.nopointer.server.database.Database;
 import com.nopointer.server.entity.Commit;
+import com.nopointer.server.entity.TextString;
 
 import java.util.List;
 
@@ -106,8 +107,12 @@ class ControllerImpl implements Controller {
     }
 
     @Override
-    public Commit getCommitById(int idUser, int idFile, int idCommit) {
-        return database.getAPI().getCommitById(idUser, idFile, idCommit);
+    public List<TextString> getCommitById(int idUser, int idFile, int idCommit) {
+        Commit commit = database.getAPI()
+                .getCommitById(idUser, idFile, idCommit);
+        if (commit == null)
+            return null;
+        return commit.getTextStrings();
     }
 
     @Override
