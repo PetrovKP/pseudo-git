@@ -49,8 +49,8 @@ public class ControllerTest {
     @Test
     public void createFile() throws Exception {
         List<String> list = new ArrayList<>();
-        assertEquals(controller.createFile(1,"NewFile", list), 100);
-        assertEquals(controller.createFile(3,"NewFile", list), 200);
+        assertEquals(controller.createFile(1,"NewFile", list), 1);
+        assertEquals(controller.createFile(3,"NewFile", list), 0);
     }
 
     @Test
@@ -154,8 +154,14 @@ public class ControllerTest {
 
     @Test
     public void getCommitById() throws Exception {
-//        assertTrue(controller.getCommitById(1,1,1).equals(new Commit()));
-        assertEquals(controller.getCommitById(1,1,1),null);
+        List<String> oldText = new ArrayList<>();
+        List<String> newText = new ArrayList<>();
+        oldText.add("Java");
+        oldText.add("Not");
+        newText.add("Java");
+        newText.add("Yes");
+        assertTrue(controller.getCommitById(1,1,1).equals(new Commit(oldText, newText)));
+        assertEquals(controller.getCommitById(2,3,5),null);
     }
 
 

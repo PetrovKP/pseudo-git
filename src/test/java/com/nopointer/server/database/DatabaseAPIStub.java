@@ -136,11 +136,16 @@ public class DatabaseAPIStub implements DatabaseAPI {
 
     @Override
     public Commit getCommitById(int idUser, int idFile, int idCommit) {
-//        if (idFile == 1 && idUser == 1 && idCommit == 1)
-//            return new Commit();
-//        else
-//            return null;
-        return null;
+        List<String> oldText = new ArrayList<>();
+        List<String> newText = new ArrayList<>();
+        oldText.add("Java");
+        oldText.add("Not");
+        newText.add("Java");
+        newText.add("Yes");
+        if (idFile == 1 && idUser == 1 && idCommit == 1)
+            return new Commit(oldText, newText);
+        else
+            return null;
     }
 
     @Override

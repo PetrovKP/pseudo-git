@@ -107,6 +107,7 @@ class OKProtocol implements Protocol {
                 idFile = (int) request.getData().get(2);
                 code = controller.addUserToFile(idUser, newIdUser, idFile);
                 response = new Response(code);
+                break;
 
             case "addCommit":
                 idUser = (int) request.getData().get(0);
@@ -121,7 +122,7 @@ class OKProtocol implements Protocol {
                 idFile = (int) request.getData().get(1);
                 idCommit = (int) request.getData().get(2);
                 String date = controller.getCommitDateById(idUser, idFile, idCommit);
-                code = (!date.equals("")) ? 100 : 200;
+                code = (date != null) ? 100 : 200;
                 response = new Response(code, date);
                 break;
 
