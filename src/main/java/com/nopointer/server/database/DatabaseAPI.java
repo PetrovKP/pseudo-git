@@ -9,8 +9,8 @@ public interface DatabaseAPI {
     void setConnection(Connection connection);
 
     // Users
-    int registerUser(String login, String password);
-    boolean login(String login, String password);
+    boolean registerUser(String login, String password);
+    int login(String login, String password);
     Integer getIdUser(String login);
 
     @Deprecated

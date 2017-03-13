@@ -12,8 +12,8 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public int registerUser(String login, String password) {
-        return (login != "Oleg") ? 2 : 0;
+    public boolean registerUser(String login, String password) {
+        return login.equals("oleg");
     }
 
     @Override
@@ -22,8 +22,8 @@ public class DatabaseAPIStub implements DatabaseAPI {
     }
 
     @Override
-    public boolean login(String login, String password) {
-        return (login.equals("oleg") && password.equals("ovcharuk"));
+    public int login(String login, String password) {
+        return (login.equals("Oleg") && password.equals("123")) ? 2 : 0;
     }
 
     @Override
