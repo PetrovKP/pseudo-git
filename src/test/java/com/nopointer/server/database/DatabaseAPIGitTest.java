@@ -28,14 +28,15 @@ public class DatabaseAPIGitTest {
 
     @Test
     public void registerUser() throws Exception {
-        boolean isEnter, isDel;
+        boolean isDel;
+        int idUser;
         database.getAPI().registerUser("ADD", "123");
-        isEnter = database.getAPI().login("ADD", "123");
-        assertTrue(isEnter);
+        idUser = database.getAPI().login("ADD", "123");
+        assertNotEquals(idUser, 0);
 
         database.getAPI().registerUser("ADD", "145");
-        isEnter = database.getAPI().login("ADD", "123");
-        assertTrue(isEnter);
+        idUser = database.getAPI().login("ADD", "123");
+        assertNotEquals(idUser, 0);
 
         isDel = database.getAPI().deleteUser("ADD");
         assertTrue(isDel);
@@ -46,12 +47,12 @@ public class DatabaseAPIGitTest {
 
     @Test
     public void login() throws Exception {
-        boolean isEnter;
-        isEnter = database.getAPI().login("petrov", "qwerty123");
-        assertTrue(isEnter);
+        int idUser;
+        idUser = database.getAPI().login("petrov", "qwerty123");
+        assertNotEquals(idUser, 0);
 
-        isEnter = database.getAPI().login("ovcharuk", "12332");
-        assertFalse(isEnter);
+        idUser = database.getAPI().login("ovcharuk", "12332");
+        assertEquals(idUser, 0);
     }
 
     @Test

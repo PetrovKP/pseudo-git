@@ -88,8 +88,8 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public int registerUser(String login, String password) {
-        int result = 0;
+    public boolean registerUser(String login, String password) {
+        boolean result = false;
         if ( !isExistLogin(login) ) {
             String sql = "INSERT INTO Users (login, password) VALUES (?, ?)";
             try {
@@ -100,7 +100,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 preparedStatement.executeUpdate();
 
                 preparedStatement.close();
-                result = getIdUser(login);
+                result = true;
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -129,8 +129,9 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public boolean login(String login, String password) {
-        boolean result = false;
+    public int login(String login, String password) {
+        int result = 0;
+
         String sql = "SELECT COUNT(*) AS rowcount FROM Users WHERE login = ? AND password = ?";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -140,8 +141,8 @@ public class DatabaseAPIGit implements DatabaseAPI {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             int count = resultSet.getInt("rowcount");
-            result = count > 0;
-
+            if (count > 0)
+                result = getIdUser(login);
             preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();

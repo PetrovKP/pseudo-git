@@ -26,16 +26,16 @@ class OKProtocol implements Protocol {
             case "registerUser":
                 login = (String) request.getData().get(0);
                 password = (String) request.getData().get(1);
-                idUser = controller.registerUser(login, password);
-                response = (idUser != 0) ? new Response(100, idUser) :
-                        new Response(200, null);
+                code = controller.registerUser(login, password);
+                response = new Response(code);
                 break;
 
             case "login":
                 login = (String) request.getData().get(0);
                 password = (String) request.getData().get(1);
-                code = controller.login(login, password);
-                response = new Response(code);
+                idUser = controller.login(login, password);
+                response = (idUser != 0) ? new Response(100, idUser) :
+                        new Response(200, null);
                 break;
 
             case "getIdUser":

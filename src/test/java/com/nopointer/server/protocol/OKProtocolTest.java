@@ -29,18 +29,22 @@ public class OKProtocolTest {
 
     @Test
     public void successLogin() throws Exception {
-        Request request = new Request("login", "oleg", "ovcharuk");
+        Request request = new Request("login", "Oleg", "123");
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 100);
+        assertEquals((int)response.getData().get(0), 2);
     }
 
     @Test
     public void unsuccessLogin() throws Exception {
-        Request request = new Request("login", "kirill", "petrov");
+        Request request = new Request("login", "kirill", "343");
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 200);
+
+//        Integer idUser = (Integer) response.getData().get(0);
+//        assertNull(idUser);
     }
 
     @Test
@@ -61,7 +65,7 @@ public class OKProtocolTest {
 
     @Test
     public void successRegister() throws Exception {
-        Request request = new Request("registerUser", "Kirill", "Petrov");
+        Request request = new Request("registerUser", "oleg", "234");
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 100);
