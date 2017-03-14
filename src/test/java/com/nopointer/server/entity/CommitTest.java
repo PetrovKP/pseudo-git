@@ -124,8 +124,8 @@ public class CommitTest {
             @Override
             public List<TextString> getTextStrings() {
                 List<TextString> textStrings = new ArrayList<>();
-                textStrings.add(new TextString(1, "DELETED2", "This is old text1"));
-                textStrings.add(new TextString(2, "NEW2", "This is new text1"));
+                textStrings.add(new TextString(1, "DELETED", "This is old text3"));
+                textStrings.add(new TextString(2, "NEW", "This is new text3"));
                 return textStrings;
             }
         };

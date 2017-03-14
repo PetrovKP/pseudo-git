@@ -2,13 +2,11 @@ package com.nopointer.server.database;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.nopointer.server.config.Module;
-import com.nopointer.server.config.TestModule;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException;
 import com.nopointer.server.entity.Commit;
-import com.nopointer.server.entity.TextString;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,14 +14,19 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class DatabaseAPIGitTest {
-    private Database database;
+    static private Database database;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUp() throws Exception {
         Injector injector = Guice.createInjector(new TestDatabaseModule());
         database = injector.getInstance(Database.class);
 
         database.connect();
+    }
+
+    @AfterClass
+    public static void tearDown() throws Exception {
+        database.disconnect();
     }
 
     @Test
@@ -162,6 +165,7 @@ public class DatabaseAPIGitTest {
 
     }
 
+
     @Test
     public void getCommitByDate() throws Exception {
         String result, expected;
@@ -176,7 +180,6 @@ public class DatabaseAPIGitTest {
         expected = "";
         assertEquals(expected, result);
     }
-
 
     @Test
     public void getAllCommitsId() throws Exception {
@@ -306,4 +309,5 @@ public class DatabaseAPIGitTest {
         isAccess = database.getAPI().isAccessUserToFile(1, 100);
         assertFalse(isAccess);
     }
+
 }
