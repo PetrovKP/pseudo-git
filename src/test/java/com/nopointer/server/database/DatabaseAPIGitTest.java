@@ -76,11 +76,11 @@ public class DatabaseAPIGitTest {
         List<String> text = new ArrayList<>();
         Collections.addAll(text, "Petrov", "love", "is", "Java!");
 
-        idFile = database.getAPI().createFile(1,"title_petrov", text);
+        idFile = database.getAPI().createFile(1,"titlrov", text);
         assertTrue(idFile != 0);
 
         String title = database.getAPI().getTitle(1, idFile);
-        assertEquals("title_petrov", title);
+        assertEquals("titlrov", title);
 
         isDelete = database.getAPI().deleteToFile(1, idFile);
         assertTrue(isDelete);

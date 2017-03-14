@@ -5,7 +5,10 @@ import com.google.inject.Injector;
 import com.nopointer.server.config.Module;
 import com.nopointer.server.config.TestModule;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+
+import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
@@ -40,8 +43,14 @@ public class DatabaseImplTest {
         database.getAPI().login("ADD", "123");
 
         database.disconnect();
-//        database.getAPI().login("ADD", "123");
+    }
 
+
+    @Test(expected = SQLException.class)
+    public void canTryConnectExpected() throws SQLException{
+        Injector injector = Guice.createInjector(new TestDatabaseError());
+        database = injector.getInstance(Database.class);
+        database.connect();
     }
 
 }
