@@ -23,6 +23,9 @@ public class Commit implements Serializable {
             return true;
         }
 
+        if (commit == null)
+            return false;
+
         List<TextString> localTextStrings = getTextStrings();
 
         if (localTextStrings == null || commit.getTextStrings() == null) {

@@ -95,6 +95,8 @@ public class CommitTest {
 
         assertTrue(commit1.equals(commit2));
         assertTrue(commit2.equals(commit1));
+        // Коммит сам с собой равен
+        assertTrue(commit1.equals(commit1));
     }
 
     @Test
@@ -118,8 +120,33 @@ public class CommitTest {
                 return textStrings;
             }
         };
+        Commit commit3 = new Commit() {
+            @Override
+            public List<TextString> getTextStrings() {
+                List<TextString> textStrings = new ArrayList<>();
+                textStrings.add(new TextString(1, "DELETED2", "This is old text1"));
+                textStrings.add(new TextString(2, "NEW2", "This is new text1"));
+                return textStrings;
+            }
+        };
+        Commit commit4 = new Commit() {
+            @Override
+            public List<TextString> getTextStrings() {
+                List<TextString> textStrings = new ArrayList<>();
+                return textStrings;
+            }
+        };
 
+        // Сравнение с разными по размеру ts
         assertFalse(commit1.equals(commit2));
         assertFalse(commit2.equals(commit1));
+
+        // Сравнение с пустым объектом
+        assertFalse(commit1.equals(null));
+        // Сравнение с одинковым по размеру ts но разные по значению
+        assertFalse(commit1.equals(commit3));
+        // Сравнение с пустым списком
+        assertFalse(commit1.equals(commit4));
+
     }
 }
