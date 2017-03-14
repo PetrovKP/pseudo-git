@@ -2,54 +2,55 @@ package com.nopointer.server.controller;
 
 import com.nopointer.server.entity.TextString;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface Controller {
     // TODO: add all functions
-    int registerUser(String login, String password);
+    int registerUser(String login, String password) throws SQLException;
 
-    int deleteUser(String login);
+    int deleteUser(String login) throws SQLException;
 
-    int login(String login, String password);
+    int login(String login, String password) throws SQLException;
 
-    Integer getIdUser(String login);
+    Integer getIdUser(String login) throws SQLException;
 
     // Texts
 
-    int createFile(int idUser, String title, List<String> text);
+    int createFile(int idUser, String title, List<String> text) throws SQLException;
 
-    int deleteToFile(int idUser, int idFile);
+    int deleteToFile(int idUser, int idFile) throws SQLException;
 
-    Integer getCommitsCount(int idUser, int idFile);
+    Integer getCommitsCount(int idUser, int idFile) throws SQLException;
 
-    List<Integer> getAllFilesId(int idUser);
+    List<Integer> getAllFilesId(int idUser) throws SQLException;
 
-    String getTitle(int idUser, int idFile);
+    String getTitle(int idUser, int idFile) throws SQLException;
 
-    List<String> getActualText(int idUser, int idFile);
+    List<String> getActualText(int idUser, int idFile) throws SQLException;
 
-    List<Integer> getAllCommitsId(int idUser, int idFile);
+    List<Integer> getAllCommitsId(int idUser, int idFile) throws SQLException;
 
     // Access
 
-    int isAccessUserToFile(int idUser, int idFile);
+    int isAccessUserToFile(int idUser, int idFile) throws SQLException;
 
-    List<String> getAllUsersByFile(int idUser, int idFile);
+    List<String> getAllUsersByFile(int idUser, int idFile) throws SQLException;
 
-    int addUserToFile(int idUser, int newIdUser, int idFile);
+    int addUserToFile(int idUser, int newIdUser, int idFile) throws SQLException;
 
-    int deleteUserToFile(int idUser, int newIdUser, int idFile);
+    int deleteUserToFile(int idUser, int newIdUser, int idFile) throws SQLException;
 
     // Commit
 
-    int addCommit(int idUser, int idFile, List<String> text);
+    int addCommit(int idUser, int idFile, List<String> text) throws SQLException;
 
-    int deleteCommit(int idUser, int idFile, int idCommit);
+    int deleteCommit(int idUser, int idFile, int idCommit) throws SQLException;
 
-    String getCommitDateById(int idUser, int idFile, int idCommit);
+    String getCommitDateById(int idUser, int idFile, int idCommit) throws SQLException;
 
-    List<TextString> getCommitById(int idUser, int idFile, int idCommit);
+    List<TextString> getCommitById(int idUser, int idFile, int idCommit) throws SQLException;
 
-    int revertFileToCommit(int idUser, int idFile, int idCommit);
+    int revertFileToCommit(int idUser, int idFile, int idCommit) throws SQLException;
 
 }

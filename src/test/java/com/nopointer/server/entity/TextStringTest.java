@@ -6,6 +6,17 @@ import static org.junit.Assert.*;
 
 public class TextStringTest {
     @Test
+    public void canCreateTextString() throws Exception {
+        TextString ts;
+
+        ts = new TextString();
+        assertNotNull(ts);
+
+        ts = new TextString(1, "This is status", "This is string");
+        assertNotNull(ts);
+    }
+
+    @Test
     public void getStatusAndString() throws Exception {
         TextString ts = new TextString(1, "This is status", "This is string");
 
@@ -25,6 +36,7 @@ public class TextStringTest {
 
         assertTrue(ts1.equals(ts2));
         assertTrue(ts2.equals(ts1));
+        assertTrue(ts1.equals(ts1));
     }
 
     @Test
@@ -34,5 +46,17 @@ public class TextStringTest {
 
         assertFalse(ts1.equals(ts2));
         assertFalse(ts2.equals(ts1));
+        assertFalse(ts2.equals(null));
+        assertFalse(ts2.equals(new Integer(3)));
+
+    }
+
+    @Test
+    public void canGetHashCode() throws Exception {
+        TextString ts1 = new TextString(1, "This is status", "This is string");
+
+        TextString ts2 = new TextString(1, "This is status", "This is string");
+
+        assertEquals(ts1.hashCode(), ts2.hashCode());
     }
 }

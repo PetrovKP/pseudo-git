@@ -63,7 +63,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
         return result;
     }
 
-    private boolean addUserToFileWithoutChecking(int idUser, int idFile) {
+    private boolean addUserToFileWithoutChecking(int idUser, int idFile) throws SQLException {
         boolean result = false;
         //  Если нет в таблице пользователя и id файла
         if (!isAccessUserToFile(idUser, idFile)) {
@@ -77,7 +77,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 preparedStatement.close();
                 result = true;
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new SQLException(e.getMessage());
             }
         }
         return result;
@@ -88,7 +88,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public boolean registerUser(String login, String password) {
+    public boolean registerUser(String login, String password) throws SQLException{
         boolean result = false;
         if ( !isExistLogin(login) ) {
             String sql = "INSERT INTO Users (login, password) VALUES (?, ?)";
@@ -102,14 +102,14 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 preparedStatement.close();
                 result = true;
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new SQLException(e.getMessage());
             }
         }
         return result;
     }
 
     @Override
-    public boolean deleteUser(String login) {
+    public boolean deleteUser(String login) throws SQLException {
         boolean result = false;
         if ( isExistLogin(login) ) {
             String sql = "DELETE FROM Users WHERE login = ?";
@@ -122,14 +122,14 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 preparedStatement.close();
                 result = true;
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new SQLException(e.getMessage());
             }
         }
         return result;
     }
 
     @Override
-    public int login(String login, String password) {
+    public int login(String login, String password) throws SQLException {
         int result = 0;
 
         String sql = "SELECT COUNT(*) AS rowcount FROM Users WHERE login = ? AND password = ?";
@@ -145,13 +145,13 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 result = getIdUser(login);
             preparedStatement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException(e.getMessage());
         }
         return result;
     }
 
     @Override
-    public Integer getIdUser(String login) {
+    public Integer getIdUser(String login) throws SQLException {
         int result = 0;
         String sql = "SELECT idUsers FROM Users WHERE login = ?";
         try {
@@ -163,13 +163,13 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 result = resultSet.getInt("idUsers");
             preparedStatement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException(e.getMessage());
         }
         return result;
     }
 
     @Override
-    public int createFile(int idUser, String title, List<String> text) {
+    public int createFile(int idUser, String title, List<String> text) throws SQLException {
         int result = 0;
         String sql = "INSERT INTO Files (title) VALUES (?)";
         try {
@@ -189,13 +189,13 @@ public class DatabaseAPIGit implements DatabaseAPI {
             preparedStatement.close();
             result = idFile;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException(e.getMessage());
         }
         return result;
     }
 
     @Override
-    public boolean deleteToFile(int idUser, int idFile) {
+    public boolean deleteToFile(int idUser, int idFile) throws SQLException {
         boolean result = false;
         if (isAccessUserToFile(idUser, idFile)) {
             String sql = "DELETE FROM Files WHERE idFiles = ?";
@@ -207,14 +207,14 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 preparedStatement.close();
                 result = true;
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new SQLException(e.getMessage());
             }
         }
         return result;
     }
 
     @Override
-    public Integer getCommitsCount(int idUser, int idFile) {
+    public Integer getCommitsCount(int idUser, int idFile) throws SQLException {
         Integer result = 0;
         if (isAccessUserToFile(idUser, idFile)) {
             String sql = "SELECT COUNT(*) AS rowcount FROM Commits WHERE idFile = ?";
@@ -228,14 +228,14 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
                 preparedStatement.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new SQLException(e.getMessage());
             }
         }
         return result;
     }
 
     @Override
-    public String getTitle(int idUser, int idFile) {
+    public String getTitle(int idUser, int idFile) throws SQLException {
         String result = null;
         if (isAccessUserToFile(idUser, idFile)) {
             String sql = "SELECT title FROM Files WHERE idFiles = ?";
@@ -249,14 +249,14 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
                 preparedStatement.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new SQLException(e.getMessage());
             }
         }
         return result;
     }
 
     @Override
-    public List<Integer> getAllFilesId(int idUser) {
+    public List<Integer> getAllFilesId(int idUser) throws SQLException {
         List<Integer> result = null;
         String sql = "SELECT idFile FROM Access WHERE idUser = ?";
         try {
@@ -269,14 +269,14 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 result.add(resultSet.getInt("idFile"));
             preparedStatement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException(e.getMessage());
         }
         return result;
     }
 
 
     @Override
-    public List<String> getActualText(int idUser, int idFile) {
+    public List<String> getActualText(int idUser, int idFile) throws SQLException {
         List<String> result = null;
 
         if (isAccessUserToFile(idUser, idFile)) {
@@ -297,14 +297,14 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 }
                 preparedStatement.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new SQLException(e.getMessage());
             }
         }
         return result;
     }
 
     @Override
-    public List<Integer> getAllCommitsId(int idUser, int idFile) {
+    public List<Integer> getAllCommitsId(int idUser, int idFile) throws SQLException {
         List<Integer> result = null;
         if (isAccessUserToFile(idUser, idFile)) {
             String sql = "SELECT idLocalCommits FROM Commits WHERE idFile = ?";
@@ -318,14 +318,14 @@ public class DatabaseAPIGit implements DatabaseAPI {
                     result.add(resultSet.getInt("idLocalCommits"));
                 preparedStatement.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new SQLException(e.getMessage());
             }
         }
         return result;
     }
 
     @Override
-    public boolean isAccessUserToFile(int idUser, int idFile) {
+    public boolean isAccessUserToFile(int idUser, int idFile) throws SQLException {
         boolean result = false;
         String sql = "SELECT * FROM Access WHERE idUser = ? AND idFile = ?";
         try {
@@ -339,13 +339,13 @@ public class DatabaseAPIGit implements DatabaseAPI {
             }
             preparedStatement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException(e.getMessage());
         }
         return result;
     }
 
     @Override
-    public List<String> getAllUsersByFile(int idUser, int idFile) {
+    public List<String> getAllUsersByFile(int idUser, int idFile) throws SQLException {
         List<String> result = new ArrayList<>();
         if (isAccessUserToFile(idUser, idFile)) {
             String sql = "SELECT Users.login FROM Users, Access" +
@@ -361,14 +361,14 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 }
                 preparedStatement.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new SQLException(e.getMessage());
             }
         }
         return result;
     }
 
     @Override
-    public boolean addUserToFile(int idUser, int newIdUser, int idFile) {
+    public boolean addUserToFile(int idUser, int newIdUser, int idFile) throws SQLException {
         boolean result = false;
         // Проверка наличия доступа к данному файлу
         if (isAccessUserToFile(idUser, idFile) ) {
@@ -378,7 +378,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public boolean deleteUserToFile(int idUser, int newIdUser, int idFile) {
+    public boolean deleteUserToFile(int idUser, int newIdUser, int idFile) throws SQLException {
         boolean result = false;
         if (isAccessUserToFile(idUser, idFile) && isAccessUserToFile(newIdUser, idFile)) {
             String sql = "DELETE FROM Access WHERE idUser = ? AND idFile = ?";
@@ -398,7 +398,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     }
 
     @Override
-    public boolean addCommit(int idUser, int idFile, List<String> text) {
+    public boolean addCommit(int idUser, int idFile, List<String> text) throws SQLException {
         boolean result = false;
         String sql = "INSERT INTO Commits (idLocalCommits, idFile," +
                 " idUser, text, data) VALUES (?, ?, ?, ?, ?)";
@@ -428,13 +428,13 @@ public class DatabaseAPIGit implements DatabaseAPI {
             preparedStatement.close();
             result = true;
         } catch (SQLException | IOException e) {
-            e.printStackTrace();
+            throw new SQLException(e.getMessage());
         }
         return result;
     }
 
     @Override
-    public boolean deleteCommit(int idUser, int idFile, int idCommit) {
+    public boolean deleteCommit(int idUser, int idFile, int idCommit) throws SQLException {
         boolean result = false;
         if (isAccessUserToFile(idUser, idFile)) {
             String sql = "DELETE FROM Commits " +
@@ -449,14 +449,14 @@ public class DatabaseAPIGit implements DatabaseAPI {
                 preparedStatement.close();
                 result = true;
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new SQLException(e.getMessage());
             }
         }
         return result;
     }
 
     @Override
-    public String getCommitDateById(int idUser, int idFile, int idCommit) {
+    public String getCommitDateById(int idUser, int idFile, int idCommit) throws SQLException {
         String result = "";
         String sql = "SELECT data FROM Commits WHERE idFile = ? AND idLocalCommits = ?";
         try {
@@ -476,13 +476,13 @@ public class DatabaseAPIGit implements DatabaseAPI {
             }
             preparedStatement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException(e.getMessage());
         }
         return result;
     }
 
     @Override
-    public Commit getCommitById(int idUser, int idFile, int idCommit) {
+    public Commit getCommitById(int idUser, int idFile, int idCommit) throws SQLException {
         Commit result = null;
         if (isAccessUserToFile(idUser, idFile)) {
             String sql = "SELECT text FROM Commits " +
@@ -516,7 +516,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
                 preparedStatement.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new SQLException(e.getMessage());
             }
         }
         return result;
@@ -525,7 +525,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
     @Override
 //    TODO:
 //    Пользователь может удалять коммиты других пользователй?
-    public boolean revertFileToCommit(int idUser, int idFile, int idCommit) {
+    public boolean revertFileToCommit(int idUser, int idFile, int idCommit) throws SQLException {
         boolean result = false;
         if (isAccessUserToFile(idUser, idFile)) {
             String sql = "DELETE FROM Commits " +
@@ -541,7 +541,7 @@ public class DatabaseAPIGit implements DatabaseAPI {
 
                 result = count > 0;
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new SQLException(e.getMessage());
             }
         }
         return result;

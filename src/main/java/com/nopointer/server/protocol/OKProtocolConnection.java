@@ -7,6 +7,7 @@ import com.nopointer.server.protocol.entity.Response;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.sql.SQLException;
 
 class OKProtocolConnection implements ProtocolConnection {
     private Socket socket;
@@ -66,7 +67,7 @@ class OKProtocolConnection implements ProtocolConnection {
                 // readObject() sends exceptions while waiting for new object
             } catch (SocketException e) {
                 throw e;
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
             }
         }

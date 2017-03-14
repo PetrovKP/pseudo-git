@@ -6,6 +6,7 @@ import com.nopointer.server.entity.TextString;
 import com.nopointer.server.protocol.entity.Request;
 import com.nopointer.server.protocol.entity.Response;
 
+import java.sql.SQLException;
 import java.util.List;
 
 class OKProtocol implements Protocol {
@@ -17,7 +18,7 @@ class OKProtocol implements Protocol {
     }
 
     @Override
-    public Response handleRequest(Request request) {
+    public Response handleRequest(Request request) throws SQLException {
         int code, idFile, idUser, idCommit;
         String login, password;
         List<String> text;

@@ -40,7 +40,7 @@ public class DatabaseImpl implements Database {
     }
 
     @Override
-    public void connect() {
+    public void connect() throws SQLException {
         if ( !isConnect() ) {
             try {
                 String driver = properties.getProperty("db.driver");
@@ -53,19 +53,19 @@ public class DatabaseImpl implements Database {
                 databaseAPI.setConnection(connection);
             }
             catch (SQLException | ClassNotFoundException e) {
-                e.printStackTrace();
+                throw new SQLException(e.getMessage());
             }
         }
     }
 
     @Override
-    public void disconnect() {
+    public void disconnect() throws SQLException {
         if ( isConnect() ) {
             try {
                 connection.close();
                 connection = null;
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new SQLException(e.getMessage());
             }
         }
     }
