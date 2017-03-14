@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.nopointer.server.config.TestModule;
 import com.nopointer.server.entity.Commit;
+import com.nopointer.server.entity.TextString;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -154,7 +155,6 @@ public class ControllerTest {
         assertEquals(controller.getCommitDateById(2, 1, 4), null);
     }
 
-    @Ignore
     @Test
     public void getCommitById() throws Exception {
         List<String> oldText = new ArrayList<>();
@@ -163,7 +163,10 @@ public class ControllerTest {
         oldText.add("Not");
         newText.add("Java");
         newText.add("Yes");
-        assertTrue(controller.getCommitById(1,1,1).equals(new Commit(oldText, newText)));
+        Commit commit = new Commit(oldText, newText);
+        List<TextString> expected = commit.getTextStrings();
+
+        assertEquals(expected, controller.getCommitById(1,1,1));
         assertEquals(controller.getCommitById(2,3,5),null);
     }
 

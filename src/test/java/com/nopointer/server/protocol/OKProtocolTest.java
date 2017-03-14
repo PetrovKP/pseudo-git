@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.nopointer.server.config.TestModule;
 import com.nopointer.server.entity.Commit;
+import com.nopointer.server.entity.TextString;
 import com.nopointer.server.protocol.entity.Request;
 import com.nopointer.server.protocol.entity.Response;
 import org.junit.Before;
@@ -358,7 +359,6 @@ public class OKProtocolTest {
         assertNull(data);
     }
 
-    @Ignore
     @Test
     public void successGetCommitById() throws Exception {
         int idUser = 1;
@@ -369,15 +369,17 @@ public class OKProtocolTest {
 
         assertEquals(response.getCode(), 100);
 
-        Commit commit = (Commit) response.getData().get(0);
+        List<TextString> ts = (List<TextString>) response.getData().get(0);
         List<String> oldText = new ArrayList<>();
         List<String> newText = new ArrayList<>();
+
         oldText.add("Java");
         oldText.add("Not");
         newText.add("Java");
         newText.add("Yes");
-        Commit expected = new Commit(oldText, newText);
-        assertTrue(expected.equals(expected));
+        Commit commit = new Commit(oldText, newText);
+        List<TextString> expected = commit.getTextStrings();
+        assertEquals(expected, ts);
     }
 
     @Test
