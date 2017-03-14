@@ -2,7 +2,7 @@ package com.nopointer.server.protocol;
 
 import com.google.inject.Inject;
 import com.nopointer.server.controller.Controller;
-import com.nopointer.server.entity.Commit;
+import com.nopointer.server.entity.TextString;
 import com.nopointer.server.protocol.entity.Request;
 import com.nopointer.server.protocol.entity.Response;
 
@@ -130,7 +130,7 @@ class OKProtocol implements Protocol {
                 idUser = (int) request.getData().get(0);
                 idFile = (int) request.getData().get(1);
                 idCommit = (int) request.getData().get(2);
-                Commit commit = controller.getCommitById(idUser, idFile, idCommit);
+                List<TextString> commit = controller.getCommitById(idUser, idFile, idCommit);
                 code = (commit != null) ? 100 : 200;
                 response = new Response(code, commit);
                 break;

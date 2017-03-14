@@ -4,13 +4,16 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.nopointer.server.config.TestModule;
 import com.nopointer.server.entity.Commit;
+import com.nopointer.server.entity.TextString;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ControllerTest {
     private Controller controller;
@@ -160,7 +163,10 @@ public class ControllerTest {
         oldText.add("Not");
         newText.add("Java");
         newText.add("Yes");
-        assertTrue(controller.getCommitById(1,1,1).equals(new Commit(oldText, newText)));
+        Commit commit = new Commit(oldText, newText);
+        List<TextString> expected = commit.getTextStrings();
+
+        assertEquals(expected, controller.getCommitById(1,1,1));
         assertEquals(controller.getCommitById(2,3,5),null);
     }
 
