@@ -132,8 +132,7 @@ public class CommitTest {
         Commit commit4 = new Commit() {
             @Override
             public List<TextString> getTextStrings() {
-                List<TextString> textStrings = new ArrayList<>();
-                return textStrings;
+                return null;
             }
         };
 

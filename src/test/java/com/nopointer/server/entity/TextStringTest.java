@@ -47,6 +47,8 @@ public class TextStringTest {
         assertFalse(ts1.equals(ts2));
         assertFalse(ts2.equals(ts1));
         assertFalse(ts2.equals(null));
+        assertFalse(ts2.equals(new Integer(3)));
+
     }
 
     @Test
