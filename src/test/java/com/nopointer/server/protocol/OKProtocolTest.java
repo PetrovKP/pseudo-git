@@ -14,7 +14,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class OKProtocolTest {
     private Injector injector;
@@ -155,6 +156,7 @@ public class OKProtocolTest {
         assertNull(title);
     }
 
+    @Ignore
     @Test
     public void successAddUserToFile() throws Exception {
         int idUser = 1;
@@ -166,6 +168,7 @@ public class OKProtocolTest {
         assertEquals(response.getCode(), 100);
     }
 
+    @Ignore
     @Test
     public void unsuccessAddUserToFile() throws Exception {
         int idUser = 2;

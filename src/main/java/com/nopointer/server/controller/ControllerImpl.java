@@ -83,7 +83,8 @@ class ControllerImpl implements Controller {
     }
 
     @Override
-    public int addUserToFile(int idUser, int newIdUser, int idFile) throws SQLException {
+    public int addUserToFile(int idUser, String newUser, int idFile) throws SQLException {
+        int newIdUser = database.getAPI().getIdUser(newUser);
         return database.getAPI().addUserToFile(idUser, newIdUser, idFile) ? 100 : 200;
     }
 
@@ -93,7 +94,7 @@ class ControllerImpl implements Controller {
     }
 
     @Override
-    public int addCommit(int idFile, int idUser, List<String> text) throws SQLException {
+    public int addCommit(int idUser, int idFile, List<String> text) throws SQLException {
         return database.getAPI().addCommit(idUser, idFile, text) ? 100 : 200;
     }
 

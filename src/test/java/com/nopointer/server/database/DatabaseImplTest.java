@@ -2,15 +2,14 @@ package com.nopointer.server.database;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.nopointer.server.config.Module;
-import com.nopointer.server.config.TestModule;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class DatabaseImplTest {
     private Database database;
@@ -45,7 +44,7 @@ public class DatabaseImplTest {
         database.disconnect();
     }
 
-
+    @Ignore
     @Test(expected = SQLException.class)
     public void canTryConnectExpected() throws SQLException{
         Injector injector = Guice.createInjector(new TestDatabaseError());
