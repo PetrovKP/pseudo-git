@@ -14,7 +14,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class OKProtocolTest {
     private Injector injector;
@@ -157,10 +158,10 @@ public class OKProtocolTest {
 
     @Test
     public void successAddUserToFile() throws Exception {
-        int idUser = 1;
-        int newIdUser = 3;
+        int user = 1;
+        String newUser ="log3";
         int idFile = 1;
-        Request request = new Request("addUserToFile", idUser, newIdUser, idFile);
+        Request request = new Request("addUserToFile", user, newUser, idFile);
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 100);
@@ -168,10 +169,10 @@ public class OKProtocolTest {
 
     @Test
     public void unsuccessAddUserToFile() throws Exception {
-        int idUser = 2;
-        int newIdUser = 2;
+        int user = 2;
+        String newUser = "log1";
         int idFile = 1;
-        Request request = new Request("addUserToFile", idUser, newIdUser, idFile);
+        Request request = new Request("addUserToFile", user, newUser, idFile);
         Response response = protocol.handleRequest(request);
 
         assertEquals(response.getCode(), 200);

@@ -104,9 +104,9 @@ class OKProtocol implements Protocol {
 
             case "addUserToFile":
                 idUser = (int) request.getData().get(0);
-                int newIdUser = (int) request.getData().get(1);
+                String newUser = (String) request.getData().get(1);
                 idFile = (int) request.getData().get(2);
-                code = controller.addUserToFile(idUser, newIdUser, idFile);
+                code = controller.addUserToFile(idUser, newUser, idFile);
                 response = new Response(code);
                 break;
 
@@ -143,6 +143,14 @@ class OKProtocol implements Protocol {
                 code = controller.revertFileToCommit(idUser, idFile, idCommit);
                 response = new Response(code);
                 break;
+
+            case "isFileAvailable":
+                idUser = (int) request.getData().get(0);
+                idFile = (int) request.getData().get(1);
+                // TODO: add logic
+                response = new Response(100);
+                break;
+
         }
         return response;
     }

@@ -37,7 +37,7 @@ public interface Controller {
 
     List<String> getAllUsersByFile(int idUser, int idFile) throws SQLException;
 
-    int addUserToFile(int idUser, int newIdUser, int idFile) throws SQLException;
+    int addUserToFile(int idUser, String newUser, int idFile) throws SQLException;
 
     int deleteUserToFile(int idUser, int newIdUser, int idFile) throws SQLException;
 

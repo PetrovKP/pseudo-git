@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class ControllerTest {
     private Controller controller;
@@ -136,10 +135,9 @@ public class ControllerTest {
 
     @Test
     public void addUserToFile() throws Exception {
-        assertEquals(controller.addUserToFile(1,3, 1), 100);
-        assertEquals(controller.addUserToFile(2,1,1), 200);
-        assertEquals(controller.addUserToFile(1,1,1), 200);
-        assertEquals(controller.addUserToFile(1,2, 1), 200);
+        assertEquals(controller.addUserToFile(1, "log3", 1), 100);
+        assertEquals(controller.addUserToFile(1, "log1", 1), 200);
+        assertEquals(controller.addUserToFile(2, "log2", 1), 200);
     }
 
     @Test

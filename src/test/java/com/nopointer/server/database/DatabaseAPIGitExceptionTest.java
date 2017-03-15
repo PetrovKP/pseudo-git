@@ -2,14 +2,15 @@ package com.nopointer.server.database;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
+public class DatabaseAPIGitExceptionTest {
 
-public class DatabaseAPIGitTestException {
     private static Database database;
     @BeforeClass
     public static void setUp() throws Exception {
