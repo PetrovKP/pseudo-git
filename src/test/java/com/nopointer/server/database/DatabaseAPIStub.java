@@ -34,6 +34,9 @@ public class DatabaseAPIStub implements DatabaseAPI {
         if (login.equals("log2")) {
             return 2;
         }
+        if (login.equals("log3")) {
+            return 3;
+        }
         return 0;
     }
 

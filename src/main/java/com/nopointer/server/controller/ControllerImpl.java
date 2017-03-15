@@ -85,6 +85,8 @@ class ControllerImpl implements Controller {
     @Override
     public int addUserToFile(int idUser, String newUser, int idFile) throws SQLException {
         int newIdUser = database.getAPI().getIdUser(newUser);
+        if ( newIdUser == 0 )
+            return 200;
         return database.getAPI().addUserToFile(idUser, newIdUser, idFile) ? 100 : 200;
     }
 

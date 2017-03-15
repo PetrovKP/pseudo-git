@@ -133,13 +133,11 @@ public class ControllerTest {
         assertEquals(controller.getAllUsersByFile(2,3), null);
     }
 
-    @Ignore
     @Test
     public void addUserToFile() throws Exception {
-        assertEquals(controller.addUserToFile(1, "ola", 1), 100);
-        assertEquals(controller.addUserToFile(2, "petrov", 1), 200);
-        assertEquals(controller.addUserToFile(1, "petrov", 1), 200);
-        assertEquals(controller.addUserToFile(1, "ovcharul", 1), 200);
+        assertEquals(controller.addUserToFile(1, "log3", 1), 100);
+        assertEquals(controller.addUserToFile(1, "log1", 1), 200);
+        assertEquals(controller.addUserToFile(2, "log2", 1), 200);
     }
 
     @Test
