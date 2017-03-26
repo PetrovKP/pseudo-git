@@ -39,7 +39,7 @@ public interface Controller {
 
     int addUserToFile(int idUser, String newUser, int idFile) throws SQLException;
 
-    int deleteUserToFile(int idUser, int newIdUser, int idFile) throws SQLException;
+    int deleteUserToFile(int idUser, String newUser, int idFile) throws SQLException;
 
     // Commit
 

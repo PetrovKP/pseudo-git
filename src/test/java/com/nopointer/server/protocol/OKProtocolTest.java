@@ -179,6 +179,28 @@ public class OKProtocolTest {
     }
 
     @Test
+    public void successDeleteUserToFile() throws Exception {
+        int user = 1;
+        String newUser = "log2";
+        int idFile = 2;
+        Request request = new Request("deleteUserToFile", user, newUser, idFile);
+        Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 100);
+    }
+
+    @Test
+    public void unsuccessDeleteUserToFile() throws Exception {
+        int user = 1;
+        String newUser = "log3";
+        int idFile = 4;
+        Request request = new Request("deleteUserToFile", user, newUser, idFile);
+        Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 200);
+    }
+
+    @Test
     public void successGetAllUsersByFile() throws Exception {
         int idUser = 1;
         int idFile = 1;
