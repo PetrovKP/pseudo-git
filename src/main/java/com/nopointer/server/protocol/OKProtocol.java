@@ -21,7 +21,7 @@ class OKProtocol implements Protocol {
     @Override
     public Response handleRequest(Request request) throws SQLException {
         int code, idFile, idUser, idCommit;
-        String login, password;
+        String login, password, newUser;
         List<String> text;
         Response response = null;
         switch (request.getType()) {
@@ -105,9 +105,17 @@ class OKProtocol implements Protocol {
 
             case "addUserToFile":
                 idUser = (int) request.getData().get(0);
-                String newUser = (String) request.getData().get(1);
+                newUser = (String) request.getData().get(1);
                 idFile = (int) request.getData().get(2);
                 code = controller.addUserToFile(idUser, newUser, idFile);
+                response = new Response(code);
+                break;
+
+            case "deleteUserToFile":
+                idUser = (int) request.getData().get(0);
+                newUser = (String) request.getData().get(1);
+                idFile = (int) request.getData().get(2);
+                code = controller.deleteUserToFile(idUser, newUser, idFile);
                 response = new Response(code);
                 break;
 
