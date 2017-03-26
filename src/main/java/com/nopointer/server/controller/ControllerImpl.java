@@ -91,7 +91,10 @@ class ControllerImpl implements Controller {
     }
 
     @Override
-    public int deleteUserToFile(int idUser, int newIdUser, int idFile) throws SQLException {
+    public int deleteUserToFile(int idUser, String newUser, int idFile) throws SQLException {
+        int newIdUser = database.getAPI().getIdUser(newUser);
+        if ( newIdUser == 0 )
+            return 200;
         return database.getAPI().deleteUserToFile(idUser, newIdUser, idFile) ? 100 : 200;
     }
 

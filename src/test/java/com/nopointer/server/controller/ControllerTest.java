@@ -142,8 +142,8 @@ public class ControllerTest {
 
     @Test
     public void deleteUserToFile() throws Exception {
-        assertEquals(controller.deleteUserToFile(1, 2, 2), 100);
-        assertEquals(controller.deleteUserToFile(1, 3,4), 200);
+        assertEquals(controller.deleteUserToFile(1, "log2", 2), 100);
+        assertEquals(controller.deleteUserToFile(1, "log3",4), 200);
     }
 
     @Test
