@@ -1,6 +1,7 @@
 package com.nopointer.server.protocol;
 
 import com.google.inject.Inject;
+import com.nopointer.server.Cache;
 import com.nopointer.server.controller.Controller;
 import com.nopointer.server.entity.TextString;
 import com.nopointer.server.protocol.entity.Request;
@@ -115,6 +116,9 @@ class OKProtocol implements Protocol {
                 idFile = (int) request.getData().get(1);
                 text = (List<String>) request.getData().get(2);
                 code = controller.addCommit(idUser, idFile, text);
+                if (code == 100) {
+                    Cache.open().finishEditFile(idFile);
+                }
                 response = new Response(code);
                 break;
 
@@ -147,8 +151,13 @@ class OKProtocol implements Protocol {
             case "isFileAvailable":
                 idUser = (int) request.getData().get(0);
                 idFile = (int) request.getData().get(1);
-                // TODO: add logic
-                response = new Response(100);
+                if (Cache.open().isFileEdited(idFile)) {
+                    code = 200;
+                } else {
+                    Cache.open().startEditFile(idFile);
+                    code = 100;
+                }
+                response = new Response(code);
                 break;
 
         }
