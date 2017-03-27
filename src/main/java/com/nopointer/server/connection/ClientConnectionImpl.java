@@ -6,7 +6,7 @@ import com.nopointer.server.protocol.ProtocolConnection;
 import java.net.Socket;
 import java.net.SocketException;
 
-class ClientConnectionImpl extends ClientConnection {
+public class ClientConnectionImpl extends ClientConnection {
 
     private ProtocolConnection protocolConnection;
 

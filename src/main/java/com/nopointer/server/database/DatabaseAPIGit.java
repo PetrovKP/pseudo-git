@@ -529,12 +529,11 @@ public class DatabaseAPIGit implements DatabaseAPI {
         boolean result = false;
         if (isAccessUserToFile(idUser, idFile)) {
             String sql = "DELETE FROM Commits " +
-                    "WHERE idUser = ? AND idFile = ? AND idLocalCommits > ?";
+                    "WHERE idFile = ? AND idLocalCommits > ?";
             try {
                 preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setInt(1, idUser);
-                preparedStatement.setInt(2, idFile);
-                preparedStatement.setInt(3, idCommit);
+                preparedStatement.setInt(1, idFile);
+                preparedStatement.setInt(2, idCommit);
 
                 int count = preparedStatement.executeUpdate();
                 preparedStatement.close();

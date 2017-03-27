@@ -2,6 +2,7 @@ package com.nopointer.server;
 
 import com.google.inject.Injector;
 import com.nopointer.server.connection.ClientConnection;
+import com.nopointer.server.connection.ClientConnectionImpl;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -40,7 +41,7 @@ public class Server {
                     Socket client = serverSocket.accept();
                     ClientConnection clientConnection = injector.getInstance(ClientConnection.class);
                     clientConnection.setSocket(client);
-                    connections.add(clientConnection);
+                    //connections.add(clientConnection);
                     clientConnection.start();
                 } catch (IOException e) {
                     e.printStackTrace();
