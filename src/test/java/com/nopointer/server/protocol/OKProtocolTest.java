@@ -440,5 +440,23 @@ public class OKProtocolTest {
 
         assertEquals(response.getCode(), 200);
     }
+    @Test
+    public void successIsFileAvailable() throws Exception {
+        int idUser = 1;
+        int idFile = 2;
+        Request request = new Request("isFileAvailable", idUser, idFile);
+        Response response = protocol.handleRequest(request);
 
+        assertEquals(response.getCode(), 100);
+    }
+
+    @Test
+    public void unsuccessIsFileAvailable() throws Exception {
+        int idUser = 2;
+        int idFile = 2;
+        Request request = new Request("isFileAvailable", idUser, idFile);
+        Response response = protocol.handleRequest(request);
+
+        assertEquals(response.getCode(), 200);
+    }
 }
